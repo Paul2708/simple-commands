@@ -7,10 +7,17 @@
     <groupId>de.paul2708</groupId>
     <artifactId>simple-commands</artifactId>
     <version>0.1-SNAPSHOT</version>
+    <modules>
+        <module>core</module>
+    </modules>
     <packaging>pom</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Custom properties -->
+        <spigot.version>1.13.2-R0.1-SNAPSHOT</spigot.version>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <name>simple-commands</name>
