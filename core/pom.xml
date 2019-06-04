@@ -12,21 +12,12 @@
     <artifactId>simple-commands-core</artifactId>
 
     <dependencies>
-        <!-- Spigot -->
+        <!-- Arguments -->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${spigot.version}</version>
-            <scope>provided</scope>
+            <groupId>de.paul2708</groupId>
+            <artifactId>simple-commands-arguments</artifactId>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
-        <!-- JUnit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
