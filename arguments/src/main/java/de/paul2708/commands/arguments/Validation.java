@@ -69,9 +69,10 @@ public final class Validation<T> {
      * Create an invalid validation.
      *
      * @param errorMessage error message
+     * @param <T> ignored
      * @return invalid validation of type {@link Void}.
      */
-    public static Validation<Void> invalid(String errorMessage) {
+    public static <T> Validation<T> invalid(String errorMessage) {
         return new Validation<>(false, null, errorMessage);
     }
 }
