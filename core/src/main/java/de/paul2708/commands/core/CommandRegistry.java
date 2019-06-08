@@ -1,7 +1,7 @@
 package de.paul2708.commands.core;
 
+import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.core.annotation.Command;
-import de.paul2708.commands.core.test.CommandArgument;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -12,18 +12,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 public interface CommandRegistry {
 
     /**
-     * Register all methods with {@link Command}-annotation in these classes.
-     *
-     * @param classes array of classes
-     */
-    void register(Class<?>... classes);
-
-    /**
      * Add command arguments.
      *
      * @param arguments command arguments
      */
     void addArgument(CommandArgument<?>... arguments);
+
+    /**
+     * Register all methods with {@link Command}-annotation in these objects.
+     *
+     * @param objects array of objects
+     */
+    void register(Object... objects);
 
     /**
      * Create a new command registry for the plugin instance.
@@ -32,7 +32,6 @@ public interface CommandRegistry {
      * @return new command registry instance
      */
     static CommandRegistry create(JavaPlugin plugin) {
-        // TODO: Implement me
-        return null;
+        return new DefaultCommandRegistry(plugin);
     }
 }
