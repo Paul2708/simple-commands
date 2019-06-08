@@ -13,10 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class implements the command registry.
@@ -27,7 +24,8 @@ public class DefaultCommandRegistry implements CommandRegistry {
 
     private final JavaPlugin plugin;
 
-    private Map<Class<?>, CommandArgument<?>> commandArguments;
+    private final Map<Class<?>, CommandArgument<?>> commandArguments;
+    private final List<SimpleCommand> commands;
 
     /**
      * Create a new command registry.
@@ -38,6 +36,7 @@ public class DefaultCommandRegistry implements CommandRegistry {
         this.plugin = plugin;
 
         this.commandArguments = new HashMap<>();
+        this.commands = new LinkedList<>();
     }
 
     /**
@@ -104,11 +103,23 @@ public class DefaultCommandRegistry implements CommandRegistry {
                     // Register command
                     SimpleCommand simpleCommand = new SimpleCommand(method.getAnnotation(Command.class), commandType,
                             object, method, list);
+                    commands.add(simpleCommand);
 
                     registerBukkitCommand(simpleCommand, new BasicCommand(simpleCommand));
                 }
             }
         }
+    }
+
+    /**
+     * Get an unmodifiable list of all registered commands.
+     *
+     * @return list of commands
+     * @see #register(Object...)
+     */
+    @Override
+    public List<SimpleCommand> getCommands() {
+        return Collections.unmodifiableList(commands);
     }
 
     /**

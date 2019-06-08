@@ -2,7 +2,10 @@ package de.paul2708.commands.core;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.core.annotation.Command;
+import de.paul2708.commands.core.command.SimpleCommand;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.List;
 
 /**
  * This interface is the command registry, that registers commands and adds arguments.
@@ -24,6 +27,14 @@ public interface CommandRegistry {
      * @param objects array of objects
      */
     void register(Object... objects);
+
+    /**
+     * Get an unmodifiable list of all registered commands.
+     *
+     * @see #register(Object...)
+     * @return list of commands
+     */
+    List<SimpleCommand> getCommands();
 
     /**
      * Create a new command registry for the plugin instance.
