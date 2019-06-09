@@ -11,7 +11,7 @@ Spigot features its own command framework by using the command design pattern.
 It's quite _simple_ to create own commands.
 But if you have multiple commands with even more sub commands, there will be a lot of redundant and duplicated code.
 
-The intention behind the framework is to handle handle and check the arguments, so that the implementation of the command only features the actual logic. This will be achieved by using annotations and interfaces for command arguments.
+The intention behind the framework is to handle and check the arguments, so that the implementation of the command only features the actual logic. This will be achieved by using annotations and interfaces for command arguments.
 
 ## Current supported features
 - custom command arguments
@@ -33,7 +33,7 @@ The intention behind the framework is to handle handle and check the arguments, 
 
 ## Getting started
 A detailed description is coming soon.
-An example plugin can be found [here](https://github.com/Paul2708/simple-commands/example).
+An example plugin can be found [here](https://github.com/Paul2708/simple-commands/tree/master/example).
 
 ## TODO
 - adding multiple and custom languages
