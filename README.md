@@ -7,6 +7,7 @@ So checkout the other command framework, if you find this project interesting.
 
 ## Why is it called "simple"?
 Spigot features its own command framework by using the command design pattern.
+
 It's quite _simple_ to create own commands.
 But if you have multiple commands with even more sub commands, there will be a lot of redundant and duplicated code.
 
