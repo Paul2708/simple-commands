@@ -1,0 +1,41 @@
+# SVN
+.svn
+repo/
+
+# VIM locks
+*.swp
+
+# LibreOffice locks
+.~lock.*#
+
+*.tmp
+
+# Word temporary
+~$*.doc*
+#
+# # Excel temporary
+~$*.xls*
+#
+# # Excel Backup File
+*.xlk
+
+# Eclipse
+.metadata/
+.recommenders/
+.checkstyle
+.classpath
+.project
+.settings
+.checkstyle
+bin/
+target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db

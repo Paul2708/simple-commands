@@ -1,0 +1,11 @@
+name: Example-Commands
+author: Paul2708
+version: 0.1
+
+website: https://github.com/Paul2708/simple-commands
+description: Example plugin to test command framework
+prefix: Example-Commands
+
+api-version: 1.13
+
+main: de.paul2708.commands.example.ExamplePlugin
