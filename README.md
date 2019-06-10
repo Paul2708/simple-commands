@@ -19,9 +19,10 @@ The intention behind the framework is to handle handle and check the arguments, 
 
 ## Installation
 ### Maven
-1. Clone the repository `git clone https://github.com/Paul2708/simple-commands.git`
-2. Install it into your local maven repo by `mvn clean install`
-3. Add the following dependency to your project
+1. Install [BuildTools](https://www.spigotmc.org/wiki/buildtools/) and build the actual version (current: 1.13.2).
+2. Clone the repository `git clone https://github.com/Paul2708/simple-commands.git`
+3. Install it into your local maven repo by `mvn clean install`
+4. Add the following dependency to your project
 ```xml
 <dependency>
     <groupId>de.paul2708</groupId>
@@ -32,13 +33,14 @@ The intention behind the framework is to handle handle and check the arguments, 
 
 ## Getting started
 A detailed description is coming soon.
-An example plugin can be found [here](https://github.com/Paul2708/simple-commands/example).
+An example plugin can be found [here](https://github.com/Paul2708/simple-commands/tree/master/example).
 
 ## TODO
 - adding multiple and custom languages
 - adding more command arguments
 - plugin injection
 - more tests (!)
+- optional annotation for parameter
 
 ## Contribution
 If you want to contribute, just open a [pull request](https://github.com/Paul2708/simple-commands/pulls).
