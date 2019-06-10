@@ -18,8 +18,7 @@ public class StringArgumentTest extends AbstractArgumentTest {
      */
     @Override
     public CommandArgument<?> create() {
-        // TODO: Create string argument
-        return null;
+        return new StringArgument();
     }
 
     /**

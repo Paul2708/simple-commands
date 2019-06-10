@@ -1,15 +1,15 @@
 package arguments;
 
 import de.paul2708.commands.arguments.CommandArgument;
-import de.paul2708.commands.arguments.impl.IntegerArgument;
+import de.paul2708.commands.arguments.impl.CharacterArgument;
 import de.paul2708.commands.arguments.util.Pair;
 
 /**
- * This class tests the integer command argument.
+ * This class tests the character command argument.
  *
  * @author Paul2708
  */
-public class IntegerArgumentTest extends AbstractArgumentTest {
+public class CharacterArgumentTest extends AbstractArgumentTest {
 
     /**
      * Create a new command argument.
@@ -18,7 +18,7 @@ public class IntegerArgumentTest extends AbstractArgumentTest {
      */
     @Override
     public CommandArgument<?> create() {
-        return new IntegerArgument();
+        return new CharacterArgument();
     }
 
     /**
@@ -29,15 +29,11 @@ public class IntegerArgumentTest extends AbstractArgumentTest {
     @Override
     public Pair[] validArguments() {
         return new Pair[] {
-                Pair.of("0", 0),
-                Pair.of("+0", 0),
-                Pair.of("-0", 0),
-                Pair.of("0", 0),
-
-                Pair.of("1337", 1337),
-                Pair.of("-1337", -1337),
-                Pair.of("+999999999", 999999999),
-                Pair.of("0005", 5)
+                Pair.of("a", 'a'),
+                Pair.of("A", 'A'),
+                Pair.of("1", '1'),
+                Pair.of("?", '?'),
+                Pair.of(",", ',')
         };
     }
 
@@ -49,16 +45,9 @@ public class IntegerArgumentTest extends AbstractArgumentTest {
     @Override
     public String[] invalidArguments() {
         return new String[] {
-                "zero",
-                "text",
+                "123",
+                "word",
                 "",
-                " ",
-                "5test",
-                "test5",
-                "0-0",
-                "0.25",
-                "1,3",
-                " 5"
         };
     }
 }

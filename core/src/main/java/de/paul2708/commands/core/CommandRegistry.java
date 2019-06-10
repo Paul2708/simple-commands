@@ -29,6 +29,14 @@ public interface CommandRegistry {
     void register(Object... objects);
 
     /**
+     * Get an unmodifiable list of all added command arguments.
+     *
+     * @see #register(Object...)
+     * @return list of arguments
+     */
+    List<CommandArgument<?>> getArguments();
+
+    /**
      * Get an unmodifiable list of all registered commands.
      *
      * @see #register(Object...)
@@ -43,6 +51,10 @@ public interface CommandRegistry {
      * @return new command registry instance
      */
     static CommandRegistry create(JavaPlugin plugin) {
+        if (plugin == null) {
+            throw new IllegalArgumentException("plugin cannot be null");
+        }
+
         return new DefaultCommandRegistry(plugin);
     }
 }

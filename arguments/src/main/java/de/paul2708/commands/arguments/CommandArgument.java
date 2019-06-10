@@ -12,6 +12,7 @@ public interface CommandArgument<T> {
 
     /**
      * Validate the object by a given command argument.
+     * The command argument is trimmed, doesn't contain any spaces and is not empty.
      *
      * @param argument command argument
      * @return a valid or invalid validation

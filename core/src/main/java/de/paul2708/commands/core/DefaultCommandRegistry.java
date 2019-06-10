@@ -51,6 +51,10 @@ public class DefaultCommandRegistry implements CommandRegistry {
         }
 
         for (CommandArgument<?> argument : arguments) {
+            if (argument == null) {
+                throw new IllegalArgumentException("cannot add null arguments");
+            }
+
             Class<?>[] typeArgs = TypeResolver.resolveRawArguments(CommandArgument.class, argument.getClass());
 
             commandArguments.put(typeArgs[0], argument);
@@ -109,6 +113,17 @@ public class DefaultCommandRegistry implements CommandRegistry {
                 }
             }
         }
+    }
+
+    /**
+     * Get an unmodifiable list of all added command arguments.
+     *
+     * @return list of arguments
+     * @see #register(Object...)
+     */
+    @Override
+    public List<CommandArgument<?>> getArguments() {
+        return Collections.unmodifiableList(new ArrayList<>(commandArguments.values()));
     }
 
     /**
