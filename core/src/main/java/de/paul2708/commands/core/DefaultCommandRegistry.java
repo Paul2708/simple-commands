@@ -1,5 +1,6 @@
 package de.paul2708.commands.core;
 
+import com.google.common.collect.ImmutableMap;
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.core.command.BasicCommand;
@@ -21,6 +22,15 @@ import java.util.*;
  * @author Paul2708
  */
 public class DefaultCommandRegistry implements CommandRegistry {
+
+    private static final Map<Class<?>, Class<?>> PRIMITIVES = ImmutableMap.<Class<?>, Class<?>>builder()
+            .put(int.class, Integer.class)
+            .put(char.class, Character.class)
+            .put(double.class, Double.class)
+            .put(float.class, Float.class)
+            .put(byte.class, Byte.class)
+            .put(short.class, Short.class)
+            .build();
 
     private final JavaPlugin plugin;
 
@@ -96,12 +106,17 @@ public class DefaultCommandRegistry implements CommandRegistry {
                     List<CommandArgument<?>> list = new ArrayList<>();
 
                     for (int i = 1; i < parameters.length; i++) {
-                        if (!commandArguments.containsKey(parameters[i].getType())) {
+                        Class<?> type = parameters[i].getType();
+
+                        if (type.isPrimitive()) {
+                            type = DefaultCommandRegistry.PRIMITIVES.get(type);
+                        }
+                        if (!commandArguments.containsKey(type)) {
                             throw new IllegalArgumentException(String.format("parameter %s of method %s doesn't have "
-                                    + "an argument wrapper", parameters[i].getName(), method.getName()));
+                                    + "an argument wrapper", type.getName(), method.getName()));
                         }
 
-                        list.add(commandArguments.get(parameters[i].getType()));
+                        list.add(commandArguments.get(type));
                     }
 
                     // Register command
