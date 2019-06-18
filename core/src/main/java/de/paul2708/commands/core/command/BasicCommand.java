@@ -2,6 +2,7 @@ package de.paul2708.commands.core.command;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
+import de.paul2708.commands.arguments.exception.NotFulfilledConditionException;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -101,10 +102,20 @@ public class BasicCommand extends Command {
         try {
             simpleCommand.getMethod().invoke(simpleCommand.getObject(), parameters.toArray());
             return true;
-        } catch (IllegalAccessException | InvocationTargetException e) {
+        } catch (IllegalAccessException e) {
             sender.sendMessage("An error occurred while invoking the command method.");
             e.printStackTrace();
             return false;
+        } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof NotFulfilledConditionException) {
+                NotFulfilledConditionException exception = (NotFulfilledConditionException) e.getCause();
+                sender.sendMessage("Failed condition: " + exception.getDescription());
+                return true;
+            } else {
+                sender.sendMessage("An error occurred while executing the command.");
+                e.printStackTrace();
+                return false;
+            }
         }
     }
 
@@ -113,7 +124,7 @@ public class BasicCommand extends Command {
     /**
      * Check if a command sender has the given permission.
      *
-     * @param sender comamnd sender
+     * @param sender command sender
      * @param permission permission
      * @return true if the sender is the console or if the player has the permission, otherwise false
      */
