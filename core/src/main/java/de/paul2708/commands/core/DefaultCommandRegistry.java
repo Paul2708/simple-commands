@@ -2,7 +2,9 @@ package de.paul2708.commands.core;
 
 import com.google.common.collect.ImmutableMap;
 import de.paul2708.commands.arguments.CommandArgument;
+import de.paul2708.commands.arguments.util.Pair;
 import de.paul2708.commands.core.annotation.Command;
+import de.paul2708.commands.core.annotation.Inject;
 import de.paul2708.commands.core.command.BasicCommand;
 import de.paul2708.commands.core.command.CommandType;
 import de.paul2708.commands.core.command.SimpleCommand;
@@ -37,6 +39,8 @@ public class DefaultCommandRegistry implements CommandRegistry {
     private final Map<Class<?>, CommandArgument<?>> commandArguments;
     private final List<SimpleCommand> commands;
 
+    private final List<Pair<Object, String>> injectedObjects;
+
     /**
      * Create a new command registry.
      *
@@ -47,6 +51,8 @@ public class DefaultCommandRegistry implements CommandRegistry {
 
         this.commandArguments = new HashMap<>();
         this.commands = new LinkedList<>();
+
+        this.injectedObjects = new ArrayList<>();
     }
 
     /**
@@ -69,6 +75,41 @@ public class DefaultCommandRegistry implements CommandRegistry {
 
             commandArguments.put(typeArgs[0], argument);
         }
+    }
+
+    /**
+     * Set the injected object value.<br>
+     * <code>@Inject</code> will refer to the given instance.
+     *
+     * @param object object
+     */
+    @Override
+    public void inject(Object object) {
+        inject("", object);
+    }
+
+    /**
+     * Set the injected object values.<br>
+     * <code>@Inject(key = "key")</code> will refer to the given instance.
+     *
+     * @param key    key
+     * @param object object
+     */
+    @Override
+    public void inject(String key, Object object) {
+        if (object == null) {
+            throw new IllegalArgumentException("injected object cannot be null");
+        }
+
+        for (Pair<Object, String> pair : injectedObjects) {
+            if (pair.getKey().getClass().equals(object.getClass())
+                    && pair.getValue().equals(key)) {
+                throw new IllegalArgumentException("an object of " + object.getClass().getName() + " and key " + key
+                        + "already exists.");
+            }
+        }
+
+        injectedObjects.add(Pair.of(object, key));
     }
 
     /**
@@ -119,6 +160,20 @@ public class DefaultCommandRegistry implements CommandRegistry {
                         list.add(commandArguments.get(type));
                     }
 
+                    // Set injected fields
+                    for (Field field : clazz.getDeclaredFields()) {
+                        if (field.isAnnotationPresent(Inject.class)) {
+                            Inject inject = field.getAnnotation(Inject.class);
+
+                            field.setAccessible(true);
+                            try {
+                                field.set(object, getInjectedValue(inject.key(), field.getType()));
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
                     // Register command
                     SimpleCommand simpleCommand = new SimpleCommand(method.getAnnotation(Command.class), commandType,
                             object, method, list);
@@ -150,6 +205,23 @@ public class DefaultCommandRegistry implements CommandRegistry {
     @Override
     public List<SimpleCommand> getCommands() {
         return Collections.unmodifiableList(commands);
+    }
+
+    /**
+     * Get the injected value by key and type.
+     *
+     * @param key key
+     * @param objectClass object class
+     * @return injected value or <code>null</code> if none was injected
+     */
+    private Object getInjectedValue(String key, Class<?> objectClass) {
+        for (Pair<Object, String> pair : injectedObjects) {
+            if (objectClass.isAssignableFrom(pair.getKey().getClass()) && pair.getValue().equals(key)) {
+                return pair.getKey();
+            }
+        }
+
+        return null;
     }
 
     /**

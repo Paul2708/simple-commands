@@ -22,6 +22,23 @@ public interface CommandRegistry {
     void addArgument(CommandArgument<?>... arguments);
 
     /**
+     * Set the injected object value.<br>
+     * <code>@Inject</code> will refer to the given instance.
+     *
+     * @param object object
+     */
+    void inject(Object object);
+
+    /**
+     * Set the injected object values.<br>
+     * <code>@Inject(key = "key")</code> will refer to the given instance.
+     *
+     * @param key key
+     * @param object object
+     */
+    void inject(String key, Object object);
+
+    /**
      * Register all methods with {@link Command}-annotation in these objects.
      *
      * @param objects array of objects
