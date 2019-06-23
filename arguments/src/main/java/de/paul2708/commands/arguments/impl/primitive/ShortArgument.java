@@ -1,4 +1,4 @@
-package de.paul2708.commands.arguments.impl;
+package de.paul2708.commands.arguments.impl.primitive;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
@@ -7,11 +7,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This command arguments represents an {@link Character} argument.
+ * This command arguments represents a {@link Short} argument.
  *
  * @author Paul2708
  */
-public class CharacterArgument implements CommandArgument<Character> {
+public class ShortArgument implements CommandArgument<Short> {
 
     /**
      * Validate the object by a given command argument.
@@ -21,11 +21,11 @@ public class CharacterArgument implements CommandArgument<Character> {
      * @return a valid or invalid validation
      */
     @Override
-    public Validation<Character> validate(String argument) {
-        if (argument.length() != 1) {
-            return Validation.invalid("Character must have one char.");
-        } else {
-            return Validation.valid(argument.charAt(0));
+    public Validation<Short> validate(String argument) {
+        try {
+            return Validation.valid(Short.parseShort(argument));
+        } catch (NumberFormatException e) {
+            return Validation.invalid("Given argument is not a short.");
         }
     }
 
@@ -36,7 +36,7 @@ public class CharacterArgument implements CommandArgument<Character> {
      */
     @Override
     public String usage() {
-        return "[Letter/Digit]";
+        return "[Short]";
     }
 
     /**

@@ -1,7 +1,10 @@
 package de.paul2708.commands.core;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import de.paul2708.commands.arguments.CommandArgument;
+import de.paul2708.commands.arguments.impl.primitive.*;
+import de.paul2708.commands.arguments.impl.StringArgument;
 import de.paul2708.commands.arguments.util.Pair;
 import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.core.annotation.Inject;
@@ -24,6 +27,16 @@ import java.util.*;
  * @author Paul2708
  */
 public class DefaultCommandRegistry implements CommandRegistry {
+
+    private static final List<CommandArgument<?>> COMMAND_ARGUMENTS = ImmutableList.<CommandArgument<?>>builder()
+            .add(new IntegerArgument())
+            .add(new StringArgument())
+            .add(new CharacterArgument())
+            .add(new ByteArgument())
+            .add(new ShortArgument())
+            .add(new DoubleArgument())
+            .add(new FloatArgument())
+            .build();
 
     private static final Map<Class<?>, Class<?>> PRIMITIVES = ImmutableMap.<Class<?>, Class<?>>builder()
             .put(int.class, Integer.class)
@@ -53,6 +66,11 @@ public class DefaultCommandRegistry implements CommandRegistry {
         this.commands = new LinkedList<>();
 
         this.injectedObjects = new ArrayList<>();
+
+        // Add default vales
+        for (CommandArgument<?> argument : DefaultCommandRegistry.COMMAND_ARGUMENTS) {
+            addArgument(argument);
+        }
     }
 
     /**

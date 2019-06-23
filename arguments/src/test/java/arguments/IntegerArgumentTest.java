@@ -1,7 +1,7 @@
 package arguments;
 
 import de.paul2708.commands.arguments.CommandArgument;
-import de.paul2708.commands.arguments.impl.IntegerArgument;
+import de.paul2708.commands.arguments.impl.primitive.IntegerArgument;
 import de.paul2708.commands.arguments.util.Pair;
 
 /**

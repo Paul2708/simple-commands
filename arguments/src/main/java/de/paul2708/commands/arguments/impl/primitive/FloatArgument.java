@@ -1,4 +1,4 @@
-package de.paul2708.commands.arguments.impl;
+package de.paul2708.commands.arguments.impl.primitive;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
@@ -7,11 +7,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This command arguments represents an {@link Integer} argument.
+ * This command arguments represents a {@link Float} argument.
  *
  * @author Paul2708
  */
-public class IntegerArgument implements CommandArgument<Integer> {
+public class FloatArgument implements CommandArgument<Float> {
 
     /**
      * Validate the object by a given command argument.
@@ -21,11 +21,11 @@ public class IntegerArgument implements CommandArgument<Integer> {
      * @return a valid or invalid validation
      */
     @Override
-    public Validation<Integer> validate(String argument) {
+    public Validation<Float> validate(String argument) {
         try {
-            return Validation.valid(Integer.parseInt(argument));
+            return Validation.valid(Float.parseFloat(argument));
         } catch (NumberFormatException e) {
-            return Validation.invalid("Given argument is not an integer.");
+            return Validation.invalid("Given argument is not a float.");
         }
     }
 
@@ -36,7 +36,7 @@ public class IntegerArgument implements CommandArgument<Integer> {
      */
     @Override
     public String usage() {
-        return "[Number]";
+        return "[Float]";
     }
 
     /**

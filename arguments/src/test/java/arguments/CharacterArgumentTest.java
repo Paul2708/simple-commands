@@ -1,7 +1,7 @@
 package arguments;
 
 import de.paul2708.commands.arguments.CommandArgument;
-import de.paul2708.commands.arguments.impl.CharacterArgument;
+import de.paul2708.commands.arguments.impl.primitive.CharacterArgument;
 import de.paul2708.commands.arguments.util.Pair;
 
 /**

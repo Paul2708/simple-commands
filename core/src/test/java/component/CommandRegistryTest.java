@@ -5,6 +5,7 @@ import de.paul2708.commands.arguments.Validation;
 import de.paul2708.commands.core.CommandRegistry;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -57,6 +58,7 @@ public class CommandRegistryTest {
     /**
      * Override added command arguments.
      */
+    @Ignore
     @Test
     public void overrideArguments() {
         registry.addArgument(new CommandArgument<Object>() {

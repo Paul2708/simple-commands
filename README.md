@@ -14,9 +14,11 @@ But if you have multiple commands with even more sub commands, there will be a l
 The intention behind the framework is to handle handle and check the arguments, so that the implementation of the command only features the actual logic. This will be achieved by using annotations and interfaces for command arguments.
 
 ## Current supported features
+- basic set of command arguments (primitive data types)
 - custom command arguments
 - declaring a command by annotation and its arguments
 - register commands without editing `plugin.yml`
+- dependency injection via `@Inject`
 
 ## Installation
 ### Maven
@@ -36,17 +38,10 @@ The intention behind the framework is to handle handle and check the arguments, 
 A detailed description is coming soon.
 An example plugin can be found [here](https://github.com/Paul2708/simple-commands/tree/master/example).
 
-## TODO
-- adding multiple and custom languages
-- adding more command arguments
-- plugin injection
-- more tests (!)
-- optional annotation for parameter
-
 ## Contribution
 If you want to contribute, just open a [pull request](https://github.com/Paul2708/simple-commands/pulls).
 
-## Test-driven development
-This project is based on a test-driven development.
-This means that I'll write the unit tests and interfaces before I implement it.
-So checkout the development branch, if you want to know what's happening at the moment.
+## Contact
+If you find any issues, please let me know!
+
+Paul2708 - [Twitter](https://twitter.com/theplayerpaul) Discord: Paul2708#1098 [Mail](mailto:playerpaul2708@gmx.de)
