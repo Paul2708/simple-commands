@@ -36,6 +36,7 @@ public class DefaultCommandRegistry implements CommandRegistry {
             .add(new ShortArgument())
             .add(new DoubleArgument())
             .add(new FloatArgument())
+            .add(new BooleanArgument())
             .build();
 
     private static final Map<Class<?>, Class<?>> PRIMITIVES = ImmutableMap.<Class<?>, Class<?>>builder()
@@ -45,6 +46,7 @@ public class DefaultCommandRegistry implements CommandRegistry {
             .put(float.class, Float.class)
             .put(byte.class, Byte.class)
             .put(short.class, Short.class)
+            .put(boolean.class, Boolean.class)
             .build();
 
     private final JavaPlugin plugin;
