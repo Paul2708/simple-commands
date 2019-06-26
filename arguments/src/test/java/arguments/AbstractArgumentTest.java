@@ -50,7 +50,7 @@ public abstract class AbstractArgumentTest {
         for (String argument : invalidArguments()) {
             Validation<?> validation = commandArgument.validate(argument);
 
-            assertFalse(validation.isValid());
+            assertFalse("argument '" + argument + "' is valid", validation.isValid());
         }
     }
 

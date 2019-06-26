@@ -1,15 +1,17 @@
-package arguments;
+package arguments.primitive;
 
+import arguments.AbstractArgumentTest;
 import de.paul2708.commands.arguments.CommandArgument;
-import de.paul2708.commands.arguments.impl.StringArgument;
+import de.paul2708.commands.arguments.impl.primitive.ByteArgument;
+import de.paul2708.commands.arguments.impl.primitive.ShortArgument;
 import de.paul2708.commands.arguments.util.Pair;
 
 /**
- * This class tests the string command argument.
+ * This class tests the short command argument.
  *
  * @author Paul2708
  */
-public class StringArgumentTest extends AbstractArgumentTest {
+public class ShortArgumentTest extends AbstractArgumentTest {
 
     /**
      * Create a new command argument.
@@ -18,7 +20,7 @@ public class StringArgumentTest extends AbstractArgumentTest {
      */
     @Override
     public CommandArgument<?> create() {
-        return new StringArgument();
+        return new ShortArgument();
     }
 
     /**
@@ -29,14 +31,11 @@ public class StringArgumentTest extends AbstractArgumentTest {
     @Override
     public Pair[] validArguments() {
         return new Pair[] {
-                Pair.of("hello", "hello"),
-                Pair.of("Test123", "Test123"),
-                Pair.of("sample,string", "sample,string"),
-                Pair.of(" front_space", "front_space"),
-                Pair.of("  test  ", "test"),
-                Pair.of("13 ", "13"),
-                Pair.of("   tab-test", "tab-test"),
-                Pair.of("a", "a")
+                Pair.of("0", (short) 0),
+                Pair.of("32767", (short) 32767),
+                Pair.of("13", (short) 13),
+                Pair.of("+100", (short) 100),
+                Pair.of("-1", (short) -1)
         };
     }
 
@@ -48,10 +47,9 @@ public class StringArgumentTest extends AbstractArgumentTest {
     @Override
     public String[] invalidArguments() {
         return new String[] {
-                " ",
-                "test sample",
-                "",
-                "many arguments",
+                "32768",
+                "0,2",
+                "test"
         };
     }
 }

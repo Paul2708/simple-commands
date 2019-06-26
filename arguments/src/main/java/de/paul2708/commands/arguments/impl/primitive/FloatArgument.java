@@ -22,8 +22,10 @@ public class FloatArgument implements CommandArgument<Float> {
      */
     @Override
     public Validation<Float> validate(String argument) {
+        String replacedArgument = argument.replace(',', '.');
+
         try {
-            return Validation.valid(Float.parseFloat(argument));
+            return Validation.valid(Float.parseFloat(replacedArgument));
         } catch (NumberFormatException e) {
             return Validation.invalid("Given argument is not a float.");
         }

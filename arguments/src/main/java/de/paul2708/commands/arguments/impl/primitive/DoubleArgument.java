@@ -22,8 +22,10 @@ public class DoubleArgument implements CommandArgument<Double> {
      */
     @Override
     public Validation<Double> validate(String argument) {
+        String replacedArgument = argument.replace(',', '.');
+
         try {
-            return Validation.valid(Double.parseDouble(argument));
+            return Validation.valid(Double.parseDouble(replacedArgument));
         } catch (NumberFormatException e) {
             return Validation.invalid("Given argument is not a double.");
         }

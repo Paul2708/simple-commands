@@ -1,5 +1,6 @@
-package arguments;
+package arguments.primitive;
 
+import arguments.AbstractArgumentTest;
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.impl.primitive.IntegerArgument;
 import de.paul2708.commands.arguments.util.Pair;
@@ -51,14 +52,12 @@ public class IntegerArgumentTest extends AbstractArgumentTest {
         return new String[] {
                 "zero",
                 "text",
-                "",
-                " ",
                 "5test",
                 "test5",
                 "0-0",
                 "0.25",
                 "1,3",
-                " 5"
+                "100000000000000000000000000000000000000000000"
         };
     }
 }

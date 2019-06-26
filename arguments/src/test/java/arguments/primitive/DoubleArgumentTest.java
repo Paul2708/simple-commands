@@ -1,15 +1,17 @@
-package arguments;
+package arguments.primitive;
 
+import arguments.AbstractArgumentTest;
 import de.paul2708.commands.arguments.CommandArgument;
-import de.paul2708.commands.arguments.impl.primitive.CharacterArgument;
+import de.paul2708.commands.arguments.impl.primitive.ByteArgument;
+import de.paul2708.commands.arguments.impl.primitive.DoubleArgument;
 import de.paul2708.commands.arguments.util.Pair;
 
 /**
- * This class tests the character command argument.
+ * This class tests the double command argument.
  *
  * @author Paul2708
  */
-public class CharacterArgumentTest extends AbstractArgumentTest {
+public class DoubleArgumentTest extends AbstractArgumentTest {
 
     /**
      * Create a new command argument.
@@ -18,7 +20,7 @@ public class CharacterArgumentTest extends AbstractArgumentTest {
      */
     @Override
     public CommandArgument<?> create() {
-        return new CharacterArgument();
+        return new DoubleArgument();
     }
 
     /**
@@ -29,11 +31,10 @@ public class CharacterArgumentTest extends AbstractArgumentTest {
     @Override
     public Pair[] validArguments() {
         return new Pair[] {
-                Pair.of("a", 'a'),
-                Pair.of("A", 'A'),
-                Pair.of("1", '1'),
-                Pair.of("?", '?'),
-                Pair.of(",", ',')
+                Pair.of("0", 0.0),
+                Pair.of("1337", 1337.0),
+                Pair.of("-5,5", -5.5),
+                Pair.of("0.001", 0.001)
         };
     }
 
@@ -45,9 +46,9 @@ public class CharacterArgumentTest extends AbstractArgumentTest {
     @Override
     public String[] invalidArguments() {
         return new String[] {
-                "123",
-                "word",
-                "",
+                "test",
+                "0;13",
+                "12,34,56"
         };
     }
 }
