@@ -19,6 +19,12 @@
             <version>${spigot.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Type-Resolver -->
+        <dependency>
+            <groupId>net.jodah</groupId>
+            <artifactId>typetools</artifactId>
+            <version>0.6.1</version>
+        </dependency>
         <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>

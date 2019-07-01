@@ -1,17 +1,13 @@
 package de.paul2708.commands.core;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import de.paul2708.commands.arguments.ArgumentHolder;
 import de.paul2708.commands.arguments.CommandArgument;
-import de.paul2708.commands.arguments.impl.primitive.*;
-import de.paul2708.commands.arguments.impl.StringArgument;
 import de.paul2708.commands.arguments.util.Pair;
 import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.core.annotation.Inject;
 import de.paul2708.commands.core.command.BasicCommand;
 import de.paul2708.commands.core.command.CommandType;
 import de.paul2708.commands.core.command.SimpleCommand;
-import net.jodah.typetools.TypeResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,7 +15,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class implements the command registry.
@@ -28,30 +27,9 @@ import java.util.*;
  */
 public class DefaultCommandRegistry implements CommandRegistry {
 
-    private static final List<CommandArgument<?>> COMMAND_ARGUMENTS = ImmutableList.<CommandArgument<?>>builder()
-            .add(new IntegerArgument())
-            .add(new StringArgument())
-            .add(new CharacterArgument())
-            .add(new ByteArgument())
-            .add(new ShortArgument())
-            .add(new DoubleArgument())
-            .add(new FloatArgument())
-            .add(new BooleanArgument())
-            .build();
-
-    private static final Map<Class<?>, Class<?>> PRIMITIVES = ImmutableMap.<Class<?>, Class<?>>builder()
-            .put(int.class, Integer.class)
-            .put(char.class, Character.class)
-            .put(double.class, Double.class)
-            .put(float.class, Float.class)
-            .put(byte.class, Byte.class)
-            .put(short.class, Short.class)
-            .put(boolean.class, Boolean.class)
-            .build();
-
     private final JavaPlugin plugin;
 
-    private final Map<Class<?>, CommandArgument<?>> commandArguments;
+    private final ArgumentHolder argumentHolder;
     private final List<SimpleCommand> commands;
 
     private final List<Pair<Object, String>> injectedObjects;
@@ -64,15 +42,10 @@ public class DefaultCommandRegistry implements CommandRegistry {
     DefaultCommandRegistry(JavaPlugin plugin) {
         this.plugin = plugin;
 
-        this.commandArguments = new HashMap<>();
+        this.argumentHolder = ArgumentHolder.create();
         this.commands = new LinkedList<>();
 
         this.injectedObjects = new ArrayList<>();
-
-        // Add default vales
-        for (CommandArgument<?> argument : DefaultCommandRegistry.COMMAND_ARGUMENTS) {
-            addArgument(argument);
-        }
     }
 
     /**
@@ -87,13 +60,7 @@ public class DefaultCommandRegistry implements CommandRegistry {
         }
 
         for (CommandArgument<?> argument : arguments) {
-            if (argument == null) {
-                throw new IllegalArgumentException("cannot add null arguments");
-            }
-
-            Class<?>[] typeArgs = TypeResolver.resolveRawArguments(CommandArgument.class, argument.getClass());
-
-            commandArguments.put(typeArgs[0], argument);
+            argumentHolder.add(argument);
         }
     }
 
@@ -169,15 +136,14 @@ public class DefaultCommandRegistry implements CommandRegistry {
                     for (int i = 1; i < parameters.length; i++) {
                         Class<?> type = parameters[i].getType();
 
-                        if (type.isPrimitive()) {
-                            type = DefaultCommandRegistry.PRIMITIVES.get(type);
-                        }
-                        if (!commandArguments.containsKey(type)) {
+                        CommandArgument<?> argument = argumentHolder.resolve(type);
+
+                        if (argument == null) {
                             throw new IllegalArgumentException(String.format("parameter %s of method %s doesn't have "
                                     + "an argument wrapper", type.getName(), method.getName()));
                         }
 
-                        list.add(commandArguments.get(type));
+                        list.add(argument);
                     }
 
                     // Set injected fields
@@ -213,7 +179,7 @@ public class DefaultCommandRegistry implements CommandRegistry {
      */
     @Override
     public List<CommandArgument<?>> getArguments() {
-        return Collections.unmodifiableList(new ArrayList<>(commandArguments.values()));
+        return argumentHolder.getAll();
     }
 
     /**
