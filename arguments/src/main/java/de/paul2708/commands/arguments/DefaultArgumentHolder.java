@@ -2,9 +2,12 @@ package de.paul2708.commands.arguments;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import de.paul2708.commands.arguments.impl.EnumArgument;
 import de.paul2708.commands.arguments.impl.StringArgument;
 import de.paul2708.commands.arguments.impl.primitive.*;
 import net.jodah.typetools.TypeResolver;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 
 import java.util.*;
 
@@ -24,6 +27,8 @@ public class DefaultArgumentHolder implements ArgumentHolder {
             .add(new DoubleArgument())
             .add(new FloatArgument())
             .add(new BooleanArgument())
+            .add(new EnumArgument<>(Material.class))
+            .add(new EnumArgument<>(EntityType.class))
             .build();
 
     private static final Map<Class<?>, Class<?>> PRIMITIVES = ImmutableMap.<Class<?>, Class<?>>builder()
