@@ -9,6 +9,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -119,7 +120,29 @@ public class BasicCommand extends Command {
         }
     }
 
-    // TODO: Add auto-complete
+    /**
+     * Executed on tab completion for this command, returning a list of
+     * options the player can tab through.
+     *
+     * @param sender Source object which is executing this command
+     * @param alias  the alias being used
+     * @param args   All arguments passed to the command, split via ' '
+     * @return a list of tab-completions for the specified arguments. This
+     * will never be null. List may be immutable.
+     * @throws IllegalArgumentException if sender, alias, or args is null
+     */
+    @Override
+    public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+        if (sender == null || alias == null || args == null) {
+            throw new IllegalArgumentException();
+        }
+
+        if (args.length == 0 || args.length > simpleCommand.getArguments().size()) {
+            return Collections.emptyList();
+        }
+
+        return simpleCommand.getArguments().get(args.length - 1).autoComplete(args[args.length - 1]);
+    }
 
     /**
      * Check if a command sender has the given permission.

@@ -66,9 +66,13 @@ public class DefaultArgumentHolder implements ArgumentHolder {
             throw new IllegalArgumentException("cannot add null argument");
         }
 
-        Class<?>[] typeArgs = TypeResolver.resolveRawArguments(CommandArgument.class, argument.getClass());
+        if (argument instanceof EnumArgument<?>) {
+            commandArguments.put(((EnumArgument<?>) argument).getEnumClass(), argument);
+        } else {
+            Class<?>[] typeArgs = TypeResolver.resolveRawArguments(CommandArgument.class, argument.getClass());
 
-        commandArguments.put(typeArgs[0], argument);
+            commandArguments.put(typeArgs[0], argument);
+        }
     }
 
     /**

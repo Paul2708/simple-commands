@@ -6,6 +6,7 @@ import de.paul2708.commands.arguments.Validation;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -14,14 +15,14 @@ import java.util.stream.Collectors;
  * @param <T> enum type parameter
  * @author Paul2708
  */
-public class EnumArgument<T extends Enum<T>> implements CommandArgument<Enum<T>> {
+public class EnumArgument<T> implements CommandArgument<T> {
 
     private final Class<T> enumClass;
 
     /**
      * Create a new enum argument with enum class as parameter.
      *
-     * @param enumClass enum class type
+     * @param enumClass enum class
      */
     public EnumArgument(Class<T> enumClass) {
         this.enumClass = enumClass;
@@ -35,12 +36,14 @@ public class EnumArgument<T extends Enum<T>> implements CommandArgument<Enum<T>>
      * @return a valid or invalid validation
      */
     @Override
-    public Validation<Enum<T>> validate(String argument) {
-        try {
-            return Validation.valid(Enum.valueOf(enumClass, argument.toUpperCase()));
-        } catch (IllegalArgumentException e) {
-            return Validation.invalid(String.format("'%s' is not valid for %s", argument, enumClass));
+    public Validation<T> validate(String argument) {
+        for (T enumValue : enumClass.getEnumConstants()) {
+            if (enumValue.toString().equals(argument.toUpperCase())) {
+                return Validation.valid(enumValue);
+            }
         }
+
+        return Validation.invalid(String.format("'%s' is not valid for %s", argument, enumClass.getSimpleName()));
     }
 
     /**
@@ -63,10 +66,19 @@ public class EnumArgument<T extends Enum<T>> implements CommandArgument<Enum<T>>
     @Override
     public List<String> autoComplete(String argument) {
         List<String> autoComplete = Arrays.stream(enumClass.getEnumConstants())
-                .map(Enum::toString)
-                .filter(name -> name.startsWith(argument))
+                .map(name -> name.toString().toLowerCase())
+                .filter(name -> name.startsWith(argument.toLowerCase()))
                 .collect(Collectors.toList());
 
         return Collections.unmodifiableList(autoComplete);
+    }
+
+    /**
+     * Get the enum class type.
+     *
+     * @return enum class type
+     */
+    public Class<T> getEnumClass() {
+        return enumClass;
     }
 }
