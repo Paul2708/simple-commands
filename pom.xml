@@ -11,6 +11,7 @@
         <module>core</module>
         <module>arguments</module>
         <module>example</module>
+        <module>language</module>
     </modules>
     <packaging>pom</packaging>
 
