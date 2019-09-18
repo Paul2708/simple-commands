@@ -1,15 +1,14 @@
 package de.paul2708.commands.arguments;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import de.paul2708.commands.arguments.impl.EnumArgument;
-import de.paul2708.commands.arguments.impl.StringArgument;
-import de.paul2708.commands.arguments.impl.primitive.*;
 import net.jodah.typetools.TypeResolver;
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class implements the argument holder.
@@ -17,19 +16,6 @@ import java.util.*;
  * @author Paul2708
  */
 public class DefaultArgumentHolder implements ArgumentHolder {
-
-    private static final List<CommandArgument<?>> COMMAND_ARGUMENTS = ImmutableList.<CommandArgument<?>>builder()
-            .add(new IntegerArgument())
-            .add(new StringArgument())
-            .add(new CharacterArgument())
-            .add(new ByteArgument())
-            .add(new ShortArgument())
-            .add(new DoubleArgument())
-            .add(new FloatArgument())
-            .add(new BooleanArgument())
-            .add(new EnumArgument<>(Material.class))
-            .add(new EnumArgument<>(EntityType.class))
-            .build();
 
     private static final Map<Class<?>, Class<?>> PRIMITIVES = ImmutableMap.<Class<?>, Class<?>>builder()
             .put(int.class, Integer.class)

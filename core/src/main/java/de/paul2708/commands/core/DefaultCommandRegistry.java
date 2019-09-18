@@ -55,22 +55,6 @@ public class DefaultCommandRegistry implements CommandRegistry {
     }
 
     /**
-     * Add command arguments.
-     *
-     * @param arguments command arguments
-     */
-    @Override
-    public void addArgument(CommandArgument<?>... arguments) {
-        if (arguments == null) {
-            throw new IllegalArgumentException("cannot add null arguments");
-        }
-
-        for (CommandArgument<?> argument : arguments) {
-            argumentHolder.add(argument);
-        }
-    }
-
-    /**
      * Set the injected object value.<br>
      * <code>@Inject</code> will refer to the given instance.
      *
@@ -178,17 +162,6 @@ public class DefaultCommandRegistry implements CommandRegistry {
     }
 
     /**
-     * Get an unmodifiable list of all added command arguments.
-     *
-     * @return list of arguments
-     * @see #register(Object...)
-     */
-    @Override
-    public List<CommandArgument<?>> getArguments() {
-        return argumentHolder.getAll();
-    }
-
-    /**
      * Get an unmodifiable list of all registered commands.
      *
      * @return list of commands
@@ -197,6 +170,16 @@ public class DefaultCommandRegistry implements CommandRegistry {
     @Override
     public List<SimpleCommand> getCommands() {
         return Collections.unmodifiableList(commands);
+    }
+
+    /**
+     * Get the argument holder to add command arguments.
+     *
+     * @return argument holder
+     */
+    @Override
+    public ArgumentHolder getArgumentHolder() {
+        return argumentHolder;
     }
 
     /**

@@ -1,5 +1,6 @@
 package de.paul2708.commands.core;
 
+import de.paul2708.commands.arguments.ArgumentHolder;
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.core.command.SimpleCommand;
@@ -14,13 +15,6 @@ import java.util.List;
  * @author Paul2708
  */
 public interface CommandRegistry {
-
-    /**
-     * Add command arguments.
-     *
-     * @param arguments command arguments
-     */
-    void addArgument(CommandArgument<?>... arguments);
 
     /**
      * Set the injected object value.<br>
@@ -47,20 +41,19 @@ public interface CommandRegistry {
     void register(Object... objects);
 
     /**
-     * Get an unmodifiable list of all added command arguments.
-     *
-     * @see #register(Object...)
-     * @return list of arguments
-     */
-    List<CommandArgument<?>> getArguments();
-
-    /**
      * Get an unmodifiable list of all registered commands.
      *
      * @see #register(Object...)
      * @return list of commands
      */
     List<SimpleCommand> getCommands();
+
+    /**
+     * Get the argument holder to add command arguments.
+     *
+     * @return argument holder
+     */
+    ArgumentHolder getArgumentHolder();
 
     /**
      * Get the language selector.
