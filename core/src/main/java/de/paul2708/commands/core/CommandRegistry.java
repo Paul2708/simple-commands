@@ -3,6 +3,7 @@ package de.paul2708.commands.core;
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.core.command.SimpleCommand;
+import de.paul2708.commands.core.language.LanguageSelector;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
@@ -60,6 +61,13 @@ public interface CommandRegistry {
      * @return list of commands
      */
     List<SimpleCommand> getCommands();
+
+    /**
+     * Get the language selector.
+     *
+     * @return language selector
+     */
+    LanguageSelector getLanguageSelector();
 
     /**
      * Create a new command registry for the plugin instance.

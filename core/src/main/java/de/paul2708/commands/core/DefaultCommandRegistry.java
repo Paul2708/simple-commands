@@ -8,6 +8,8 @@ import de.paul2708.commands.core.annotation.Inject;
 import de.paul2708.commands.core.command.BasicCommand;
 import de.paul2708.commands.core.command.CommandType;
 import de.paul2708.commands.core.command.SimpleCommand;
+import de.paul2708.commands.core.language.DefaultLanguageSelector;
+import de.paul2708.commands.core.language.LanguageSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,6 +36,8 @@ public class DefaultCommandRegistry implements CommandRegistry {
 
     private final List<Pair<Object, String>> injectedObjects;
 
+    private final LanguageSelector languageSelector;
+
     /**
      * Create a new command registry.
      *
@@ -46,6 +50,8 @@ public class DefaultCommandRegistry implements CommandRegistry {
         this.commands = new LinkedList<>();
 
         this.injectedObjects = new ArrayList<>();
+
+        this.languageSelector = new DefaultLanguageSelector();
     }
 
     /**
@@ -191,6 +197,16 @@ public class DefaultCommandRegistry implements CommandRegistry {
     @Override
     public List<SimpleCommand> getCommands() {
         return Collections.unmodifiableList(commands);
+    }
+
+    /**
+     * Get the language selector.
+     *
+     * @return language selector
+     */
+    @Override
+    public LanguageSelector getLanguageSelector() {
+        return languageSelector;
     }
 
     /**
