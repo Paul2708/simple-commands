@@ -3,6 +3,8 @@ package de.paul2708.commands.core.command;
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
 import de.paul2708.commands.arguments.exception.NotFulfilledConditionException;
+import de.paul2708.commands.core.language.LanguageSelector;
+import de.paul2708.commands.language.MessageResource;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -20,16 +22,19 @@ import java.util.List;
  */
 public class BasicCommand extends Command {
 
+    private final LanguageSelector languageSelector;
     private final SimpleCommand simpleCommand;
 
     /**
      * Create a new basic command based on the simple command.
      *
+     * @param languageSelector language selector to translate messages
      * @param simpleCommand simple command
      */
-    public BasicCommand(SimpleCommand simpleCommand) {
+    public BasicCommand(LanguageSelector languageSelector, SimpleCommand simpleCommand) {
         super(simpleCommand.getInformation().name());
 
+        this.languageSelector = languageSelector;
         this.simpleCommand = simpleCommand;
     }
 
@@ -49,14 +54,14 @@ public class BasicCommand extends Command {
         switch (simpleCommand.getType()) {
             case PLAYER_COMMAND:
                 if (!(sender instanceof Player)) {
-                    sender.sendMessage("You cannot execute this command, only players allowed.");
+                    languageSelector.sendMessage(sender, MessageResource.of("command.only_players"));
                     return false;
                 }
 
                 break;
             case CONSOLE_COMMAND:
                 if (!(sender instanceof ConsoleCommandSender)) {
-                    sender.sendMessage("You cannot execute this command, only players allowed.");
+                    languageSelector.sendMessage(sender, MessageResource.of("command.only_console"));
                     return false;
                 }
 
@@ -69,15 +74,15 @@ public class BasicCommand extends Command {
 
         // Check permission
         if (!hasPermission(sender, simpleCommand.getInformation().permission())) {
-            sender.sendMessage("You do not have enough permissions to execute the command.");
+            languageSelector.sendMessage(sender, MessageResource.of("command.no_permission"));
             return false;
         }
 
         // Check arguments
         List<CommandArgument<?>> arguments = simpleCommand.getArguments();
         if (arguments.size() != args.length) {
-            sender.sendMessage(String.format("False usage. Use %d parameters instead of %d",
-                    arguments.size(), args.length));
+            languageSelector.sendMessage(sender, MessageResource.of("command.invalid_parameters", arguments.size(),
+                    args.length));
             return false;
         }
 
@@ -85,7 +90,7 @@ public class BasicCommand extends Command {
             Validation<?> validate = arguments.get(i).validate(args[i]);
 
             if (!validate.isValid()) {
-                sender.sendMessage(String.format("False usage. %s", validate.getErrorMessage()));
+                languageSelector.sendMessage(sender, validate.getErrorResource());
                 return false;
             }
         }
@@ -104,19 +109,24 @@ public class BasicCommand extends Command {
             simpleCommand.getMethod().invoke(simpleCommand.getObject(), parameters.toArray());
             return true;
         } catch (IllegalAccessException e) {
-            sender.sendMessage("An error occurred while invoking the command method.");
+            languageSelector.sendMessage(sender, MessageResource.of("command.error"));
             e.printStackTrace();
             return false;
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof NotFulfilledConditionException) {
                 NotFulfilledConditionException exception = (NotFulfilledConditionException) e.getCause();
-                sender.sendMessage("Failed condition: " + exception.getDescription());
+                languageSelector.sendMessage(sender,
+                        MessageResource.of("command.failed_condition", exception.getDescription()));
                 return true;
             } else {
-                sender.sendMessage("An error occurred while executing the command.");
+                languageSelector.sendMessage(sender, MessageResource.of("command.error"));
                 e.printStackTrace();
                 return false;
             }
+        } catch (Exception e) {
+            languageSelector.sendMessage(sender, MessageResource.of("command.error"));
+            e.printStackTrace();
+            return false;
         }
     }
 

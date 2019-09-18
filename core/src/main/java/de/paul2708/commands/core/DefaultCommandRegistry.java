@@ -171,7 +171,7 @@ public class DefaultCommandRegistry implements CommandRegistry {
                             object, method, list);
                     commands.add(simpleCommand);
 
-                    registerBukkitCommand(simpleCommand, new BasicCommand(simpleCommand));
+                    registerBukkitCommand(simpleCommand, new BasicCommand(languageSelector, simpleCommand));
                 }
             }
         }
