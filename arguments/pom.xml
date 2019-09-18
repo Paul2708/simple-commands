@@ -12,6 +12,12 @@
     <artifactId>simple-commands-arguments</artifactId>
 
     <dependencies>
+        <!-- Language -->
+        <dependency>
+            <groupId>de.paul2708</groupId>
+            <artifactId>simple-commands-language</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
         <!-- Spigot -->
         <dependency>
             <groupId>org.spigotmc</groupId>

@@ -2,6 +2,7 @@ package de.paul2708.commands.arguments.impl.primitive;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
+import de.paul2708.commands.language.MessageResource;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +24,7 @@ public class CharacterArgument implements CommandArgument<Character> {
     @Override
     public Validation<Character> validate(String argument) {
         if (argument.length() != 1) {
-            return Validation.invalid("Character must have one char.");
+            return Validation.invalid(MessageResource.of("argument.char.invalid"));
         } else {
             return Validation.valid(argument.charAt(0));
         }

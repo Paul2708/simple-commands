@@ -2,6 +2,7 @@ package de.paul2708.commands.arguments.impl.primitive;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
+import de.paul2708.commands.language.MessageResource;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +28,7 @@ public class FloatArgument implements CommandArgument<Float> {
         try {
             return Validation.valid(Float.parseFloat(replacedArgument));
         } catch (NumberFormatException e) {
-            return Validation.invalid("Given argument is not a float.");
+            return Validation.invalid(MessageResource.of("argument.float.invalid", argument));
         }
     }
 

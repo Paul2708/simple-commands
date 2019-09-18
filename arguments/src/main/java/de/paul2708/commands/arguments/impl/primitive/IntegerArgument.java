@@ -2,6 +2,7 @@ package de.paul2708.commands.arguments.impl.primitive;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
+import de.paul2708.commands.language.MessageResource;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +26,7 @@ public class IntegerArgument implements CommandArgument<Integer> {
         try {
             return Validation.valid(Integer.parseInt(argument));
         } catch (NumberFormatException e) {
-            return Validation.invalid("Given argument is not an integer.");
+            return Validation.invalid(MessageResource.of("argument.integer.invalid", argument));
         }
     }
 

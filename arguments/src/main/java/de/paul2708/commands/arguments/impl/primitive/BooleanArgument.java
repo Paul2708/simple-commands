@@ -2,6 +2,7 @@ package de.paul2708.commands.arguments.impl.primitive;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
+import de.paul2708.commands.language.MessageResource;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,7 +51,7 @@ public class BooleanArgument implements CommandArgument<Boolean> {
             }
         }
 
-        return Validation.invalid("Given argument is not a boolean.");
+        return Validation.invalid(MessageResource.of("argument.boolean.invalid", argument));
     }
 
     /**

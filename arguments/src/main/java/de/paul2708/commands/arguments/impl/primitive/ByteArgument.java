@@ -2,6 +2,7 @@ package de.paul2708.commands.arguments.impl.primitive;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
+import de.paul2708.commands.language.MessageResource;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +26,7 @@ public class ByteArgument implements CommandArgument<Byte> {
         try {
             return Validation.valid(Byte.parseByte(argument));
         } catch (NumberFormatException e) {
-            return Validation.invalid("Given argument is not a byte.");
+            return Validation.invalid(MessageResource.of("argument.byte.invalid", argument));
         }
     }
 

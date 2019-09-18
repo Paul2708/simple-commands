@@ -2,6 +2,7 @@ package de.paul2708.commands.arguments.impl.primitive;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
+import de.paul2708.commands.language.MessageResource;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +26,7 @@ public class ShortArgument implements CommandArgument<Short> {
         try {
             return Validation.valid(Short.parseShort(argument));
         } catch (NumberFormatException e) {
-            return Validation.invalid("Given argument is not a short.");
+            return Validation.invalid(MessageResource.of("argument.short.invalid", argument));
         }
     }
 

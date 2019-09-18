@@ -2,6 +2,7 @@ package model;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
+import de.paul2708.commands.language.MessageResource;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +38,7 @@ public class PersonArgument implements CommandArgument<Person> {
         String[] properties = argument.split(";");
 
         if (properties.length != 2) {
-            return Validation.invalid("invalid format, use name;age");
+            return Validation.invalid(MessageResource.of("argument.person.invalid.format"));
         }
 
         // Sample check
@@ -45,7 +46,7 @@ public class PersonArgument implements CommandArgument<Person> {
         try {
             age = Integer.parseInt(properties[1]);
         } catch (NumberFormatException e) {
-            return Validation.invalid("invalid age");
+            return Validation.invalid(MessageResource.of("argument.person.invalid.age"));
         }
 
         Person givenPerson = new Person(properties[0], age);
@@ -56,7 +57,7 @@ public class PersonArgument implements CommandArgument<Person> {
             }
         }
 
-        return Validation.invalid("person not found");
+        return Validation.invalid(MessageResource.of("argument.person.invalid.not_found"));
     }
 
     /**

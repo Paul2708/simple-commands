@@ -25,13 +25,6 @@ public class StringArgument implements CommandArgument<String> {
     public Validation<String> validate(String argument) {
         String trimmedArgument = argument.trim();
 
-        if (trimmedArgument.equals("")) {
-            return Validation.invalid("String cannot be empty.");
-        }
-        if (trimmedArgument.contains(" ")) {
-            return Validation.invalid("Spaces are not allowed.");
-        }
-
         return Validation.valid(trimmedArgument);
     }
 

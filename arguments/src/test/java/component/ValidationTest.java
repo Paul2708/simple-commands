@@ -1,6 +1,8 @@
 package component;
 
 import de.paul2708.commands.arguments.Validation;
+import de.paul2708.commands.language.MessageResource;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -21,7 +23,7 @@ public class ValidationTest {
 
         assertTrue(validation.isValid());
 
-        assertNull(validation.getErrorMessage());
+        assertNull(validation.getErrorResource());
 
         assertNotNull(validation.getParsedObject());
         assertEquals("it's valid", validation.getParsedObject());
@@ -32,13 +34,13 @@ public class ValidationTest {
      */
     @Test
     public void invalidValidation() {
-        Validation<Void> validation = Validation.invalid("error");
+        Validation<Void> validation = Validation.invalid(MessageResource.of("sample_key"));
 
         assertFalse(validation.isValid());
 
         assertNull(validation.getParsedObject());
 
-        assertNotNull(validation.getErrorMessage());
-        assertEquals("error", validation.getErrorMessage());
+        assertNotNull(validation.getErrorResource());
+        assertEquals("sample_key", validation.getErrorResource().getKey());
     }
 }

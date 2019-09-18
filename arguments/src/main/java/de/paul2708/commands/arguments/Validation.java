@@ -1,5 +1,7 @@
 package de.paul2708.commands.arguments;
 
+import de.paul2708.commands.language.MessageResource;
+
 /**
  * This class models a parsing result, used to check passed command arguments.
  *
@@ -11,19 +13,19 @@ public final class Validation<T> {
     private final boolean valid;
 
     private final T parsedObject;
-    private final String errorMessage;
+    private final MessageResource errorMessageResource;
 
     /**
      * Create a new validation.
      *
      * @param valid true if it's valid, otherwise false
      * @param parsedObject parsed object
-     * @param errorMessage error message, if the
+     * @param errorMessageResource error message resource, if the argument is not valid
      */
-    private Validation(boolean valid, T parsedObject, String errorMessage) {
+    private Validation(boolean valid, T parsedObject, MessageResource errorMessageResource) {
         this.valid = valid;
         this.parsedObject = parsedObject;
-        this.errorMessage = errorMessage;
+        this.errorMessageResource = errorMessageResource;
     }
 
     /**
@@ -45,13 +47,13 @@ public final class Validation<T> {
     }
 
     /**
-     * Get the error message, the reason why the parsing failed.
+     * Get the error message resource, the reason why the parsing failed.
      * Can be <code>null</code> if the validation is valid.
      *
-     * @return error message (or <code>null</code>)
+     * @return error message resource (or <code>null</code>)
      */
-    public String getErrorMessage() {
-        return errorMessage;
+    public MessageResource getErrorResource() {
+        return errorMessageResource;
     }
 
     /**
@@ -68,11 +70,11 @@ public final class Validation<T> {
     /**
      * Create an invalid validation.
      *
-     * @param errorMessage error message
+     * @param errorMessageResource error message resource
      * @param <T> ignored
      * @return invalid validation of type {@link Void}.
      */
-    public static <T> Validation<T> invalid(String errorMessage) {
-        return new Validation<>(false, null, errorMessage);
+    public static <T> Validation<T> invalid(MessageResource errorMessageResource) {
+        return new Validation<>(false, null, errorMessageResource);
     }
 }
