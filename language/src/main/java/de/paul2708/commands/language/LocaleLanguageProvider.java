@@ -12,7 +12,10 @@ import java.util.ResourceBundle;
 public class LocaleLanguageProvider implements LanguageProvider {
 
     private static final String PATH = "messages";
+
     private static final String PREFIX_KEY = "prefix";
+
+    private static String REPLACE_CHAR = "%";
 
     private final ResourceBundle resourceBundle;
     private final String prefix;
@@ -33,7 +36,7 @@ public class LocaleLanguageProvider implements LanguageProvider {
      * Get the translated message by key.
      *
      * @param key properties key to message
-     * @param objects objects, that will be replaced for {0} placeholder.
+     * @param objects objects, that will be replaced for {i} placeholder.
      * @return translated message
      */
     @Override
@@ -42,17 +45,11 @@ public class LocaleLanguageProvider implements LanguageProvider {
             return prefix;
         }
 
-        Object[] newOne;
-        if (objects == null || objects.length == 0) {
-            newOne = new Object[] { prefix };
-        } else {
-            newOne = new Object[objects.length + 1];
-            newOne[0] = prefix;
+        String message = resourceBundle.getString(key).replace(REPLACE_CHAR + PREFIX_KEY + REPLACE_CHAR,
+                prefix);
+        Object[] arguments = objects == null ? new Object[0] : objects;
 
-            System.arraycopy(objects, 0, newOne, 1, objects.length);
-        }
-
-        return MessageFormat.format(replaceColorCodes(resourceBundle.getString(key)), newOne);
+        return MessageFormat.format(replaceColorCodes(message), arguments);
     }
 
     /**

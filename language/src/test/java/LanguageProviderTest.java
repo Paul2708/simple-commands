@@ -12,14 +12,14 @@ import static org.junit.Assert.assertEquals;
  */
 public class LanguageProviderTest {
 
-    // TODO: Test replacing
+    // TODO: Add argument test cases
 
     /**
      * Test if the prefix is correct.
      */
     @Test
     public void testPrefix() {
-        String prefix = LanguageProvider.of(Locale.GERMAN).translate("prefix");
+        String prefix = LanguageProvider.of(Locale.GERMANY).translate("prefix");
 
         assertEquals("§8[§9Simple-Commands§8]§7", prefix);
     }
