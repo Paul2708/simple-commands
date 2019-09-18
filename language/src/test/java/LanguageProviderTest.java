@@ -1,4 +1,5 @@
 import de.paul2708.commands.language.LanguageProvider;
+import de.paul2708.commands.language.MessageResource;
 import org.junit.Test;
 
 import java.util.Locale;
@@ -19,7 +20,7 @@ public class LanguageProviderTest {
      */
     @Test
     public void testPrefix() {
-        String prefix = LanguageProvider.of(Locale.GERMANY).translate("prefix");
+        String prefix = LanguageProvider.of(Locale.GERMANY).translate(MessageResource.of("prefix"));
 
         assertEquals("§8[§9Simple-Commands§8]§7", prefix);
     }
@@ -31,6 +32,6 @@ public class LanguageProviderTest {
     public void testInvalidLocale() {
         LanguageProvider provider = LanguageProvider.of(Locale.JAPAN);
 
-        assertEquals("english", provider.translate("language"));
+        assertEquals("english", provider.translate(MessageResource.of("language")));
     }
 }

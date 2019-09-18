@@ -35,19 +35,21 @@ public class LocaleLanguageProvider implements LanguageProvider {
     /**
      * Get the translated message by key.
      *
-     * @param key properties key to message
-     * @param objects objects, that will be replaced for {i} placeholder.
+     * @param resource message resource that contains key and parameters
      * @return translated message
+     * @see MessageResource
      */
     @Override
-    public String translate(String key, Object... objects) {
+    public String translate(MessageResource resource) {
+        String key = resource.getKey();
+        Object[] arguments = resource.getArguments();
+
         if (key.equals(LocaleLanguageProvider.PREFIX_KEY)) {
             return prefix;
         }
 
         String message = resourceBundle.getString(key).replace(REPLACE_CHAR + PREFIX_KEY + REPLACE_CHAR,
                 prefix);
-        Object[] arguments = objects == null ? new Object[0] : objects;
 
         return MessageFormat.format(replaceColorCodes(message), arguments);
     }

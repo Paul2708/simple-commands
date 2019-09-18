@@ -17,11 +17,11 @@ public interface LanguageProvider {
     /**
      * Get the translated message by key.
      *
-     * @param key properties key to message
-     * @param objects objects, that will be replaced for {0} placeholder.
+     * @param resource message resource that contains key and parameters
      * @return translated message
+     * @see MessageResource
      */
-    String translate(String key, Object... objects);
+    String translate(MessageResource resource);
 
     /**
      * Create a new instance to the given locale.
