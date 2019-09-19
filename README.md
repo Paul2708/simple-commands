@@ -31,7 +31,7 @@ The intention behind the framework is to handle handle and check the arguments, 
 <dependency>
     <groupId>de.paul2708</groupId>
     <artifactId>simple-commands-core</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
