@@ -12,7 +12,7 @@ public interface LanguageProvider {
     /**
      * Default locale for messages.
      */
-    Locale DEFAULT_LOCALE = Locale.US;
+    Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
     /**
      * Get the translated message by key.
