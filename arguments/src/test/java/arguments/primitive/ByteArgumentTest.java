@@ -3,7 +3,6 @@ package arguments.primitive;
 import arguments.AbstractArgumentTest;
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.impl.primitive.ByteArgument;
-import de.paul2708.commands.arguments.impl.primitive.CharacterArgument;
 import de.paul2708.commands.arguments.util.Pair;
 
 /**
@@ -11,7 +10,7 @@ import de.paul2708.commands.arguments.util.Pair;
  *
  * @author Paul2708
  */
-public class ByteArgumentTest extends AbstractArgumentTest {
+public final class ByteArgumentTest extends AbstractArgumentTest {
 
     /**
      * Create a new command argument.

@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
  *
  * @author Paul2708
  */
-public class PersonArgument implements CommandArgument<Person> {
+public final class PersonArgument implements CommandArgument<Person> {
 
-    private List<Person> list;
+    private final List<Person> list;
 
     /**
      * Create a new person argument with some persons.

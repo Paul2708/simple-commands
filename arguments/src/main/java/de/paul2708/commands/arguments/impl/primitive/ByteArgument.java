@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Paul2708
  */
-public class ByteArgument implements CommandArgument<Byte> {
+public final class ByteArgument implements CommandArgument<Byte> {
 
     /**
      * Validate the object by a given command argument.

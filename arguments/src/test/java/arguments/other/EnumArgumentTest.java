@@ -3,12 +3,9 @@ package arguments.other;
 import arguments.AbstractArgumentTest;
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.impl.EnumArgument;
-import de.paul2708.commands.arguments.impl.primitive.ByteArgument;
 import de.paul2708.commands.arguments.util.Pair;
-import org.junit.Test;
 
 import java.time.DayOfWeek;
-import java.util.List;
 
 /**
  * This class tests the enum command argument.

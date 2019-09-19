@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  *
  * @author Paul2708
  */
-public class BooleanArgument implements CommandArgument<Boolean> {
+public final class BooleanArgument implements CommandArgument<Boolean> {
 
     /**
      * Valid arguments that will be evaluated to <ocde>true</ocde>.

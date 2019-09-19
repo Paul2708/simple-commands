@@ -10,7 +10,7 @@ import de.paul2708.commands.arguments.util.Pair;
  *
  * @author Paul2708
  */
-public class IntegerArgumentTest extends AbstractArgumentTest {
+public final class IntegerArgumentTest extends AbstractArgumentTest {
 
     /**
      * Create a new command argument.

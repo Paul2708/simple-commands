@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  */
 public final class PersonArgument implements CommandArgument<Person> {
 
-    private List<Person> list;
+    private final List<Person> list;
 
     /**
      * Create a new person argument with some persons.

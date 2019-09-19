@@ -1,7 +1,6 @@
 package de.paul2708.commands.core;
 
 import de.paul2708.commands.arguments.ArgumentHolder;
-import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.core.command.SimpleCommand;
 import de.paul2708.commands.core.language.LanguageSelector;

@@ -7,7 +7,6 @@ import de.paul2708.commands.language.MessageResource;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
  * @param <T> enum type parameter
  * @author Paul2708
  */
-public class EnumArgument<T> implements CommandArgument<T> {
+public final class EnumArgument<T> implements CommandArgument<T> {
 
     private final Class<T> enumClass;
 

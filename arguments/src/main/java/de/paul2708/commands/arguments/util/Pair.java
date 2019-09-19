@@ -1,5 +1,7 @@
 package de.paul2708.commands.arguments.util;
 
+import java.util.Objects;
+
 /**
  * This class represents a pair of a key and a value. It's a 2-tuple like (key, value).
  *
@@ -99,11 +101,11 @@ public final class Pair<K, V> {
 
         Pair<?, ?> pair = (Pair<?, ?>) o;
 
-        if (key != null ? !key.equals(pair.key) : pair.key != null) {
+        if (!Objects.equals(key, pair.key)) {
             return false;
         }
 
-        return value != null ? value.equals(pair.value) : pair.value == null;
+        return Objects.equals(value, pair.value);
     }
 
     /**

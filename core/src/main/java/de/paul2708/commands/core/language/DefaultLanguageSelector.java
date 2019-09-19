@@ -19,7 +19,7 @@ public final class DefaultLanguageSelector implements LanguageSelector {
 
     // TODO: Check non-existing locales
 
-    private Map<UUID, Locale> languages;
+    private final Map<UUID, Locale> languages;
     private Locale consoleLanguage;
 
     /**

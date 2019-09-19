@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
  *
  * @author Paul2708
  */
-public class OnlinePlayerArgument implements CommandArgument<Player> {
+public final class OnlinePlayerArgument implements CommandArgument<Player> {
 
     /**
      * Validate the object by a given command argument.

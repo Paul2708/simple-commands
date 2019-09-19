@@ -1,11 +1,13 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * This class models a person with primitive fields. A person is unique by its name and age.
  *
  * @author Paul2708
  */
-public class Person {
+public final class Person {
 
     private final String name;
     private final int age;
@@ -60,7 +62,7 @@ public class Person {
             return false;
         }
 
-        return name != null ? name.equals(person.name) : person.name == null;
+        return Objects.equals(name, person.name);
     }
 
     /**

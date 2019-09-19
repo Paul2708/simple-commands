@@ -3,7 +3,6 @@ package arguments.primitive;
 import arguments.AbstractArgumentTest;
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.impl.primitive.BooleanArgument;
-import de.paul2708.commands.arguments.impl.primitive.CharacterArgument;
 import de.paul2708.commands.arguments.util.Pair;
 
 import java.util.LinkedList;
@@ -14,7 +13,7 @@ import java.util.List;
  *
  * @author Paul2708
  */
-public class BooleanArgumentTest extends AbstractArgumentTest {
+public final class BooleanArgumentTest extends AbstractArgumentTest {
 
     /**
      * Create a new command argument.

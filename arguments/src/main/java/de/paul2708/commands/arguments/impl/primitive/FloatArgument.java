@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Paul2708
  */
-public class FloatArgument implements CommandArgument<Float> {
+public final class FloatArgument implements CommandArgument<Float> {
 
     /**
      * Validate the object by a given command argument.

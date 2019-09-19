@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Paul2708
  */
-public class IntegerArgument implements CommandArgument<Integer> {
+public final class IntegerArgument implements CommandArgument<Integer> {
 
     /**
      * Validate the object by a given command argument.

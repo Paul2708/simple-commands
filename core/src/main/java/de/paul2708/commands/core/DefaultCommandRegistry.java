@@ -27,7 +27,7 @@ import java.util.List;
  *
  * @author Paul2708
  */
-public class DefaultCommandRegistry implements CommandRegistry {
+public final class DefaultCommandRegistry implements CommandRegistry {
 
     private final JavaPlugin plugin;
 

@@ -9,13 +9,13 @@ import java.util.ResourceBundle;
  *
  * @author Paul2708
  */
-public class LocaleLanguageProvider implements LanguageProvider {
+public final class LocaleLanguageProvider implements LanguageProvider {
 
     private static final String PATH = "messages";
 
     private static final String PREFIX_KEY = "prefix";
 
-    private static String REPLACE_CHAR = "%";
+    private static final String REPLACE_CHAR = "%";
 
     private final ResourceBundle resourceBundle;
     private final String prefix;

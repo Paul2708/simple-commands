@@ -26,7 +26,7 @@ public enum CommandType {
      */
     DEFAULT_COMMAND(CommandSender.class);
 
-    private Class<?> executorClass;
+    private final Class<?> executorClass;
 
     /**
      * Create a new command type.

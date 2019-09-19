@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Paul2708
  */
-public class StringArgument implements CommandArgument<String> {
+public final class StringArgument implements CommandArgument<String> {
 
     /**
      * Validate the object by a given command argument.

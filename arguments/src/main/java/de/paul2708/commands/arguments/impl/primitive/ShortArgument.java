@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Paul2708
  */
-public class ShortArgument implements CommandArgument<Short> {
+public final class ShortArgument implements CommandArgument<Short> {
 
     /**
      * Validate the object by a given command argument.

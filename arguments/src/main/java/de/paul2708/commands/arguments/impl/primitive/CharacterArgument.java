@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Paul2708
  */
-public class CharacterArgument implements CommandArgument<Character> {
+public final class CharacterArgument implements CommandArgument<Character> {
 
     /**
      * Validate the object by a given command argument.

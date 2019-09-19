@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  *
  * @author Paul2708
  */
-public class PersonArgumentTest {
+public final class PersonArgumentTest {
 
     private PersonArgument argument;
 

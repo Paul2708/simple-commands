@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Paul2708
  */
-public class DoubleArgument implements CommandArgument<Double> {
+public final class DoubleArgument implements CommandArgument<Double> {
 
     /**
      * Validate the object by a given command argument.

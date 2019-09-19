@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Paul2708
  */
-public class BasicCommand extends Command {
+public final class BasicCommand extends Command {
 
     private final LanguageSelector languageSelector;
     private final SimpleCommand simpleCommand;
@@ -108,10 +108,6 @@ public class BasicCommand extends Command {
         try {
             simpleCommand.getMethod().invoke(simpleCommand.getObject(), parameters.toArray());
             return true;
-        } catch (IllegalAccessException e) {
-            languageSelector.sendMessage(sender, MessageResource.of("command.error"));
-            e.printStackTrace();
-            return false;
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof NotFulfilledConditionException) {
                 NotFulfilledConditionException exception = (NotFulfilledConditionException) e.getCause();

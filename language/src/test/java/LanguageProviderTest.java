@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Paul2708
  */
-public class LanguageProviderTest {
+public final class LanguageProviderTest {
 
     // TODO: Add example argument test cases
 

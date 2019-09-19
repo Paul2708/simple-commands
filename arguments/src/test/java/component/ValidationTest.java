@@ -2,7 +2,6 @@ package component;
 
 import de.paul2708.commands.arguments.Validation;
 import de.paul2708.commands.language.MessageResource;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -12,7 +11,7 @@ import static org.junit.Assert.*;
  *
  * @author Paul2708
  */
-public class ValidationTest {
+public final class ValidationTest {
 
     /**
      * Test a valid validation.

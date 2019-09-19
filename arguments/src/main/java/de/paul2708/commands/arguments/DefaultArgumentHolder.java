@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * @author Paul2708
  */
-public class DefaultArgumentHolder implements ArgumentHolder {
+public final class DefaultArgumentHolder implements ArgumentHolder {
 
     private static final Map<Class<?>, Class<?>> PRIMITIVES = ImmutableMap.<Class<?>, Class<?>>builder()
             .put(int.class, Integer.class)

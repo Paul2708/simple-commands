@@ -6,9 +6,9 @@ package de.paul2708.commands.arguments.exception;
  * @see de.paul2708.commands.arguments.CommandArgument#condition(boolean, String)
  * @author Paul2708
  */
-public class NotFulfilledConditionException extends IllegalStateException {
+public final class NotFulfilledConditionException extends IllegalStateException {
 
-    private String description;
+    private final String description;
 
     /**
      * Create a new not fulfilled condition exception with a description.
