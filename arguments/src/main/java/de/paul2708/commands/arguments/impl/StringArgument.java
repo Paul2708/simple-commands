@@ -2,6 +2,7 @@ package de.paul2708.commands.arguments.impl;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
+import de.paul2708.commands.language.MessageResource;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,8 +35,8 @@ public class StringArgument implements CommandArgument<String> {
      * @return usage
      */
     @Override
-    public String usage() {
-        return "[Word]";
+    public MessageResource usage() {
+        return MessageResource.of("argument.string.usage");
     }
 
     /**

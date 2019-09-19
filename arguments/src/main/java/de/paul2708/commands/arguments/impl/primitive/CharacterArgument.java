@@ -36,8 +36,8 @@ public class CharacterArgument implements CommandArgument<Character> {
      * @return usage
      */
     @Override
-    public String usage() {
-        return "[Letter/Digit]";
+    public MessageResource usage() {
+        return MessageResource.of("argument.char.usage");
     }
 
     /**

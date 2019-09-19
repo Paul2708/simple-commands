@@ -38,8 +38,8 @@ public class FloatArgument implements CommandArgument<Float> {
      * @return usage
      */
     @Override
-    public String usage() {
-        return "[Float]";
+    public MessageResource usage() {
+        return MessageResource.of("argument.float.usage");
     }
 
     /**

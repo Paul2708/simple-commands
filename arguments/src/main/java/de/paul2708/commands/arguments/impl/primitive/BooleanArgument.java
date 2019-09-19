@@ -60,8 +60,8 @@ public class BooleanArgument implements CommandArgument<Boolean> {
      * @return usage
      */
     @Override
-    public String usage() {
-        return "[true/false]";
+    public MessageResource usage() {
+        return MessageResource.of("argument.boolean.usage");
     }
 
     /**

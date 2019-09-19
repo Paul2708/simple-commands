@@ -43,8 +43,8 @@ public class OnlinePlayerArgument implements CommandArgument<Player> {
      * @return usage
      */
     @Override
-    public String usage() {
-        return "[Player]";
+    public MessageResource usage() {
+        return MessageResource.of("argument.player.usage");
     }
 
     /**

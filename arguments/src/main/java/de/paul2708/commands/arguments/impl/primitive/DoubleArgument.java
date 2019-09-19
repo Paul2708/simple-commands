@@ -38,8 +38,8 @@ public class DoubleArgument implements CommandArgument<Double> {
      * @return usage
      */
     @Override
-    public String usage() {
-        return "[Double]";
+    public MessageResource usage() {
+        return MessageResource.of("argument.double.usage");
     }
 
     /**

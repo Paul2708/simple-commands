@@ -85,7 +85,7 @@ public class PersonArgumentTest {
      */
     @Test
     public void testUsage() {
-        assertEquals("[name;age]", argument.usage());
+        assertEquals("argument.person.usage", argument.usage().getKey());
     }
 
     /**

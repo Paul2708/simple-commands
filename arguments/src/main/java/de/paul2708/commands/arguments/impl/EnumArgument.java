@@ -53,8 +53,8 @@ public class EnumArgument<T> implements CommandArgument<T> {
      * @return usage
      */
     @Override
-    public String usage() {
-        return "[" + enumClass.getSimpleName() + "]";
+    public MessageResource usage() {
+        return MessageResource.of("argument.enum.usage", enumClass.getSimpleName());
     }
 
     /**

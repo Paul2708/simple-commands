@@ -1,6 +1,7 @@
 package de.paul2708.commands.arguments;
 
 import de.paul2708.commands.arguments.exception.NotFulfilledConditionException;
+import de.paul2708.commands.language.MessageResource;
 
 import java.util.List;
 
@@ -24,9 +25,9 @@ public interface CommandArgument<T> {
     /**
      * Get the correct usage for this type.
      *
-     * @return usage
+     * @return message resource
      */
-    String usage();
+    MessageResource usage();
 
     /**
      * Get a list of strings that are used for the auto completion.

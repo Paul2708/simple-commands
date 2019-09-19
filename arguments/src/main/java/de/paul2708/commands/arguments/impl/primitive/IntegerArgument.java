@@ -36,8 +36,8 @@ public class IntegerArgument implements CommandArgument<Integer> {
      * @return usage
      */
     @Override
-    public String usage() {
-        return "[Number]";
+    public MessageResource usage() {
+        return MessageResource.of("argument.integer.usage");
     }
 
     /**

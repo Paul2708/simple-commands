@@ -36,8 +36,8 @@ public class ByteArgument implements CommandArgument<Byte> {
      * @return usage
      */
     @Override
-    public String usage() {
-        return "[Byte]";
+    public MessageResource usage() {
+        return MessageResource.of("argument.byte.usage");
     }
 
     /**

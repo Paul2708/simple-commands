@@ -36,8 +36,8 @@ public class ShortArgument implements CommandArgument<Short> {
      * @return usage
      */
     @Override
-    public String usage() {
-        return "[Short]";
+    public MessageResource usage() {
+        return MessageResource.of("argument.short.usage");
     }
 
     /**

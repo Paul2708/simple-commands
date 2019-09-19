@@ -66,8 +66,8 @@ public final class PersonArgument implements CommandArgument<Person> {
      * @return usage
      */
     @Override
-    public String usage() {
-        return "[name;age]";
+    public MessageResource usage() {
+        return MessageResource.of("argument.person.usage");
     }
 
     /**
