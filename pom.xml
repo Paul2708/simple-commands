@@ -6,11 +6,12 @@
 
     <groupId>de.paul2708</groupId>
     <artifactId>simple-commands</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2.0</version>
     <modules>
         <module>core</module>
         <module>arguments</module>
         <module>example</module>
+        <module>language</module>
     </modules>
     <packaging>pom</packaging>
 

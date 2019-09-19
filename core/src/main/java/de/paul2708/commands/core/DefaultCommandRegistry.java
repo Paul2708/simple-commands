@@ -1,11 +1,15 @@
 package de.paul2708.commands.core;
 
+import de.paul2708.commands.arguments.ArgumentHolder;
 import de.paul2708.commands.arguments.CommandArgument;
+import de.paul2708.commands.arguments.util.Pair;
 import de.paul2708.commands.core.annotation.Command;
+import de.paul2708.commands.core.annotation.Inject;
 import de.paul2708.commands.core.command.BasicCommand;
 import de.paul2708.commands.core.command.CommandType;
 import de.paul2708.commands.core.command.SimpleCommand;
-import net.jodah.typetools.TypeResolver;
+import de.paul2708.commands.core.language.DefaultLanguageSelector;
+import de.paul2708.commands.core.language.LanguageSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,19 +17,26 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class implements the command registry.
  *
  * @author Paul2708
  */
-public class DefaultCommandRegistry implements CommandRegistry {
+public final class DefaultCommandRegistry implements CommandRegistry {
 
     private final JavaPlugin plugin;
 
-    private final Map<Class<?>, CommandArgument<?>> commandArguments;
+    private final ArgumentHolder argumentHolder;
     private final List<SimpleCommand> commands;
+
+    private final List<Pair<Object, String>> injectedObjects;
+
+    private final LanguageSelector languageSelector;
 
     /**
      * Create a new command registry.
@@ -35,26 +46,47 @@ public class DefaultCommandRegistry implements CommandRegistry {
     DefaultCommandRegistry(JavaPlugin plugin) {
         this.plugin = plugin;
 
-        this.commandArguments = new HashMap<>();
+        this.argumentHolder = ArgumentHolder.create();
         this.commands = new LinkedList<>();
+
+        this.injectedObjects = new ArrayList<>();
+
+        this.languageSelector = new DefaultLanguageSelector();
     }
 
     /**
-     * Add command arguments.
+     * Set the injected object value.<br>
+     * <code>@Inject</code> will refer to the given instance.
      *
-     * @param arguments command arguments
+     * @param object object
      */
     @Override
-    public void addArgument(CommandArgument<?>... arguments) {
-        if (arguments == null) {
-            throw new IllegalArgumentException("cannot add null arguments");
+    public void inject(Object object) {
+        inject("", object);
+    }
+
+    /**
+     * Set the injected object values.<br>
+     * <code>@Inject(key = "key")</code> will refer to the given instance.
+     *
+     * @param key    key
+     * @param object object
+     */
+    @Override
+    public void inject(String key, Object object) {
+        if (object == null) {
+            throw new IllegalArgumentException("injected object cannot be null");
         }
 
-        for (CommandArgument<?> argument : arguments) {
-            Class<?>[] typeArgs = TypeResolver.resolveRawArguments(CommandArgument.class, argument.getClass());
-
-            commandArguments.put(typeArgs[0], argument);
+        for (Pair<Object, String> pair : injectedObjects) {
+            if (pair.getKey().getClass().equals(object.getClass())
+                    && pair.getValue().equals(key)) {
+                throw new IllegalArgumentException("an object of " + object.getClass().getName() + " and key " + key
+                        + "already exists.");
+            }
         }
+
+        injectedObjects.add(Pair.of(object, key));
     }
 
     /**
@@ -92,12 +124,30 @@ public class DefaultCommandRegistry implements CommandRegistry {
                     List<CommandArgument<?>> list = new ArrayList<>();
 
                     for (int i = 1; i < parameters.length; i++) {
-                        if (!commandArguments.containsKey(parameters[i].getType())) {
+                        Class<?> type = parameters[i].getType();
+
+                        CommandArgument<?> argument = argumentHolder.resolve(type);
+
+                        if (argument == null) {
                             throw new IllegalArgumentException(String.format("parameter %s of method %s doesn't have "
-                                    + "an argument wrapper", parameters[i].getName(), method.getName()));
+                                    + "an argument wrapper", type.getName(), method.getName()));
                         }
 
-                        list.add(commandArguments.get(parameters[i].getType()));
+                        list.add(argument);
+                    }
+
+                    // Set injected fields
+                    for (Field field : clazz.getDeclaredFields()) {
+                        if (field.isAnnotationPresent(Inject.class)) {
+                            Inject inject = field.getAnnotation(Inject.class);
+
+                            field.setAccessible(true);
+                            try {
+                                field.set(object, getInjectedValue(inject.key(), field.getType()));
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
 
                     // Register command
@@ -105,7 +155,7 @@ public class DefaultCommandRegistry implements CommandRegistry {
                             object, method, list);
                     commands.add(simpleCommand);
 
-                    registerBukkitCommand(simpleCommand, new BasicCommand(simpleCommand));
+                    registerBukkitCommand(simpleCommand, new BasicCommand(languageSelector, simpleCommand));
                 }
             }
         }
@@ -120,6 +170,43 @@ public class DefaultCommandRegistry implements CommandRegistry {
     @Override
     public List<SimpleCommand> getCommands() {
         return Collections.unmodifiableList(commands);
+    }
+
+    /**
+     * Get the argument holder to add command arguments.
+     *
+     * @return argument holder
+     */
+    @Override
+    public ArgumentHolder getArgumentHolder() {
+        return argumentHolder;
+    }
+
+    /**
+     * Get the language selector.
+     *
+     * @return language selector
+     */
+    @Override
+    public LanguageSelector getLanguageSelector() {
+        return languageSelector;
+    }
+
+    /**
+     * Get the injected value by key and type.
+     *
+     * @param key key
+     * @param objectClass object class
+     * @return injected value or <code>null</code> if none was injected
+     */
+    private Object getInjectedValue(String key, Class<?> objectClass) {
+        for (Pair<Object, String> pair : injectedObjects) {
+            if (objectClass.isAssignableFrom(pair.getKey().getClass()) && pair.getValue().equals(key)) {
+                return pair.getKey();
+            }
+        }
+
+        return null;
     }
 
     /**

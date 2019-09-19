@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  *
  * @author Paul2708
  */
-public class PersonArgumentTest {
+public final class PersonArgumentTest {
 
     private PersonArgument argument;
 
@@ -55,7 +55,7 @@ public class PersonArgumentTest {
         Validation<Person> validate = this.argument.validate("invalid-format");
 
         assertFalse(validate.isValid());
-        assertEquals(validate.getErrorMessage(), "invalid format, use name;age");
+        assertEquals("argument.person.invalid.format", validate.getErrorResource().getKey());
     }
 
     /**
@@ -66,7 +66,7 @@ public class PersonArgumentTest {
         Validation<Person> validate = this.argument.validate("paul;age");
 
         assertFalse(validate.isValid());
-        assertEquals(validate.getErrorMessage(), "invalid age");
+        assertEquals("argument.person.invalid.age", validate.getErrorResource().getKey());
     }
 
     /**
@@ -77,7 +77,7 @@ public class PersonArgumentTest {
         Validation<Person> validate = this.argument.validate("tom;12");
 
         assertFalse(validate.isValid());
-        assertEquals(validate.getErrorMessage(), "person not found");
+        assertEquals("argument.person.invalid.not_found", validate.getErrorResource().getKey());
     }
 
     /**
@@ -85,7 +85,7 @@ public class PersonArgumentTest {
      */
     @Test
     public void testUsage() {
-        assertEquals("[name;age]", argument.usage());
+        assertEquals("argument.person.usage", argument.usage().getKey());
     }
 
     /**

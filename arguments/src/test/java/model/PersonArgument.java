@@ -2,7 +2,9 @@ package model;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
+import de.paul2708.commands.language.MessageResource;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,9 +14,9 @@ import java.util.stream.Collectors;
  *
  * @author Paul2708
  */
-public class PersonArgument implements CommandArgument<Person> {
+public final class PersonArgument implements CommandArgument<Person> {
 
-    private List<Person> list;
+    private final List<Person> list;
 
     /**
      * Create a new person argument with some persons.
@@ -36,7 +38,7 @@ public class PersonArgument implements CommandArgument<Person> {
         String[] properties = argument.split(";");
 
         if (properties.length != 2) {
-            return Validation.invalid("invalid format, use name;age");
+            return Validation.invalid(MessageResource.of("argument.person.invalid.format"));
         }
 
         // Sample check
@@ -44,7 +46,7 @@ public class PersonArgument implements CommandArgument<Person> {
         try {
             age = Integer.parseInt(properties[1]);
         } catch (NumberFormatException e) {
-            return Validation.invalid("invalid age");
+            return Validation.invalid(MessageResource.of("argument.person.invalid.age"));
         }
 
         Person givenPerson = new Person(properties[0], age);
@@ -55,7 +57,7 @@ public class PersonArgument implements CommandArgument<Person> {
             }
         }
 
-        return Validation.invalid("person not found");
+        return Validation.invalid(MessageResource.of("argument.person.invalid.not_found"));
     }
 
     /**
@@ -64,8 +66,8 @@ public class PersonArgument implements CommandArgument<Person> {
      * @return usage
      */
     @Override
-    public String usage() {
-        return "[name;age]";
+    public MessageResource usage() {
+        return MessageResource.of("argument.person.usage");
     }
 
     /**
@@ -77,9 +79,10 @@ public class PersonArgument implements CommandArgument<Person> {
      */
     @Override
     public List<String> autoComplete(String argument) {
-        return list.stream()
+        List<String> autoComplete = list.stream()
                 .map(Person::getName)
-                .filter(name -> name.startsWith(argument))
-                .collect(Collectors.toUnmodifiableList());
+                .filter(name -> name.startsWith(argument)).collect(Collectors.toList());
+
+        return Collections.unmodifiableList(autoComplete);
     }
 }

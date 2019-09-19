@@ -1,5 +1,8 @@
 package de.paul2708.commands.arguments;
 
+import de.paul2708.commands.arguments.exception.NotFulfilledConditionException;
+import de.paul2708.commands.language.MessageResource;
+
 import java.util.List;
 
 /**
@@ -12,6 +15,7 @@ public interface CommandArgument<T> {
 
     /**
      * Validate the object by a given command argument.
+     * The command argument is trimmed, doesn't contain any spaces and is not empty.
      *
      * @param argument command argument
      * @return a valid or invalid validation
@@ -21,9 +25,9 @@ public interface CommandArgument<T> {
     /**
      * Get the correct usage for this type.
      *
-     * @return usage
+     * @return message resource
      */
-    String usage();
+    MessageResource usage();
 
     /**
      * Get a list of strings that are used for the auto completion.
@@ -35,12 +39,15 @@ public interface CommandArgument<T> {
     List<String> autoComplete(String argument);
 
     /**
-     * Check if the given condition is fulfilled or not.
+     * Check if the given condition is fulfilled or not.<br>
+     * The command won't be executed, if the condition is not fulfilled.
      *
      * @param condition condition
      * @param description condition description
      */
     static void condition(boolean condition, String description) {
-        // TODO: Implement me
+        if (!condition) {
+            throw new NotFulfilledConditionException(description);
+        }
     }
 }
