@@ -1,49 +1,57 @@
 package de.paul2708.commands.example;
 
-import de.paul2708.commands.arguments.CommandArgument;
-import de.paul2708.commands.arguments.Validation;
+import com.google.common.collect.ImmutableList;
+import de.paul2708.commands.arguments.ArgumentHolder;
 import de.paul2708.commands.core.CommandRegistry;
+import de.paul2708.commands.core.language.LanguageSelector;
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This class is the main plugin class.
  *
  * @author Paul2708
  */
-public class ExamplePlugin extends JavaPlugin {
+public final class ExamplePlugin extends JavaPlugin {
 
     /**
-     * Add command arguments and register commands.
+     * Prepare the command registry.
      */
     @Override
     public void onEnable() {
         CommandRegistry registry = CommandRegistry.create(this);
 
-        registry.addArgument(new CommandArgument<Integer>() {
+        // Add custom arguments
+        List<Person> persons = ImmutableList.of(
+                new Person("Paul", 20),
+                new Person("Tina", 5),
+                new Person("Tom", 18)
+        );
 
-            @Override
-            public Validation<Integer> validate(String argument) {
-                try {
-                    return Validation.valid(Integer.parseInt(argument));
-                } catch (NumberFormatException e) {
-                    return Validation.invalid("Given argument is not an integer.");
-                }
+        ArgumentHolder argumentHolder = registry.getArgumentHolder();
+        argumentHolder.add(new PersonArgument(persons));
+
+        // Select the language
+        LanguageSelector languageSelector = registry.getLanguageSelector();
+        languageSelector.select(Bukkit.getConsoleSender(), Locale.ENGLISH);
+        Bukkit.getPluginManager().registerEvents(new Listener() {
+
+            @EventHandler
+            public void onJoin(PlayerJoinEvent event) {
+                languageSelector.select(event.getPlayer(), Locale.GERMAN);
             }
+        }, this);
 
-            @Override
-            public String usage() {
-                return "[Int]";
-            }
+        // Inject the plugin
+        registry.inject(this);
 
-            @Override
-            public List<String> autoComplete(String argument) {
-                return new ArrayList<>();
-            }
-        });
-
+        // Register the command class
         registry.register(new TestCommand());
     }
 }
