@@ -61,6 +61,18 @@ public final class DefaultLanguageSelector implements LanguageSelector {
     }
 
     /**
+     * Translate the resource with the selected sender.
+     *
+     * @param sender   command sender, can be players or <code>Bukkit.getConsoleSender()</code>
+     * @param resource message resource that will be translated
+     * @return translated message
+     */
+    @Override
+    public String translate(CommandSender sender, MessageResource resource) {
+        return LanguageProvider.of(get(sender)).translate(resource);
+    }
+
+    /**
      * Get the selected locale for the player uuid.
      * If none locale was selected, {@link LanguageProvider#DEFAULT_LOCALE} will be
      * returned.
