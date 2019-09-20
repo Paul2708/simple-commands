@@ -2,7 +2,7 @@
 Simple commands is a command framework for [Spigot](https://www.spigotmc.org).
 It's currently under heavy development, so stay tuned.
 
-Note: This project is inspired by [Akir](https://github.com/aikar/commands).
+Note: This project is inspired by [Aikar](https://github.com/aikar/commands).
 So checkout the other command framework, if you find this project interesting.
 
 ## Why is it called "simple"?
@@ -52,7 +52,7 @@ public void test(Player sender, Player target) {
 }
 ```
 
-An example plugin with all current features like language selection and dependency injection can be found [here][here](https://github.com/Paul2708/simple-commands/tree/master/example).
+An example plugin with all current features like language selection and dependency injection can be found [here](https://github.com/Paul2708/simple-commands/tree/master/example).
 It's really recommended as it is a real working plugin with features implemented.
 
 Some wiki pages will follow soon.

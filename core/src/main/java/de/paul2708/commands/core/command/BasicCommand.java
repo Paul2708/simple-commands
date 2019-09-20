@@ -46,6 +46,7 @@ public final class BasicCommand extends Command {
      * @param args         All arguments passed to the command, split via ' '
      * @return true if the command was successful, otherwise false
      */
+    @SuppressWarnings("checkstyle:illegalcatch")
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         // TODO: Add custom listener
