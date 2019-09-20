@@ -128,6 +128,7 @@ I think, you can spot the differences and the boilerplate by spigot.
 Maybe you can help and implement a new feature.
 
 If you want to contribute, just clone the project, switch to a feature branch and open a [pull request](https://github.com/Paul2708/simple-commands/pulls).
+The only restriction is a provided checkstyle file under `src/test/resources/checkstyle.xml`.
 
 ## Contact
 If you find any issues, please let me know!
