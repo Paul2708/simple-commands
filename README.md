@@ -1,4 +1,4 @@
-# simple-commands [![Build Status](https://travis-ci.com/Paul2708/simple-commands.svg?branch=master)](https://travis-ci.com/Paul2708/simple-commands)
+# simple-commands [![Build Status](https://travis-ci.com/Paul2708/simple-commands.svg?branch=master)](https://travis-ci.com/Paul2708/simple-commands) [![](https://jitpack.io/v/Paul2708/simple-commands.svg)](https://jitpack.io/#Paul2708/simple-commands)
 Simple commands is a command framework for [Spigot](https://www.spigotmc.org).
 It's currently under heavy development, so stay tuned.
 
@@ -23,20 +23,37 @@ The intention behind the framework is to handle and check the arguments, so that
 
 ## Installation
 ### Maven
-1. Install [BuildTools](https://www.spigotmc.org/wiki/buildtools/) and build the actual version (current: 1.13.2).
-2. Clone the repository `git clone https://github.com/Paul2708/simple-commands.git`
-3. Install it into your local maven repo by `mvn clean install`
-4. Add the following dependency to your project
+Just add the following repository and dependency to your Maven project.
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+```
 ```xml
 <dependency>
-    <groupId>de.paul2708</groupId>
-    <artifactId>simple-commands-core</artifactId>
-    <version>0.2.0</version>
+    <groupId>com.github.Paul2708</groupId>
+    <artifactId>simple-commands</artifactId>
+    <version>0.2.1</version>
 </dependency>
 ```
 
 ### Jar
 If you don't use a build tool like Maven or Gradle, you can download the latest release [here](https://github.com/Paul2708/simple-commands/releases).
+
+### Local build
+1. Clone the repository `git clone https://github.com/Paul2708/simple-commands.git`
+2. Install it into your local maven repo by `mvn clean install`
+3. Add the following dependency to your project
+```xml
+<dependency>
+    <groupId>de.paul2708</groupId>
+    <artifactId>simple-commands-core</artifactId>
+    <version>0.2.1</version>
+</dependency>
+```
 
 ## Getting started
 ### Sample command
