@@ -1,5 +1,6 @@
 package de.paul2708.commands.core.language;
 
+import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.language.MessageResource;
 import org.bukkit.command.CommandSender;
 
@@ -24,12 +25,21 @@ public interface LanguageSelector {
     void select(CommandSender sender, Locale locale);
 
     /**
-     * Translate the resource with the selected sender.
+     * Translate the resource with the selected sender and send it to the user.
      *
      * @param sender   command sender, can be players or <code>Bukkit.getConsoleSender()</code>
      * @param resource message resource that will be translated
      */
     void sendMessage(CommandSender sender, MessageResource resource);
+
+    /**
+     * Translate the resource with the selected sender.
+     *
+     * @param sender   command sender, can be players or <code>Bukkit.getConsoleSender()</code>
+     * @param resource message resource that will be translated
+     * @return translated message
+     */
+    String translate(CommandSender sender, MessageResource resource);
 
     /**
      * Get the selected locale for the player uuid.

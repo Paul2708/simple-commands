@@ -46,6 +46,17 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <!-- Checkstyle -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <configLocation>src/test/resources/checkstyle.xml</configLocation>
+                    <linkXRef>false</linkXRef>
+                    <failOnViolation>true</failOnViolation>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

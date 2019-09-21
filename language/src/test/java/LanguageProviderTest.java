@@ -13,8 +13,6 @@ import static org.junit.Assert.assertEquals;
  */
 public final class LanguageProviderTest {
 
-    // TODO: Add example argument test cases
-
     /**
      * Test if the prefix is correct.
      */
@@ -25,6 +23,9 @@ public final class LanguageProviderTest {
         assertEquals("§8[§9Simple-Commands§8]§7", prefix);
     }
 
+    /**
+     * Test german language detection.
+     */
     @Test
     public void testGerman() {
         LanguageProvider provider = LanguageProvider.of(Locale.GERMAN);
@@ -32,6 +33,9 @@ public final class LanguageProviderTest {
         assertEquals("deutsch", provider.translate(MessageResource.of("language")));
     }
 
+    /**
+     * Test english language detection.
+     */
     @Test
     public void testEnglish() {
         LanguageProvider provider = LanguageProvider.of(Locale.ENGLISH);

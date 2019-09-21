@@ -46,6 +46,7 @@ public final class BasicCommand extends Command {
      * @param args         All arguments passed to the command, split via ' '
      * @return true if the command was successful, otherwise false
      */
+    @SuppressWarnings("checkstyle:illegalcatch")
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         // TODO: Add custom listener
@@ -81,8 +82,13 @@ public final class BasicCommand extends Command {
         // Check arguments
         List<CommandArgument<?>> arguments = simpleCommand.getArguments();
         if (arguments.size() != args.length) {
-            languageSelector.sendMessage(sender, MessageResource.of("command.invalid_parameters", arguments.size(),
-                    args.length));
+            StringBuilder usage = new StringBuilder("/" + simpleCommand.getInformation().name() + " ");
+
+            for (CommandArgument<?> argument : arguments) {
+                usage.append(languageSelector.translate(sender, argument.usage()));
+            }
+
+            languageSelector.sendMessage(sender, MessageResource.of("command.false_usage", usage.toString()));
             return false;
         }
 
