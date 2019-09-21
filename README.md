@@ -26,17 +26,17 @@ The intention behind the framework is to handle and check the arguments, so that
 Just add the following repository and dependency to your Maven project.
 ```xml
 <repositories>
-	<repository>
-	    <id>jitpack.io</id>
-	    <url>https://jitpack.io</url>
-	</repository>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
 </repositories>
 ```
 ```xml
 <dependency>
     <groupId>com.github.Paul2708</groupId>
-	<artifactId>simple-commands</artifactId>
-	<version>0.2.1</version>
+    <artifactId>simple-commands</artifactId>
+    <version>0.2.1</version>
 </dependency>
 ```
 
