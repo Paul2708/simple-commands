@@ -1,4 +1,4 @@
-# simple-commands
+# simple-commands [![Build Status](https://travis-ci.com/Paul2708/simple-commands.svg?branch=master)](https://travis-ci.com/Paul2708/simple-commands)
 Simple commands is a command framework for [Spigot](https://www.spigotmc.org).
 It's currently under heavy development, so stay tuned.
 
@@ -57,7 +57,7 @@ It's really recommended as it is a real working plugin with features implemented
 
 Some wiki pages will follow soon.
 
-### Comparison: Spigot command vs simple command
+### Comparison: Spigot command vs. simple command
 The following commands teleport a target player to a given y-height.
 
 #### Spigot command
@@ -111,7 +111,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
 ```java
 @Command(name = "teleport", desc = "Teleport a player to y", permission = "example.tp")
 public void test(Player sender, Player target, int yHeight) {
-    condition(yHeight <= 0, "The height has to be positive.");
+    condition(yHeight > 0, "The height has to be positive.");
 
     Location location = target.getLocation().clone();
     location.setY(yHeight);
