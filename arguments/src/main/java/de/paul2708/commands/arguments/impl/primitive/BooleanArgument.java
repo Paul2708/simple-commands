@@ -18,14 +18,14 @@ import java.util.stream.Stream;
 public final class BooleanArgument implements CommandArgument<Boolean> {
 
     /**
-     * Valid arguments that will be evaluated to <ocde>true</ocde>.
+     * Valid arguments that will be evaluated to <code>true</code>.
      */
     public static final String[] TRUE_KEYS = new String[] {
             "true", "yes", "y", "ja", "wahr", "correct"
     };
 
     /**
-     * Valid arguments that will be evaluated to <ocde>false</ocde>.
+     * Valid arguments that will be evaluated to <code>false</code>.
      */
     public static final String[] FALSE_KEYS = new String[] {
             "false", "no", "n", "nein", "falsch", "negative"
