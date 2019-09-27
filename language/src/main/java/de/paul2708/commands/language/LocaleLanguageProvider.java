@@ -26,6 +26,8 @@ public final class LocaleLanguageProvider implements LanguageProvider {
     private ResourceBundle resourceBundle;
     private final String prefix;
 
+    private Locale locale;
+
     /**
      * Create a new language provider based on a locale.
      *
@@ -40,8 +42,12 @@ public final class LocaleLanguageProvider implements LanguageProvider {
 
         try (InputStream inputStream = new FileInputStream(file)) {
             this.resourceBundle =  new PropertyResourceBundle(inputStream);
+
+            this.locale = locale;
         } catch (MissingResourceException | IOException e) {
             this.resourceBundle = ResourceBundle.getBundle(LocaleLanguageProvider.BUNDLE, locale);
+
+            this.locale = resourceBundle.getLocale();
         }
 
         this.prefix = replaceColorCodes(resourceBundle.getString(LocaleLanguageProvider.PREFIX_KEY));
@@ -67,6 +73,17 @@ public final class LocaleLanguageProvider implements LanguageProvider {
                 prefix);
 
         return MessageFormat.format(replaceColorCodes(message), arguments);
+    }
+
+    /**
+     * Get the locale used in {@link #of(String, Locale)}.
+     * If the locale doesn't exist, the default locale will be used.
+     *
+     * @return locale
+     */
+    @Override
+    public Locale getLocale() {
+        return locale;
     }
 
     /**

@@ -32,6 +32,7 @@ public final class LanguageProviderTest {
     public void testGerman() {
         LanguageProvider provider = LanguageProvider.of(PATH, Locale.GERMAN);
 
+        assertEquals(Locale.GERMAN, provider.getLocale());
         assertEquals("deutsch", provider.translate(MessageResource.of("language")));
     }
 
@@ -42,6 +43,7 @@ public final class LanguageProviderTest {
     public void testEnglish() {
         LanguageProvider provider = LanguageProvider.of(PATH, Locale.ENGLISH);
 
+        assertEquals(Locale.ENGLISH, provider.getLocale());
         assertEquals("english", provider.translate(MessageResource.of("language")));
     }
 
@@ -52,6 +54,7 @@ public final class LanguageProviderTest {
     public void testInvalidLocale() {
         LanguageProvider provider = LanguageProvider.of(PATH, Locale.JAPANESE);
 
+        assertEquals(Locale.ENGLISH, provider.getLocale());
         assertEquals("english", provider.translate(MessageResource.of("language")));
     }
 }
