@@ -54,6 +54,20 @@ public final class LocaleLanguageProvider implements LanguageProvider {
     }
 
     /**
+     * Create a new language provider based on a locale.
+     *
+     * @param locale locale
+     */
+    LocaleLanguageProvider(Locale locale) {
+        Locale.setDefault(LanguageProvider.DEFAULT_LOCALE);
+
+        this.resourceBundle = ResourceBundle.getBundle(LocaleLanguageProvider.BUNDLE, locale);
+        this.locale = resourceBundle.getLocale();
+
+        this.prefix = replaceColorCodes(resourceBundle.getString(LocaleLanguageProvider.PREFIX_KEY));
+    }
+
+    /**
      * Get the translated message by key.
      *
      * @param resource message resource that contains key and parameters

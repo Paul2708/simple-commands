@@ -42,4 +42,15 @@ public interface LanguageProvider {
     static LanguageProvider of(String directory, Locale locale) {
         return new LocaleLanguageProvider(directory, locale);
     }
+
+    /**
+     * Create a new instance to the given locale.
+     * If there is no resource bundle for the given locale, the {@link #DEFAULT_LOCALE} will be used instead.
+     *
+     * @param locale locale
+     * @return new language provider instance
+     */
+    static LanguageProvider of(Locale locale) {
+        return new LocaleLanguageProvider(locale);
+    }
 }
