@@ -13,12 +13,14 @@ import static org.junit.Assert.assertEquals;
  */
 public final class LanguageProviderTest {
 
+    private static final String PATH = "src/test/resources/";
+
     /**
      * Test if the prefix is correct.
      */
     @Test
     public void testColorCodes() {
-        String prefix = LanguageProvider.of(LanguageProvider.DEFAULT_LOCALE).translate(MessageResource.of("prefix"));
+        String prefix = LanguageProvider.of(PATH, LanguageProvider.DEFAULT_LOCALE).translate(MessageResource.of("prefix"));
 
         assertEquals("§8[§9Simple-Commands§8]§7", prefix);
     }
@@ -28,7 +30,7 @@ public final class LanguageProviderTest {
      */
     @Test
     public void testGerman() {
-        LanguageProvider provider = LanguageProvider.of(Locale.GERMAN);
+        LanguageProvider provider = LanguageProvider.of(PATH, Locale.GERMAN);
 
         assertEquals("deutsch", provider.translate(MessageResource.of("language")));
     }
@@ -38,7 +40,7 @@ public final class LanguageProviderTest {
      */
     @Test
     public void testEnglish() {
-        LanguageProvider provider = LanguageProvider.of(Locale.ENGLISH);
+        LanguageProvider provider = LanguageProvider.of(PATH, Locale.ENGLISH);
 
         assertEquals("english", provider.translate(MessageResource.of("language")));
     }
@@ -48,7 +50,7 @@ public final class LanguageProviderTest {
      */
     @Test
     public void testInvalidLocale() {
-        LanguageProvider provider = LanguageProvider.of(Locale.JAPANESE);
+        LanguageProvider provider = LanguageProvider.of(PATH, Locale.JAPANESE);
 
         assertEquals("english", provider.translate(MessageResource.of("language")));
     }

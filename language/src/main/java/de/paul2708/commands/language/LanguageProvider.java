@@ -27,10 +27,11 @@ public interface LanguageProvider {
      * Create a new instance to the given locale.
      * If there is no resource bundle for the given locale, the {@link #DEFAULT_LOCALE} will be used instead.
      *
+     * @param directory file path to the directory of all message properties
      * @param locale locale
      * @return new language provider instance
      */
-    static LanguageProvider of(Locale locale) {
-        return new LocaleLanguageProvider(locale);
+    static LanguageProvider of(String directory, Locale locale) {
+        return new LocaleLanguageProvider(directory, locale);
     }
 }
