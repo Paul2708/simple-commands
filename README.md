@@ -149,6 +149,6 @@ The only restriction is a provided checkstyle file under `src/test/resources/che
 
 ## Contact
 If you find any issues, please let me know!
-Just open a [bug report](https://github.com/Paul2708/simple-commands/issues/new?template=bug-report.md) or an other[issue](https://github.com/Paul2708/simple-commands/issues/new/choose).
+Just open a [bug report](https://github.com/Paul2708/simple-commands/issues/new?template=bug-report.md) or another [issue](https://github.com/Paul2708/simple-commands/issues/new/choose).
 
 Paul2708 - [Twitter](https://twitter.com/theplayerpaul) Discord: Paul2708#1098 [Mail](mailto:playerpaul2708@gmx.de)
