@@ -3,4 +3,4 @@ jdk: openjdk8
 
 script:
   - mvn clean install
-  - mvn checkstyle:checkstyle
+  - mvn checkstyle:check
