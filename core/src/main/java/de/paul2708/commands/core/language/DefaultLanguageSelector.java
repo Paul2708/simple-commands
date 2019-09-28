@@ -1,6 +1,5 @@
 package de.paul2708.commands.core.language;
 
-import com.sun.tools.internal.xjc.Language;
 import de.paul2708.commands.language.LanguageProvider;
 import de.paul2708.commands.language.MessageResource;
 import org.bukkit.command.CommandSender;
