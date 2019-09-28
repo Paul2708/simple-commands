@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.UUID;
 
 /**
@@ -17,7 +18,7 @@ import java.util.UUID;
  */
 public final class DefaultLanguageSelector implements LanguageSelector {
 
-    // TODO: Check non-existing locales
+    private String directory;
 
     private final Map<UUID, Locale> languages;
     private Locale consoleLanguage;
@@ -28,6 +29,20 @@ public final class DefaultLanguageSelector implements LanguageSelector {
     public DefaultLanguageSelector() {
         this.languages = new HashMap<>();
         this.consoleLanguage = LanguageProvider.DEFAULT_LOCALE;
+    }
+
+    /**
+     * Load the language files from a certain path.
+     *
+     * @param path directory of all <code>message_XX.properties</code>, relative to spigot.jar
+     */
+    @Override
+    public void loadFromFile(String path) throws MissingResourceException {
+        if (directory != null) {
+            throw new IllegalStateException("File aready set.");
+        }
+
+        this.directory = path;
     }
 
     /**
@@ -43,9 +58,9 @@ public final class DefaultLanguageSelector implements LanguageSelector {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            languages.put(player.getUniqueId(), locale);
+            languages.put(player.getUniqueId(), provideLanguage(locale).getLocale());
         } else {
-            this.consoleLanguage = locale;
+            this.consoleLanguage = provideLanguage(locale).getLocale();
         }
     }
 
@@ -57,7 +72,7 @@ public final class DefaultLanguageSelector implements LanguageSelector {
      */
     @Override
     public void sendMessage(CommandSender sender, MessageResource resource) {
-        sender.sendMessage(LanguageProvider.of(get(sender)).translate(resource));
+        sender.sendMessage(provideLanguage(get(sender)).translate(resource));
     }
 
     /**
@@ -69,7 +84,7 @@ public final class DefaultLanguageSelector implements LanguageSelector {
      */
     @Override
     public String translate(CommandSender sender, MessageResource resource) {
-        return LanguageProvider.of(get(sender)).translate(resource);
+        return provideLanguage(get(sender)).translate(resource);
     }
 
     /**
@@ -88,6 +103,14 @@ public final class DefaultLanguageSelector implements LanguageSelector {
             return languages.getOrDefault(player.getUniqueId(), LanguageProvider.DEFAULT_LOCALE);
         } else {
             return consoleLanguage;
+        }
+    }
+
+    private LanguageProvider provideLanguage(Locale locale) {
+        if (directory == null) {
+            return LanguageProvider.of(locale);
+        } else {
+            return LanguageProvider.of(directory, locale);
         }
     }
 }

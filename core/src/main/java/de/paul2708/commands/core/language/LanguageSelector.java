@@ -1,6 +1,5 @@
 package de.paul2708.commands.core.language;
 
-import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.language.MessageResource;
 import org.bukkit.command.CommandSender;
 
@@ -13,6 +12,14 @@ import java.util.Locale;
  * @author Paul2708
  */
 public interface LanguageSelector {
+
+    /**
+     * Load the language files from a certain path.
+     * If the directory doesn't exist, the default resources will be created and loaded there.
+     *
+     * @param path directory of all <code>message_XX.properties</code>, relative to spigot.jar
+     */
+    void loadFromFile(String path);
 
     /**
      * Select the language for a given command sender.

@@ -24,6 +24,26 @@ public interface LanguageProvider {
     String translate(MessageResource resource);
 
     /**
+     * Get the locale used in {@link #of(String, Locale)}.
+     * If the locale doesn't exist, the default locale will be used.
+     *
+     * @return locale
+     */
+    Locale getLocale();
+
+    /**
+     * Create a new instance to the given locale.
+     * If there is no resource bundle for the given locale, the {@link #DEFAULT_LOCALE} will be used instead.
+     *
+     * @param directory file path to the directory of all message properties
+     * @param locale locale
+     * @return new language provider instance
+     */
+    static LanguageProvider of(String directory, Locale locale) {
+        return new LocaleLanguageProvider(directory, locale);
+    }
+
+    /**
      * Create a new instance to the given locale.
      * If there is no resource bundle for the given locale, the {@link #DEFAULT_LOCALE} will be used instead.
      *
