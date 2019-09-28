@@ -36,7 +36,7 @@ Just add the following repository and dependency to your Maven project.
 <dependency>
     <groupId>com.github.Paul2708</groupId>
     <artifactId>simple-commands</artifactId>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
 </dependency>
 ```
 
@@ -51,7 +51,7 @@ If you don't use a build tool like Maven or Gradle, you can download the latest 
 <dependency>
     <groupId>de.paul2708</groupId>
     <artifactId>simple-commands-core</artifactId>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
 </dependency>
 ```
 
@@ -141,7 +141,7 @@ public void test(Player sender, Player target, int yHeight) {
 I think, you can spot the differences and the boilerplate by spigot.
 
 ## Contribution
-[Here](https://github.com/Paul2708/simple-commands/issues/2) is a list of TODOs, ideas and planned features.
+[Here](https://github.com/Paul2708/simple-commands/issues) is a list of TODOs, ideas and planned features.
 Maybe you can help and implement a new feature.
 
 If you want to contribute, just clone the project, switch to a feature branch and open a [pull request](https://github.com/Paul2708/simple-commands/pulls).

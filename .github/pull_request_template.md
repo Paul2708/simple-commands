@@ -8,7 +8,7 @@ _Make sure that you completed the following actions to submitting this PR._
 * [ ] I have created a feature branch.
 * [ ] My changes have been committed.
 * [ ] I have pushed my changes to the branch.
-* [ ] Running `mvn checkstyle:checkstyle` doesn't fail.
+* [ ] Running `mvn checkstyle:check` doesn't fail.
 
 ## Title
 _Give your PR a short title summarizing the patch, bug fix or feature._
