@@ -11,6 +11,7 @@ import de.paul2708.commands.arguments.impl.primitive.FloatArgument;
 import de.paul2708.commands.arguments.impl.primitive.IntegerArgument;
 import de.paul2708.commands.arguments.impl.primitive.ShortArgument;
 import de.paul2708.commands.arguments.impl.spigot.EntityArgument;
+import de.paul2708.commands.arguments.impl.spigot.LocationArgument;
 import de.paul2708.commands.arguments.impl.spigot.OnlinePlayerArgument;
 import de.paul2708.commands.arguments.impl.spigot.WorldArgument;
 import org.bukkit.GameMode;
@@ -44,6 +45,7 @@ public interface ArgumentHolder {
             .add(new OnlinePlayerArgument())
             .add(new WorldArgument())
             .add(new EntityArgument())
+            .add(new LocationArgument())
             .build();
 
     /**
