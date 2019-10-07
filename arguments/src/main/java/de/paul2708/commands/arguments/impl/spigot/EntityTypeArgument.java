@@ -3,7 +3,6 @@ package de.paul2708.commands.arguments.impl.spigot;
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
 import de.paul2708.commands.language.MessageResource;
-import org.bukkit.GameMode;
 import org.bukkit.entity.EntityType;
 
 import java.util.Arrays;
@@ -30,7 +29,7 @@ public final class EntityTypeArgument implements CommandArgument<EntityType> {
         EntityType entityType;
         try {
             entityType = EntityType.valueOf(argument);
-        } catch (Exception ignored) {
+        } catch (IllegalArgumentException ignored) {
             return Validation.invalid(MessageResource.of("argument.entitytype.invalid", argument));
         }
 
