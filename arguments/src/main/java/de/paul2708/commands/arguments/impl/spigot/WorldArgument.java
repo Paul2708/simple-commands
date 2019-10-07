@@ -5,9 +5,7 @@ import de.paul2708.commands.arguments.Validation;
 import de.paul2708.commands.language.MessageResource;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.entity.EntityType;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +28,7 @@ public final class WorldArgument implements CommandArgument<World> {
     public Validation<World> validate(String argument) {
         World world = Bukkit.getWorld(argument);
 
-        if(world == null) {
+        if (world == null) {
             return Validation.invalid(MessageResource.of("argument.world.invalid", argument));
         }
 
