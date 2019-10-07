@@ -29,8 +29,8 @@ public final class EntityArgument implements CommandArgument<Entity> {
         Entity entity = Bukkit.getWorlds()
                 .stream()
                 .flatMap(world -> world.getEntities().stream())
-                .filter(anEntity -> anEntity.getUniqueId().toString().equalsIgnoreCase(argument) ||
-                        argument.equalsIgnoreCase(anEntity.getCustomName()))
+                .filter(anEntity -> anEntity.getUniqueId().toString().equalsIgnoreCase(argument)
+                        || argument.equalsIgnoreCase(anEntity.getCustomName()))
                 .findAny()
                 .orElse(null);
 
@@ -62,8 +62,8 @@ public final class EntityArgument implements CommandArgument<Entity> {
     public List<String> autoComplete(String argument) {
         List<String> autoComplete = Bukkit.getWorlds().stream()
                 .flatMap(world -> world.getEntities().stream())
-                .map(entity -> (entity.getCustomName() == null ?
-                        entity.getUniqueId().toString() : entity.getCustomName()))
+                .map(entity -> (entity.getCustomName() == null
+                        ? entity.getUniqueId().toString() : entity.getCustomName()))
                 .filter(s -> s.startsWith(argument.toLowerCase()))
                 .collect(Collectors.toList());
 
