@@ -29,7 +29,7 @@ public final class GameModeArgument implements CommandArgument<GameMode> {
         GameMode gameMode;
         try {
             gameMode = GameMode.valueOf(argument);
-        } catch (Exception ignored) {
+        } catch (IllegalArgumentException ignored) {
             return Validation.invalid(MessageResource.of("argument.gamemode.invalid", argument));
         }
 
