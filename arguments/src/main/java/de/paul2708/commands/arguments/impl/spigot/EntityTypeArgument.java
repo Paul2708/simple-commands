@@ -4,6 +4,7 @@ import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
 import de.paul2708.commands.language.MessageResource;
 import org.bukkit.GameMode;
+import org.bukkit.entity.EntityType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,11 +12,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * This command arguments represents a {@link org.bukkit.GameMode} argument.
+ * This command arguments represents a {@link org.bukkit.entity.EntityType} argument.
  *
  * @author Cerus
  */
-public final class GameModeArgument implements CommandArgument<GameMode> {
+public final class EntityTypeArgument implements CommandArgument<EntityType> {
 
     /**
      * Validate the object by a given command argument.
@@ -25,15 +26,15 @@ public final class GameModeArgument implements CommandArgument<GameMode> {
      * @return a valid or invalid validation
      */
     @Override
-    public Validation<GameMode> validate(String argument) {
-        GameMode gameMode;
+    public Validation<EntityType> validate(String argument) {
+        EntityType entityType;
         try {
-            gameMode = GameMode.valueOf(argument);
+            entityType = EntityType.valueOf(argument);
         } catch (Exception ignored) {
-            return Validation.invalid(MessageResource.of("argument.gamemode.invalid", argument));
+            return Validation.invalid(MessageResource.of("argument.entitytype.invalid", argument));
         }
 
-        return Validation.valid(gameMode);
+        return Validation.valid(entityType);
     }
 
     /**
@@ -43,7 +44,7 @@ public final class GameModeArgument implements CommandArgument<GameMode> {
      */
     @Override
     public MessageResource usage() {
-        return MessageResource.of("argument.gamemode.usage");
+        return MessageResource.of("argument.entitytype.usage");
     }
 
     /**
@@ -55,8 +56,8 @@ public final class GameModeArgument implements CommandArgument<GameMode> {
      */
     @Override
     public List<String> autoComplete(String argument) {
-        List<String> autoComplete = Arrays.stream(GameMode.values())
-                .map(gameMode -> gameMode.name().toLowerCase())
+        List<String> autoComplete = Arrays.stream(EntityType.values())
+                .map(entityType -> entityType.name().toLowerCase())
                 .filter(name -> name.startsWith(argument.toLowerCase()))
                 .collect(Collectors.toList());
 
