@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -83,8 +84,8 @@ public final class LocaleLanguageProvider implements LanguageProvider {
             return prefix;
         }
 
-        String message = resourceBundle.getString(key).replace(REPLACE_CHAR + PREFIX_KEY + REPLACE_CHAR,
-                prefix);
+        String message = new String(resourceBundle.getString(key).getBytes(StandardCharsets.ISO_8859_1),
+                StandardCharsets.UTF_8).replace(REPLACE_CHAR + PREFIX_KEY + REPLACE_CHAR, prefix);
 
         return MessageFormat.format(replaceColorCodes(message), arguments);
     }

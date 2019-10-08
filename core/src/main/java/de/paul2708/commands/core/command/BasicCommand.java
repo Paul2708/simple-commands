@@ -85,7 +85,7 @@ public final class BasicCommand extends Command {
             StringBuilder usage = new StringBuilder("/" + simpleCommand.getInformation().name() + " ");
 
             for (CommandArgument<?> argument : arguments) {
-                usage.append(languageSelector.translate(sender, argument.usage()));
+                usage.append(languageSelector.translate(sender, argument.usage())).append(" ");
             }
 
             languageSelector.sendMessage(sender, MessageResource.of("command.false_usage", usage.toString()));
