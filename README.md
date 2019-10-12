@@ -36,7 +36,7 @@ Just add the following repository and dependency to your Maven project.
 <dependency>
     <groupId>com.github.Paul2708</groupId>
     <artifactId>simple-commands</artifactId>
-    <version>0.2.2</version>
+    <version>0.2.3</version>
 </dependency>
 ```
 
@@ -51,7 +51,7 @@ If you don't use a build tool like Maven or Gradle, you can download the latest 
 <dependency>
     <groupId>de.paul2708</groupId>
     <artifactId>simple-commands-core</artifactId>
-    <version>0.2.2</version>
+    <version>0.2.3</version>
 </dependency>
 ```
 
@@ -141,14 +141,10 @@ public void test(Player sender, Player target, int yHeight) {
 I think, you can spot the differences and the boilerplate by spigot.
 
 ## Contribution
-[Here](https://github.com/Paul2708/simple-commands/issues) is a list of TODOs, ideas and planned features.
-Maybe you can help and implement a new feature.
-
-If you want to contribute, just clone the project, switch to a feature branch and open a [pull request](https://github.com/Paul2708/simple-commands/pulls).
-The only restriction is a provided checkstyle file under `src/test/resources/checkstyle.xml`.
+[Here](CONTRIBUTING.md) is a set of instructions that will guide you through your contribution.
 
 ## Contact
 If you find any issues, please let me know!
-Just open a [bug report](https://github.com/Paul2708/simple-commands/issues/new?template=bug-report.md) or an other[issue](https://github.com/Paul2708/simple-commands/issues/new/choose).
+Just open a [bug report](https://github.com/Paul2708/simple-commands/issues/new?template=bug-report.md) or another [issue](https://github.com/Paul2708/simple-commands/issues/new/choose).
 
 Paul2708 - [Twitter](https://twitter.com/theplayerpaul) Discord: Paul2708#1098 [Mail](mailto:playerpaul2708@gmx.de)

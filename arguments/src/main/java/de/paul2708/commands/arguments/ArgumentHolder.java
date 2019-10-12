@@ -10,7 +10,11 @@ import de.paul2708.commands.arguments.impl.primitive.DoubleArgument;
 import de.paul2708.commands.arguments.impl.primitive.FloatArgument;
 import de.paul2708.commands.arguments.impl.primitive.IntegerArgument;
 import de.paul2708.commands.arguments.impl.primitive.ShortArgument;
+import de.paul2708.commands.arguments.impl.spigot.EntityArgument;
+import de.paul2708.commands.arguments.impl.spigot.LocationArgument;
 import de.paul2708.commands.arguments.impl.spigot.OnlinePlayerArgument;
+import de.paul2708.commands.arguments.impl.spigot.WorldArgument;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
@@ -37,7 +41,11 @@ public interface ArgumentHolder {
             .add(new BooleanArgument())
             .add(new EnumArgument<>(Material.class))
             .add(new EnumArgument<>(EntityType.class))
+            .add(new EnumArgument<>(GameMode.class))
             .add(new OnlinePlayerArgument())
+            .add(new WorldArgument())
+            .add(new EntityArgument())
+            .add(new LocationArgument())
             .build();
 
     /**
