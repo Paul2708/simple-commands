@@ -141,11 +141,7 @@ public void test(Player sender, Player target, int yHeight) {
 I think, you can spot the differences and the boilerplate by spigot.
 
 ## Contribution
-[Here](https://github.com/Paul2708/simple-commands/issues) is a list of TODOs, ideas and planned features.
-Maybe you can help and implement a new feature.
-
-If you want to contribute, just clone the project, switch to a feature branch and open a [pull request](https://github.com/Paul2708/simple-commands/pulls).
-The only restriction is a provided checkstyle file under `src/test/resources/checkstyle.xml`.
+[Here](CONTRIBUTING.md) is a set of instructions that will guide you through your contribution.
 
 ## Contact
 If you find any issues, please let me know!
