@@ -64,11 +64,15 @@ public final class TestCommand {
 
     /**
      * Do some fancy optional stuff
+     *
+     * @param sender sender who send the request
+     * @param integer a number to be given back to the sender (optional)
+     * @param text a text to be given back to the sender
      */
     @Command(name = "optcmd", desc = "Optionally specify a number")
     public void optionalTest(CommandSender sender, @Optional Integer integer, String text) {
-        integer = integer != null ? integer : -1;
+        int actualValue = integer != null ? integer : -1;
         sender.sendMessage(String.format("You send the string: %s and the number %d (-1 if none specified)",
-                text, integer));
+                text, actualValue));
     }
 }
