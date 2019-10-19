@@ -135,9 +135,9 @@ public final class DefaultCommandRegistry implements CommandRegistry {
                                     + "an argument wrapper", type.getName(), method.getName()));
                         }
 
-                        if(isOptional)
+                        if (isOptional) {
                             argument = argument.asOptional();
-
+                        }
                         list.add(argument);
                     }
 

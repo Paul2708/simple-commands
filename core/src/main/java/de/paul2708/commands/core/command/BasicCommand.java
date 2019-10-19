@@ -92,7 +92,7 @@ public final class BasicCommand extends Command {
         for (int i = 0; i < args.length; i++) {
             if (!arguments.hasNext()) {
                 sendUsage(sender, simpleCommand.getArguments());
-                for(Validation<?> validation: errors){
+                for (Validation<?> validation : errors) {
                     languageSelector.sendMessage(sender, validation.getErrorResource());
                 }
                 return false;
@@ -102,7 +102,7 @@ public final class BasicCommand extends Command {
             parameters.add(validate.getParsedObject());
 
             if (!validate.isValid()) {
-                if(argument.isOptional()){
+                if (argument.isOptional()) {
                     i--;
                     // i will be incremented at the end of the loop causing this text argument to be processed once
                     //more
@@ -115,9 +115,9 @@ public final class BasicCommand extends Command {
                 return false;
             }
         }
-        System.out.println(parameters);
+
         // If any arguments are left, you passed to few arguments.
-        if(arguments.hasNext()){
+        if (arguments.hasNext()) {
             sendUsage(sender, simpleCommand.getArguments());
         }
 
@@ -143,6 +143,11 @@ public final class BasicCommand extends Command {
         }
     }
 
+    /**
+     * private helper to send usage to a CommandSender
+     * @param sender the sender to send the usage to
+     * @param arguments the required arguments of the command
+     */
     private void sendUsage(CommandSender sender, List<CommandArgument<?>> arguments) {
         StringBuilder usage = new StringBuilder("/" + simpleCommand.getInformation().name() + " ");
 
