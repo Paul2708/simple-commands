@@ -2,6 +2,7 @@ package de.paul2708.commands.example;
 
 import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.core.annotation.Inject;
+import de.paul2708.commands.core.annotation.Optional;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -59,5 +60,15 @@ public final class TestCommand {
         // ...
 
         sender.sendMessage("You set the age for: " + person.toString());
+    }
+
+    /**
+     * Do some fancy optional stuff
+     */
+    @Command(name = "optcmd", desc = "Optionally specify a number")
+    public void optionalTest(CommandSender sender, @Optional Integer integer, String text) {
+        integer = integer != null ? integer : -1;
+        sender.sendMessage(String.format("You send the string: %s and the number %d (-1 if none specified)",
+                text, integer));
     }
 }
