@@ -1,16 +1,12 @@
 package de.paul2708.commands.arguments.impl.spigot;
 
-import com.google.common.collect.ImmutableList;
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
 import de.paul2708.commands.language.MessageResource;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -25,16 +21,14 @@ public final class EnchantmentArgument implements CommandArgument<Enchantment> {
 
     @Override
     public Validation<Enchantment> validate(String argument) {
-        if (argument.startsWith("minecraft:")) {
-            argument = argument.substring(10);
-        }
+        String newArgument = argument.startsWith("minecraft:") ? argument.substring(10) : argument;
 
-        NamespacedKey key = NamespacedKey.minecraft(argument);
+        NamespacedKey key = NamespacedKey.minecraft(newArgument);
         return Stream.of(Enchantment.values())
                 .filter(e -> e.getKey().equals(key))
                 .findFirst()
                 .map(Validation::valid)
-                .orElse(Validation.invalid(MessageResource.of("argument.enchantment.invalid", argument)));
+                .orElse(Validation.invalid(MessageResource.of("argument.enchantment.invalid", newArgument)));
     }
 
     @Override
