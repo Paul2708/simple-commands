@@ -5,7 +5,8 @@ import de.paul2708.commands.language.MessageResource;
 import java.util.List;
 
 /**
- * An argument which is marked as Optional to the argument parser. This can be received via {@link CommandArgument#asOptional()}
+ * An argument which is marked as Optional to the argument parser. This can be received via
+ * {@link CommandArgument#asOptional()}
  * @param <T> The type of this argument
  */
 public class OptionalArgument<T> implements CommandArgument<T> {
