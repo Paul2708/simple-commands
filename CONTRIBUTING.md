@@ -17,10 +17,11 @@ If you have an idea, feature request or other things you want to mention, you ca
 ## Getting started
 1. Be sure you have an assigned issue you can refer to.
 2. Fork the project.
-3. Create a new branch based on the issue, e.g. `fix/null-argument`, `feature/uuid-argument`, `doc/extendend-example`.
-4. Commit your changes to the branch. Make more simple commits instead of one commit that resolves the issue at once.
-5. Push the branch to your forked project.
-6. **Open a pull request**.
+3. Switch to `development` branch by `git checkout development`.
+4. Create a new branch based on the issue, e.g. `fix/null-argument`, `feature/uuid-argument`, `doc/extendend-example`.
+5. Commit your changes to the branch. Make more simple commits instead of one commit that resolves the issue at once.
+6. Push the branch to your forked project.
+7. **Open a pull request**.
 
 ### Checkstyle
 The only restriction is a provided checkstyle file under `src/test/resources/checkstyle.xml`.

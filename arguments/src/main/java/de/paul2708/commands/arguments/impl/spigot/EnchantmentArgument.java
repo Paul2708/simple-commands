@@ -21,6 +21,8 @@ public final class EnchantmentArgument implements CommandArgument<Enchantment> {
 
     @Override
     public Validation<Enchantment> validate(String argument) {
+        // TODO: Add try-catch with invalidation as none-existing key throws an exception
+
         String newArgument = argument.startsWith("minecraft:") ? argument.substring(10) : argument;
 
         NamespacedKey key = NamespacedKey.minecraft(newArgument);
