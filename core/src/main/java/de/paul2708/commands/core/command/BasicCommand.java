@@ -119,6 +119,7 @@ public final class BasicCommand extends Command {
         // If any arguments are left, you passed to few arguments.
         if (arguments.hasNext()) {
             sendUsage(sender, simpleCommand.getArguments());
+            return false;
         }
 
         // Execute command
