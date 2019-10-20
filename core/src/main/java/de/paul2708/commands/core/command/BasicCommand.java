@@ -156,7 +156,7 @@ public final class BasicCommand extends Command {
             usage.append(languageSelector.translate(sender, argument.usage())).append(" ");
         }
 
-        languageSelector.sendMessage(sender, MessageResource.of("command.false_usage", usage.toString()));
+        languageSelector.sendMessage(sender, MessageResource.of("command.false_usage", usage.toString().trim()));
     }
 
     /**
