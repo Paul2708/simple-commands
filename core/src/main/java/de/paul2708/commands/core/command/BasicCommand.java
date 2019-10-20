@@ -98,7 +98,7 @@ public final class BasicCommand extends Command {
                 return false;
             }
             CommandArgument<?> argument = arguments.next();
-            Validation<?> validate = argument.validate(args[i]);
+            Validation<?> validate = argument.validate(args[i]); // TODO: Catch exception caused by validating
             parameters.add(validate.getParsedObject());
 
             if (!validate.isValid()) {
@@ -172,6 +172,8 @@ public final class BasicCommand extends Command {
      */
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+        // TODO: Check if tab completion works with optional arguments
+
         if (sender == null || alias == null || args == null) {
             throw new IllegalArgumentException();
         }
