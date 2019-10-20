@@ -10,9 +10,12 @@ import de.paul2708.commands.arguments.impl.primitive.DoubleArgument;
 import de.paul2708.commands.arguments.impl.primitive.FloatArgument;
 import de.paul2708.commands.arguments.impl.primitive.IntegerArgument;
 import de.paul2708.commands.arguments.impl.primitive.ShortArgument;
+import de.paul2708.commands.arguments.impl.spigot.EnchantmentArgument;
 import de.paul2708.commands.arguments.impl.spigot.EntityArgument;
+import de.paul2708.commands.arguments.impl.spigot.GameRuleArgument;
 import de.paul2708.commands.arguments.impl.spigot.LocationArgument;
 import de.paul2708.commands.arguments.impl.spigot.OnlinePlayerArgument;
+import de.paul2708.commands.arguments.impl.spigot.UuidArgument;
 import de.paul2708.commands.arguments.impl.spigot.WorldArgument;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -46,6 +49,9 @@ public interface ArgumentHolder {
             .add(new WorldArgument())
             .add(new EntityArgument())
             .add(new LocationArgument())
+            .add(new GameRuleArgument())
+            .add(new UuidArgument())
+            .add(new EnchantmentArgument())
             .build();
 
     /**
