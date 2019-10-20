@@ -50,4 +50,21 @@ public interface CommandArgument<T> {
             throw new NotFulfilledConditionException(description);
         }
     }
+
+    /**
+     * @return this argument as an optional argument
+     * @see CommandArgument#isOptional()
+     */
+    default CommandArgument<T> asOptional() {
+        return new OptionalArgument<>(this);
+    }
+
+    /**
+     * An optional argument may be skipped by the argument parser
+     *
+     * @return whether this argument is optional
+     */
+    default boolean isOptional() {
+        return false;
+    }
 }

@@ -11,7 +11,9 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -80,37 +82,46 @@ public final class BasicCommand extends Command {
         }
 
         // Check arguments
-        List<CommandArgument<?>> arguments = simpleCommand.getArguments();
-        if (arguments.size() != args.length) {
-            StringBuilder usage = new StringBuilder("/" + simpleCommand.getInformation().name() + " ");
+        Iterator<CommandArgument<?>> arguments = simpleCommand.getArguments().iterator();
 
-            for (CommandArgument<?> argument : arguments) {
-                usage.append(languageSelector.translate(sender, argument.usage())).append(" ");
-            }
 
-            languageSelector.sendMessage(sender, MessageResource.of("command.false_usage", usage.toString()));
-            return false;
-        }
+        List<Validation<?>> errors = new ArrayList<>();
+        List<Object> parameters = new LinkedList<>();
+        parameters.add(sender);
 
         for (int i = 0; i < args.length; i++) {
-            Validation<?> validate = arguments.get(i).validate(args[i]);
+            if (!arguments.hasNext()) {
+                sendUsage(sender, simpleCommand.getArguments());
+                for (Validation<?> validation : errors) {
+                    languageSelector.sendMessage(sender, validation.getErrorResource());
+                }
+                return false;
+            }
+            CommandArgument<?> argument = arguments.next();
+            Validation<?> validate = argument.validate(args[i]);
+            parameters.add(validate.getParsedObject());
 
             if (!validate.isValid()) {
+                if (argument.isOptional()) {
+                    i--;
+                    // i will be incremented at the end of the loop causing this text argument to be processed once
+                    //more
+                    errors.add(validate);
+                    // We will take note, so if the command still fails we can still report this
+                    // error
+                    continue;
+                }
                 languageSelector.sendMessage(sender, validate.getErrorResource());
                 return false;
             }
         }
 
-        // Execute command
-        List<Object> parameters = new LinkedList<>();
-        parameters.add(sender);
-
-        for (int i = 0; i < args.length; i++) {
-            Validation<?> validate = arguments.get(i).validate(args[i]);
-
-            parameters.add(validate.getParsedObject());
+        // If any arguments are left, you passed to few arguments.
+        if (arguments.hasNext()) {
+            sendUsage(sender, simpleCommand.getArguments());
         }
 
+        // Execute command
         try {
             simpleCommand.getMethod().invoke(simpleCommand.getObject(), parameters.toArray());
             return true;
@@ -130,6 +141,21 @@ public final class BasicCommand extends Command {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * private helper to send usage to a CommandSender
+     * @param sender the sender to send the usage to
+     * @param arguments the required arguments of the command
+     */
+    private void sendUsage(CommandSender sender, List<CommandArgument<?>> arguments) {
+        StringBuilder usage = new StringBuilder("/" + simpleCommand.getInformation().name() + " ");
+
+        for (CommandArgument<?> argument : arguments) {
+            usage.append(languageSelector.translate(sender, argument.usage())).append(" ");
+        }
+
+        languageSelector.sendMessage(sender, MessageResource.of("command.false_usage", usage.toString()));
     }
 
     /**
