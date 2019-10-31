@@ -38,7 +38,7 @@ public final class EnumArgument<T> implements CommandArgument<T> {
     @Override
     public Validation<T> validate(String argument) {
         for (T enumValue : enumClass.getEnumConstants()) {
-            if (enumValue.toString().equals(argument.toUpperCase())) {
+            if (enumValue.toString().toUpperCase().equals(argument.toUpperCase())) {
                 return Validation.valid(enumValue);
             }
         }

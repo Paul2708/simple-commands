@@ -5,6 +5,7 @@ import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.util.Pair;
 import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.core.annotation.Inject;
+import de.paul2708.commands.core.annotation.Optional;
 import de.paul2708.commands.core.command.BasicCommand;
 import de.paul2708.commands.core.command.CommandType;
 import de.paul2708.commands.core.command.SimpleCommand;
@@ -125,6 +126,7 @@ public final class DefaultCommandRegistry implements CommandRegistry {
 
                     for (int i = 1; i < parameters.length; i++) {
                         Class<?> type = parameters[i].getType();
+                        boolean isOptional = parameters[i].getAnnotation(Optional.class) != null;
 
                         CommandArgument<?> argument = argumentHolder.resolve(type);
 
@@ -133,6 +135,9 @@ public final class DefaultCommandRegistry implements CommandRegistry {
                                     + "an argument wrapper", type.getName(), method.getName()));
                         }
 
+                        if (isOptional) {
+                            argument = argument.asOptional();
+                        }
                         list.add(argument);
                     }
 
