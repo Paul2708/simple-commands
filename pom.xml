@@ -6,7 +6,7 @@
 
     <groupId>de.paul2708</groupId>
     <artifactId>simple-commands</artifactId>
-    <version>0.2.3</version>
+    <version>0.2.4</version>
     <modules>
         <module>core</module>
         <module>arguments</module>
