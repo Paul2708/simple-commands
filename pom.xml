@@ -35,13 +35,6 @@
         </developer>
     </developers>
 
-    <repositories>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <!-- JUnit -->
         <dependency>
@@ -86,6 +79,12 @@
                     <configLocation>src/test/resources/checkstyle.xml</configLocation>
                     <linkXRef>false</linkXRef>
                 </configuration>
+            </plugin>
+            <!-- Surefire (fix test execution errors) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M4</version>
             </plugin>
         </plugins>
     </build>
