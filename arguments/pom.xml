@@ -11,13 +11,6 @@
 
     <artifactId>simple-commands-arguments</artifactId>
 
-    <repositories>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <!-- Language -->
         <dependency>
@@ -36,7 +29,7 @@
         <dependency>
             <groupId>net.jodah</groupId>
             <artifactId>typetools</artifactId>
-            <version>0.6.1</version>
+            <version>0.6.2</version>
         </dependency>
         <!-- JUnit -->
         <dependency>
@@ -46,5 +39,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>
