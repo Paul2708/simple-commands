@@ -153,7 +153,17 @@ public final class BasicCommand extends Command {
         StringBuilder usage = new StringBuilder("/" + simpleCommand.getInformation().name() + " ");
 
         for (CommandArgument<?> argument : arguments) {
-            usage.append(languageSelector.translate(sender, argument.usage())).append(" ");
+            if (argument.isOptional()) {
+                usage.append(languageSelector.translate(sender, MessageResource.of("symbol.optional.left")))
+                        .append(languageSelector.translate(sender, argument.usage()))
+                        .append(languageSelector.translate(sender, MessageResource.of("symbol.optional.right")));
+            } else {
+                usage.append(languageSelector.translate(sender, MessageResource.of("symbol.required.left")))
+                        .append(languageSelector.translate(sender, argument.usage()))
+                        .append(languageSelector.translate(sender, MessageResource.of("symbol.required.right")));
+            }
+
+            usage.append(" ");
         }
 
         languageSelector.sendMessage(sender, MessageResource.of("command.false_usage", usage.toString().trim()));
