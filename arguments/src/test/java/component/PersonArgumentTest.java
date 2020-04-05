@@ -3,15 +3,15 @@ package component;
 import de.paul2708.commands.arguments.Validation;
 import model.Person;
 import model.PersonArgument;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This test class tests the person argument test. These tests should all command argument implement.
@@ -25,7 +25,7 @@ public final class PersonArgumentTest {
     /**
      * Create a new command argument with a list of persons.
      */
-    @Before
+    @BeforeEach
     public void setUp() {
         List<Person> list = new ArrayList<>();
         list.add(new Person("testuser", 1337));

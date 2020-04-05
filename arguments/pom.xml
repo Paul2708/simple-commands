@@ -31,12 +31,5 @@
             <artifactId>typetools</artifactId>
             <version>0.6.2</version>
         </dependency>
-        <!-- JUnit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>

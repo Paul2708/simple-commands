@@ -20,7 +20,7 @@
 
         <!-- Custom properties -->
         <spigot.version>1.15.2-R0.1-SNAPSHOT</spigot.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>5.6.1</junit.version>
         <mockito.version>3.3.3</mockito.version>
     </properties>
 
@@ -41,6 +41,16 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
     </repositories>
+
+    <dependencies>
+        <!-- JUnit -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
