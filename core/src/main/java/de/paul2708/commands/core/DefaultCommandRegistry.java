@@ -6,7 +6,7 @@ import de.paul2708.commands.arguments.util.Pair;
 import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.core.annotation.Inject;
 import de.paul2708.commands.core.annotation.Optional;
-import de.paul2708.commands.core.command.BasicCommand;
+import de.paul2708.commands.core.command.CommandDelegator;
 import de.paul2708.commands.core.command.CommandType;
 import de.paul2708.commands.core.command.SimpleCommand;
 import de.paul2708.commands.core.language.DefaultLanguageSelector;
@@ -160,7 +160,7 @@ public final class DefaultCommandRegistry implements CommandRegistry {
                             object, method, list);
                     commands.add(simpleCommand);
 
-                    registerBukkitCommand(simpleCommand, new BasicCommand(languageSelector, simpleCommand));
+                    registerBukkitCommand(simpleCommand, new CommandDelegator(languageSelector, simpleCommand));
                 }
             }
         }

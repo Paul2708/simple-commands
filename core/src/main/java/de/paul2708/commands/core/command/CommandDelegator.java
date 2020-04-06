@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author Paul2708
  */
-public final class BasicCommand extends Command {
+public final class CommandDelegator extends Command {
 
     private final LanguageSelector languageSelector;
     private final SimpleCommand simpleCommand;
@@ -33,7 +33,7 @@ public final class BasicCommand extends Command {
      * @param languageSelector language selector to translate messages
      * @param simpleCommand simple command
      */
-    public BasicCommand(LanguageSelector languageSelector, SimpleCommand simpleCommand) {
+    public CommandDelegator(LanguageSelector languageSelector, SimpleCommand simpleCommand) {
         super(simpleCommand.getInformation().name());
 
         this.languageSelector = languageSelector;
