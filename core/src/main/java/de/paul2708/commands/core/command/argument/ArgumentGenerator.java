@@ -1,6 +1,7 @@
 package de.paul2708.commands.core.command.argument;
 
 import de.paul2708.commands.arguments.CommandArgument;
+import de.paul2708.commands.arguments.OptionalArgument;
 import de.paul2708.commands.core.math.Combinator;
 
 import java.util.ArrayList;
@@ -34,8 +35,8 @@ public final class ArgumentGenerator {
      *
      * @return list of list of arguments
      */
-    public List<List<Optional<CommandArgument<?>>>> generate() {
-        List<List<Optional<CommandArgument<?>>>> generated = new LinkedList<>();
+    public List<List<CommandArgument<?>>> generate() {
+        List<List<CommandArgument<?>>> generated = new LinkedList<>();
 
         List<List<Optional<CommandArgument<?>>>> optionals = Combinator.combinations(arguments.stream()
                 .filter(CommandArgument::isOptional)
@@ -43,19 +44,19 @@ public final class ArgumentGenerator {
                 .collect(Collectors.toList());
 
         for (List<Optional<CommandArgument<?>>> optional : optionals) {
-            List<Optional<CommandArgument<?>>> list = new ArrayList<>();
+            List<CommandArgument<?>> list = new ArrayList<>();
 
             int optionalCounter = 0;
             for (CommandArgument<?> argument : arguments) {
                 if (argument.isOptional()) {
                     if (optional.get(optionalCounter).isPresent()) {
-                        list.add(Optional.of(argument));
+                        list.add(((OptionalArgument<?>) argument).getInternal());
                     } else {
-                        list.add(Optional.empty());
+                        list.add(argument);
                     }
                     optionalCounter++;
                 } else {
-                    list.add(Optional.of(argument));
+                    list.add(argument);
                 }
             }
 

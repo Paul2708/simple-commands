@@ -20,6 +20,15 @@ public class OptionalArgument<T> implements CommandArgument<T> {
         this.internal = internal;
     }
 
+    /**
+     * Get the internal command argument that is wrapped within the optional argument.
+     *
+     * @return internal command argument
+     */
+    public CommandArgument<T> getInternal() {
+        return internal;
+    }
+
     @Override
     public Validation<T> validate(String argument) {
         return internal.validate(argument);

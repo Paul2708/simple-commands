@@ -1,6 +1,7 @@
 package de.paul2708.commands.core.argument;
 
 import de.paul2708.commands.arguments.CommandArgument;
+import de.paul2708.commands.arguments.OptionalArgument;
 import de.paul2708.commands.arguments.impl.StringArgument;
 import de.paul2708.commands.arguments.impl.primitive.FloatArgument;
 import de.paul2708.commands.arguments.impl.primitive.IntegerArgument;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -27,7 +27,7 @@ final class ArgumentGeneratorTest {
     @Test
     void emptyArguments() {
         ArgumentGenerator generator = new ArgumentGenerator(Collections.emptyList());
-        List<List<Optional<CommandArgument<?>>>> combinations = generator.generate();
+        List<List<CommandArgument<?>>> combinations = generator.generate();
 
         assertEquals(1, combinations.size());
         assertEquals(0, combinations.get(0).size());
@@ -41,10 +41,10 @@ final class ArgumentGeneratorTest {
         StringArgument firstArg = new StringArgument();
         IntegerArgument secondArg = new IntegerArgument();
         ArgumentGenerator generator = new ArgumentGenerator(List.of(firstArg, secondArg));
-        List<List<Optional<CommandArgument<?>>>> combinations = generator.generate();
+        List<List<CommandArgument<?>>> combinations = generator.generate();
 
         assertEquals(1, combinations.size());
-        assertEquals(List.of(Optional.of(firstArg), Optional.of(secondArg)), combinations.get(0));
+        assertEquals(List.of(firstArg, secondArg), combinations.get(0));
     }
 
     /**
@@ -52,18 +52,18 @@ final class ArgumentGeneratorTest {
      */
     @Test
     void onlyOptionalArguments() {
-        CommandArgument<?> firstArg = new StringArgument().asOptional();
-        CommandArgument<?> secondArg = new IntegerArgument().asOptional();
+        OptionalArgument<?> firstArg = (OptionalArgument<?>) new StringArgument().asOptional();
+        OptionalArgument<?> secondArg = (OptionalArgument<?>) new IntegerArgument().asOptional();
 
         ArgumentGenerator generator = new ArgumentGenerator(List.of(firstArg, secondArg));
-        List<List<Optional<CommandArgument<?>>>> combinations = generator.generate();
+        List<List<CommandArgument<?>>> combinations = generator.generate();
 
         assertEquals(4, combinations.size());
 
-        assertContains(List.of(Optional.of(firstArg), Optional.of(secondArg)), combinations);
-        assertContains(List.of(Optional.of(firstArg), Optional.empty()), combinations);
-        assertContains(List.of(Optional.empty(), Optional.of(secondArg)), combinations);
-        assertContains(List.of(Optional.empty(), Optional.empty()), combinations);
+        assertContains(List.of(firstArg.getInternal(), secondArg.getInternal()), combinations);
+        assertContains(List.of(firstArg.getInternal(), secondArg), combinations);
+        assertContains(List.of(firstArg, secondArg.getInternal()), combinations);
+        assertContains(List.of(firstArg, secondArg), combinations);
     }
 
     /**
@@ -71,20 +71,20 @@ final class ArgumentGeneratorTest {
      */
     @Test
     void mixedArguments() {
-        CommandArgument<?> optFirstArg = new StringArgument().asOptional();
+        OptionalArgument<?> optFirstArg = (OptionalArgument<?>) new StringArgument().asOptional();
         CommandArgument<?> secondArg = new FloatArgument();
-        CommandArgument<?> optThirdArg = new IntegerArgument().asOptional();
+        OptionalArgument<?> optThirdArg = (OptionalArgument<?>) new IntegerArgument().asOptional();
         CommandArgument<?> fourthArg = new IntegerArgument();
 
         ArgumentGenerator generator = new ArgumentGenerator(List.of(optFirstArg, secondArg, optThirdArg, fourthArg));
-        List<List<Optional<CommandArgument<?>>>> combinations = generator.generate();
+        List<List<CommandArgument<?>>> combinations = generator.generate();
 
         assertEquals(4, combinations.size());
 
-        assertContains(List.of(Optional.of(optFirstArg), Optional.of(secondArg), Optional.of(optThirdArg), Optional.of(fourthArg)), combinations);
-        assertContains(List.of(Optional.of(optFirstArg), Optional.of(secondArg), Optional.empty(), Optional.of(fourthArg)), combinations);
-        assertContains(List.of(Optional.empty(), Optional.of(secondArg), Optional.of(optThirdArg), Optional.of(fourthArg)), combinations);
-        assertContains(List.of(Optional.empty(), Optional.of(secondArg), Optional.empty(), Optional.of(fourthArg)), combinations);
+        assertContains(List.of(optFirstArg.getInternal(), secondArg, optThirdArg.getInternal(), fourthArg), combinations);
+        assertContains(List.of(optFirstArg.getInternal(), secondArg, optThirdArg, fourthArg), combinations);
+        assertContains(List.of(optFirstArg, secondArg, optThirdArg.getInternal(), fourthArg), combinations);
+        assertContains(List.of(optFirstArg, secondArg, optThirdArg, fourthArg), combinations);
     }
 
     /**
