@@ -1,8 +1,11 @@
 package de.paul2708.commands.core.command;
 
 import de.paul2708.commands.arguments.CommandArgument;
-import de.paul2708.commands.arguments.Validation;
 import de.paul2708.commands.arguments.exception.NotFulfilledConditionException;
+import de.paul2708.commands.core.command.argument.ArgumentGenerator;
+import de.paul2708.commands.core.command.argument.ArgumentTester;
+import de.paul2708.commands.core.command.argument.result.SuccessResult;
+import de.paul2708.commands.core.command.argument.result.TestResult;
 import de.paul2708.commands.core.language.LanguageSelector;
 import de.paul2708.commands.language.MessageResource;
 import org.bukkit.command.Command;
@@ -11,11 +14,10 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This command is a bukkit command that executes the {@link SimpleCommand}.
@@ -31,7 +33,7 @@ public final class CommandDelegator extends Command {
      * Create a new basic command based on the simple command.
      *
      * @param languageSelector language selector to translate messages
-     * @param simpleCommand simple command
+     * @param simpleCommand    simple command
      */
     public CommandDelegator(LanguageSelector languageSelector, SimpleCommand simpleCommand) {
         super(simpleCommand.getInformation().name());
@@ -58,14 +60,14 @@ public final class CommandDelegator extends Command {
             case PLAYER_COMMAND:
                 if (!(sender instanceof Player)) {
                     languageSelector.sendMessage(sender, MessageResource.of("command.only_players"));
-                    return false;
+                    return true;
                 }
 
                 break;
             case CONSOLE_COMMAND:
                 if (!(sender instanceof ConsoleCommandSender)) {
                     languageSelector.sendMessage(sender, MessageResource.of("command.only_console"));
-                    return false;
+                    return true;
                 }
 
                 break;
@@ -78,75 +80,61 @@ public final class CommandDelegator extends Command {
         // Check permission
         if (!hasPermission(sender, simpleCommand.getInformation().permission())) {
             languageSelector.sendMessage(sender, MessageResource.of("command.no_permission"));
-            return false;
-        }
-
-        // Check arguments
-        Iterator<CommandArgument<?>> arguments = simpleCommand.getArguments().iterator();
-
-
-        List<Validation<?>> errors = new ArrayList<>();
-        List<Object> parameters = new LinkedList<>();
-        parameters.add(sender);
-
-        for (int i = 0; i < args.length; i++) {
-            if (!arguments.hasNext()) {
-                sendUsage(sender, simpleCommand.getArguments());
-                for (Validation<?> validation : errors) {
-                    languageSelector.sendMessage(sender, validation.getErrorResource());
-                }
-                return false;
-            }
-            CommandArgument<?> argument = arguments.next();
-            Validation<?> validate = argument.validate(args[i]); // TODO: Catch exception caused by validating
-            parameters.add(validate.getParsedObject());
-
-            if (!validate.isValid()) {
-                if (argument.isOptional()) {
-                    i--;
-                    // i will be incremented at the end of the loop causing this text argument to be processed once
-                    //more
-                    errors.add(validate);
-                    // We will take note, so if the command still fails we can still report this
-                    // error
-                    continue;
-                }
-                languageSelector.sendMessage(sender, validate.getErrorResource());
-                return false;
-            }
-        }
-
-        // If any arguments are left, you passed to few arguments.
-        if (arguments.hasNext()) {
-            sendUsage(sender, simpleCommand.getArguments());
-            return false;
-        }
-
-        // Execute command
-        try {
-            simpleCommand.getMethod().invoke(simpleCommand.getObject(), parameters.toArray());
             return true;
+        }
+
+        // Test arguments
+        ArgumentGenerator generator = new ArgumentGenerator(simpleCommand.getArguments());
+        ArgumentTester tester = new ArgumentTester(args);
+
+        List<TestResult> results = new LinkedList<>();
+
+        for (List<CommandArgument<?>> arguments : generator.generate()) {
+            TestResult result = tester.test(arguments);
+            results.add(result);
+        }
+
+        // Handle results
+        results.stream()
+                .filter(result -> result instanceof SuccessResult)
+                .findFirst()
+                .ifPresentOrElse(result -> {
+                    List<Object> test = ((SuccessResult) result).getMappedArguments().stream()
+                            .map(parameter -> parameter.isEmpty() ? null : parameter.get())
+                            .collect(Collectors.toList());
+                    execute(sender, test);
+                }, () -> {
+                    // TODO: How to check which error message should be printed?
+                    sendUsage(sender, simpleCommand.getArguments());
+                });
+        return true;
+    }
+
+    @SuppressWarnings("checkstyle:IllegalCatch")
+    private void execute(CommandSender sender, List<Object> mappedParameters) {
+        mappedParameters.add(0, sender);
+
+        try {
+            simpleCommand.getMethod().invoke(simpleCommand.getObject(), mappedParameters.toArray());
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof NotFulfilledConditionException) {
                 NotFulfilledConditionException exception = (NotFulfilledConditionException) e.getCause();
                 languageSelector.sendMessage(sender,
                         MessageResource.of("command.failed_condition", exception.getDescription()));
-                return true;
             } else {
                 languageSelector.sendMessage(sender, MessageResource.of("command.error"));
                 e.printStackTrace();
-                return false;
             }
         } catch (Exception e) {
             languageSelector.sendMessage(sender, MessageResource.of("command.error"));
             e.printStackTrace();
-            return false;
         }
     }
 
     /**
      * private helper to send usage to a CommandSender
-     * @param sender the sender to send the usage to
+     *
+     * @param sender    the sender to send the usage to
      * @param arguments the required arguments of the command
      */
     private void sendUsage(CommandSender sender, List<CommandArgument<?>> arguments) {
@@ -198,7 +186,7 @@ public final class CommandDelegator extends Command {
     /**
      * Check if a command sender has the given permission.
      *
-     * @param sender command sender
+     * @param sender     command sender
      * @param permission permission
      * @return true if the sender is the console or if the player has the permission, otherwise false
      */

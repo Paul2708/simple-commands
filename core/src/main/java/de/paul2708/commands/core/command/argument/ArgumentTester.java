@@ -9,6 +9,8 @@ import de.paul2708.commands.core.command.argument.result.WrongLengthResult;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * This class tries to match user input with a given list of command arguments.
@@ -37,20 +39,33 @@ public final class ArgumentTester {
      * @see TestResult
      */
     public TestResult test(List<CommandArgument<?>> arguments) {
-        if (arguments.size() != userArgs.length) {
-            return new WrongLengthResult(arguments.size(), userArgs.length, arguments);
+        List<CommandArgument<?>> presentArgs = arguments.stream()
+                .filter(arg -> !arg.isOptional())
+                .collect(Collectors.toList());
+        if (presentArgs.size() != userArgs.length) {
+            return new WrongLengthResult(presentArgs.size(), userArgs.length, arguments);
         }
 
-        List<Object> validParameters = new LinkedList<>();
-        for (int i = 0; i < userArgs.length; i++) {
-            CommandArgument<?> argument = arguments.get(i);
-            Validation<?> validation = argument.validate(userArgs[i]);
+        List<Optional<Object>> validParameters = new LinkedList<>();
 
-            if (!validation.isValid()) {
-                return new InvalidMappingResult(userArgs[i], validation, arguments);
+        int pureArgumentCounter = 0;
+        for (int i = 0; i < arguments.size(); i++) {
+            CommandArgument<?> argument = arguments.get(i);
+
+            if (argument.isOptional()) {
+                validParameters.add(Optional.empty());
+                continue;
             }
 
-            validParameters.add(validation.getParsedObject());
+            Validation<?> validation = argument.validate(userArgs[pureArgumentCounter]);
+
+            if (!validation.isValid()) {
+                return new InvalidMappingResult(userArgs[pureArgumentCounter], validation, arguments);
+            }
+
+            validParameters.add(Optional.of(validation.getParsedObject()));
+
+            pureArgumentCounter++;
         }
 
         return new SuccessResult(validParameters, arguments);

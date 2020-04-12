@@ -56,7 +56,7 @@ final class ArgumentTesterTest {
      */
     @Test
     public void optionalArguments() {
-        assertSuccess(tester.test(List.of(new IntegerArgument(), new StringArgument(), new StringArgument().asOptional(),
+        assertFailure(tester.test(List.of(new IntegerArgument(), new StringArgument(), new StringArgument().asOptional(),
                 new DoubleArgument())));
     }
 
