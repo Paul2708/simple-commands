@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -26,7 +27,7 @@ final class ArgumentGeneratorTest {
     @Test
     void emptyArguments() {
         ArgumentGenerator generator = new ArgumentGenerator(Collections.emptyList());
-        List<List<CommandArgument<?>>> combinations = generator.generate();
+        List<List<Optional<CommandArgument<?>>>> combinations = generator.generate();
 
         assertEquals(1, combinations.size());
         assertEquals(0, combinations.get(0).size());
@@ -37,12 +38,13 @@ final class ArgumentGeneratorTest {
      */
     @Test
     void noneOptionalArguments() {
-        List<CommandArgument<?>> arguments = List.of(new StringArgument(), new IntegerArgument());
-        ArgumentGenerator generator = new ArgumentGenerator(arguments);
-        List<List<CommandArgument<?>>> combinations = generator.generate();
+        StringArgument firstArg = new StringArgument();
+        IntegerArgument secondArg = new IntegerArgument();
+        ArgumentGenerator generator = new ArgumentGenerator(List.of(firstArg, secondArg));
+        List<List<Optional<CommandArgument<?>>>> combinations = generator.generate();
 
         assertEquals(1, combinations.size());
-        assertEquals(arguments, combinations.get(0));
+        assertEquals(List.of(Optional.of(firstArg), Optional.of(secondArg)), combinations.get(0));
     }
 
     /**
@@ -54,14 +56,14 @@ final class ArgumentGeneratorTest {
         CommandArgument<?> secondArg = new IntegerArgument().asOptional();
 
         ArgumentGenerator generator = new ArgumentGenerator(List.of(firstArg, secondArg));
-        List<List<CommandArgument<?>>> combinations = generator.generate();
+        List<List<Optional<CommandArgument<?>>>> combinations = generator.generate();
 
         assertEquals(4, combinations.size());
 
-        assertContains(List.of(firstArg, secondArg), combinations);
-        assertContains(List.of(firstArg), combinations);
-        assertContains(List.of(secondArg), combinations);
-        assertContains(List.of(), combinations);
+        assertContains(List.of(Optional.of(firstArg), Optional.of(secondArg)), combinations);
+        assertContains(List.of(Optional.of(firstArg), Optional.empty()), combinations);
+        assertContains(List.of(Optional.empty(), Optional.of(secondArg)), combinations);
+        assertContains(List.of(Optional.empty(), Optional.empty()), combinations);
     }
 
     /**
@@ -75,14 +77,14 @@ final class ArgumentGeneratorTest {
         CommandArgument<?> fourthArg = new IntegerArgument();
 
         ArgumentGenerator generator = new ArgumentGenerator(List.of(optFirstArg, secondArg, optThirdArg, fourthArg));
-        List<List<CommandArgument<?>>> combinations = generator.generate();
+        List<List<Optional<CommandArgument<?>>>> combinations = generator.generate();
 
         assertEquals(4, combinations.size());
 
-        assertContains(List.of(optFirstArg, secondArg, optThirdArg, fourthArg), combinations);
-        assertContains(List.of(optFirstArg, secondArg, fourthArg), combinations);
-        assertContains(List.of(secondArg, optThirdArg, fourthArg), combinations);
-        assertContains(List.of(secondArg, fourthArg), combinations);
+        assertContains(List.of(Optional.of(optFirstArg), Optional.of(secondArg), Optional.of(optThirdArg), Optional.of(fourthArg)), combinations);
+        assertContains(List.of(Optional.of(optFirstArg), Optional.of(secondArg), Optional.empty(), Optional.of(fourthArg)), combinations);
+        assertContains(List.of(Optional.empty(), Optional.of(secondArg), Optional.of(optThirdArg), Optional.of(fourthArg)), combinations);
+        assertContains(List.of(Optional.empty(), Optional.of(secondArg), Optional.empty(), Optional.of(fourthArg)), combinations);
     }
 
     /**

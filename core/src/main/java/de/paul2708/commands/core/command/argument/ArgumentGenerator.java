@@ -30,12 +30,12 @@ public final class ArgumentGenerator {
 
     /**
      * Generate all command argument combinations.
-     * Every optional arguments will be replaced with empty and none empty argument.
+     * Every optional arguments will be replaced with each: empty and none empty argument.
      *
      * @return list of list of arguments
      */
-    public List<List<CommandArgument<?>>> generate() {
-        List<List<CommandArgument<?>>> generated = new LinkedList<>();
+    public List<List<Optional<CommandArgument<?>>>> generate() {
+        List<List<Optional<CommandArgument<?>>>> generated = new LinkedList<>();
 
         List<List<Optional<CommandArgument<?>>>> optionals = Combinator.combinations(arguments.stream()
                 .filter(CommandArgument::isOptional)
@@ -43,17 +43,19 @@ public final class ArgumentGenerator {
                 .collect(Collectors.toList());
 
         for (List<Optional<CommandArgument<?>>> optional : optionals) {
-            List<CommandArgument<?>> list = new ArrayList<>();
+            List<Optional<CommandArgument<?>>> list = new ArrayList<>();
 
             int optionalCounter = 0;
             for (CommandArgument<?> argument : arguments) {
                 if (argument.isOptional()) {
                     if (optional.get(optionalCounter).isPresent()) {
-                        list.add(argument);
+                        list.add(Optional.of(argument));
+                    } else {
+                        list.add(Optional.empty());
                     }
                     optionalCounter++;
                 } else {
-                    list.add(argument);
+                    list.add(Optional.of(argument));
                 }
             }
 
