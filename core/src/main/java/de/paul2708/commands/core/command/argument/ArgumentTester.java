@@ -2,7 +2,12 @@ package de.paul2708.commands.core.command.argument;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
+import de.paul2708.commands.core.command.argument.result.InvalidMappingResult;
+import de.paul2708.commands.core.command.argument.result.SuccessResult;
+import de.paul2708.commands.core.command.argument.result.TestResult;
+import de.paul2708.commands.core.command.argument.result.WrongLengthResult;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -28,22 +33,26 @@ public final class ArgumentTester {
      * Test if the user arguments match the given arguments.
      *
      * @param arguments list of command arguments
-     * @return true if the user input matches the arguments, otherwise false
+     * @return test result
+     * @see TestResult
      */
-    public boolean test(List<CommandArgument<?>> arguments) {
+    public TestResult test(List<CommandArgument<?>> arguments) {
         if (arguments.size() != userArgs.length) {
-            return false;
+            return new WrongLengthResult(arguments.size(), userArgs.length, arguments);
         }
 
+        List<Object> validParameters = new LinkedList<>();
         for (int i = 0; i < userArgs.length; i++) {
             CommandArgument<?> argument = arguments.get(i);
             Validation<?> validation = argument.validate(userArgs[i]);
 
             if (!validation.isValid()) {
-                return false;
+                return new InvalidMappingResult(userArgs[i], validation, arguments);
             }
+
+            validParameters.add(validation.getParsedObject());
         }
 
-        return true;
+        return new SuccessResult(validParameters, arguments);
     }
 }

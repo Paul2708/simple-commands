@@ -5,14 +5,14 @@ import de.paul2708.commands.arguments.impl.primitive.BooleanArgument;
 import de.paul2708.commands.arguments.impl.primitive.DoubleArgument;
 import de.paul2708.commands.arguments.impl.primitive.IntegerArgument;
 import de.paul2708.commands.core.command.argument.ArgumentTester;
-import org.junit.jupiter.api.Assertions;
+import de.paul2708.commands.core.command.argument.result.SuccessResult;
+import de.paul2708.commands.core.command.argument.result.TestResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This test class tests the {@link ArgumentTester} if the input matches the arguments.
@@ -38,7 +38,7 @@ final class ArgumentTesterTest {
      */
     @Test
     void validArguments() {
-        assertTrue(tester.test(List.of(new IntegerArgument(), new StringArgument(), new StringArgument(),
+        assertSuccess(tester.test(List.of(new IntegerArgument(), new StringArgument(), new StringArgument(),
                 new DoubleArgument())));
     }
 
@@ -47,7 +47,7 @@ final class ArgumentTesterTest {
      */
     @Test
     void testFalseLength() {
-        assertFalse(tester.test(List.of(new IntegerArgument(), new StringArgument(), new StringArgument(),
+        assertFailure(tester.test(List.of(new IntegerArgument(), new StringArgument(), new StringArgument(),
                 new DoubleArgument(), new BooleanArgument())));
     }
 
@@ -56,7 +56,7 @@ final class ArgumentTesterTest {
      */
     @Test
     public void optionalArguments() {
-        assertTrue(tester.test(List.of(new IntegerArgument(), new StringArgument(), new StringArgument().asOptional(),
+        assertSuccess(tester.test(List.of(new IntegerArgument(), new StringArgument(), new StringArgument().asOptional(),
                 new DoubleArgument())));
     }
 
@@ -66,7 +66,29 @@ final class ArgumentTesterTest {
      */
     @Test
     public void invalidArguments() {
-        assertFalse(tester.test(List.of(new BooleanArgument(), new StringArgument(), new StringArgument(),
+        assertFailure(tester.test(List.of(new BooleanArgument(), new StringArgument(), new StringArgument(),
                 new DoubleArgument())));
+    }
+
+    /**
+     * Assert that the test result is successful.
+     *
+     * @param result actual result
+     */
+    private void assertSuccess(TestResult result) {
+        if (!(result instanceof SuccessResult)) {
+            fail(String.format("Expected success result bot got %s", result));
+        }
+    }
+
+    /**
+     * Assert that the test result is a failure.
+     *
+     * @param result actual result
+     */
+    private void assertFailure(TestResult result) {
+        if (result instanceof SuccessResult) {
+            fail(String.format("Expected failure result bot got %s", result));
+        }
     }
 }
