@@ -10,7 +10,7 @@ import java.util.List;
  * @param <T> The type of this argument
  */
 public class OptionalArgument<T> implements CommandArgument<T> {
-    private CommandArgument<T> internal;
+    private final CommandArgument<T> internal;
 
     /**
      * For internal use only. Use {@link CommandArgument#asOptional()} instead.

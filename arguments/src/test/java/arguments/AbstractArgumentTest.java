@@ -64,7 +64,7 @@ public abstract class AbstractArgumentTest {
      *
      * @return array of pairs
      */
-    public abstract Pair[] validArguments();
+    public abstract Pair<String, ?>[] validArguments();
 
     /**
      * Get an array of string arguments.

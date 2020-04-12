@@ -3,11 +3,9 @@ package arguments.other;
 import arguments.AbstractArgumentTest;
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.impl.spigot.GameRuleArgument;
-import de.paul2708.commands.arguments.impl.spigot.UuidArgument;
 import de.paul2708.commands.arguments.util.Pair;
 import org.bukkit.GameRule;
 
-import java.util.UUID;
 import java.util.function.Function;
 
 /**

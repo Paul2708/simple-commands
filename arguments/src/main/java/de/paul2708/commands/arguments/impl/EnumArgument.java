@@ -5,7 +5,6 @@ import de.paul2708.commands.arguments.Validation;
 import de.paul2708.commands.language.MessageResource;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,12 +64,10 @@ public final class EnumArgument<T> implements CommandArgument<T> {
      */
     @Override
     public List<String> autoComplete(String argument) {
-        List<String> autoComplete = Arrays.stream(enumClass.getEnumConstants())
+        return Arrays.stream(enumClass.getEnumConstants())
                 .map(name -> name.toString().toLowerCase())
                 .filter(name -> name.startsWith(argument.toLowerCase()))
-                .collect(Collectors.toList());
-
-        return Collections.unmodifiableList(autoComplete);
+                .collect(Collectors.toUnmodifiableList());
     }
 
     /**

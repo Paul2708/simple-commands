@@ -6,7 +6,6 @@ import de.paul2708.commands.language.MessageResource;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,13 +59,11 @@ public final class EntityArgument implements CommandArgument<Entity> {
      */
     @Override
     public List<String> autoComplete(String argument) {
-        List<String> autoComplete = Bukkit.getWorlds().stream()
+        return Bukkit.getWorlds().stream()
                 .flatMap(world -> world.getEntities().stream())
                 .map(entity -> (entity.getCustomName() == null
                         ? entity.getUniqueId().toString() : entity.getCustomName()))
                 .filter(s -> s.startsWith(argument.toLowerCase()))
-                .collect(Collectors.toList());
-
-        return Collections.unmodifiableList(autoComplete);
+                .collect(Collectors.toUnmodifiableList());
     }
 }

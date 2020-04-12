@@ -72,7 +72,6 @@ public final class CommandDelegator extends Command {
 
                 break;
             case DEFAULT_COMMAND:
-                break;
             default:
                 break;
         }

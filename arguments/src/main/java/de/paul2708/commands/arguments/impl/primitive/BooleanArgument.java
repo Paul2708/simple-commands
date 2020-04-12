@@ -5,7 +5,6 @@ import de.paul2708.commands.arguments.Validation;
 import de.paul2708.commands.language.MessageResource;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -76,10 +75,8 @@ public final class BooleanArgument implements CommandArgument<Boolean> {
         Stream<String> stream = Stream.concat(Arrays.stream(BooleanArgument.TRUE_KEYS),
                 Arrays.stream(BooleanArgument.FALSE_KEYS));
 
-        List<String> autoComplete = stream
+        return stream
                 .filter(key -> key.startsWith(argument))
-                .collect(Collectors.toList());
-
-        return Collections.unmodifiableList(autoComplete);
+                .collect(Collectors.toUnmodifiableList());
     }
 }
