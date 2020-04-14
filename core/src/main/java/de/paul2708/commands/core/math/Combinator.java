@@ -29,7 +29,7 @@ public final class Combinator {
      * <br>
      * Source: https://stackoverflow.com/questions/37835286/generate-all-possible-combinations-java
      *
-     * @see Combinator-Test for more examples
+     * @see Combinator
      * @param list list of elements
      * @param <T>  element type
      * @return stream of list with optional items

@@ -17,3 +17,5 @@ jobs:
         java-version: 14
     - name: Build with Maven
       run: mvn clean install
+    - name: Verify checkstyle rules
+      run: mvn checkstyle:check
