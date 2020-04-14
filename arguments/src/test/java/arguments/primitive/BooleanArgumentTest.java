@@ -31,7 +31,7 @@ public final class BooleanArgumentTest extends AbstractArgumentTest {
      * @return array of pairs
      */
     @Override
-    public Pair[] validArguments() {
+    public Pair<String, ?>[] validArguments() {
         List<Pair<String, Boolean>> pairs = new LinkedList<>();
 
         for (String trueKey : BooleanArgument.TRUE_KEYS) {

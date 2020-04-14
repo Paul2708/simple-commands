@@ -5,25 +5,18 @@
     <parent>
         <artifactId>simple-commands</artifactId>
         <groupId>de.paul2708</groupId>
-        <version>0.2.4</version>
+        <version>0.3.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>simple-commands-arguments</artifactId>
-
-    <repositories>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <!-- Language -->
         <dependency>
             <groupId>de.paul2708</groupId>
             <artifactId>simple-commands-language</artifactId>
-            <version>0.2.4</version>
+            <version>0.3.0</version>
         </dependency>
         <!-- Spigot -->
         <dependency>
@@ -36,15 +29,7 @@
         <dependency>
             <groupId>net.jodah</groupId>
             <artifactId>typetools</artifactId>
-            <version>0.6.1</version>
-        </dependency>
-        <!-- JUnit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
+            <version>0.6.2</version>
         </dependency>
     </dependencies>
-
 </project>

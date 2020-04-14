@@ -5,25 +5,18 @@
     <parent>
         <artifactId>simple-commands</artifactId>
         <groupId>de.paul2708</groupId>
-        <version>0.2.4</version>
+        <version>0.3.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>simple-commands-example</artifactId>
-
-    <repositories>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <!-- Simple-Commands -->
         <dependency>
             <groupId>de.paul2708</groupId>
             <artifactId>simple-commands-core</artifactId>
-            <version>0.2.4</version>
+            <version>0.3.0</version>
         </dependency>
         <!-- Spigot -->
         <dependency>
@@ -35,24 +28,22 @@
     </dependencies>
 
     <build>
+        <defaultGoal>clean package</defaultGoal>
         <plugins>
-            <!-- Assembly -->
+            <!-- Shade -->
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <finalName>simple-commands-example</finalName>
-                    <appendAssemblyId>false</appendAssemblyId>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.2</version>
                 <executions>
                     <execution>
-                        <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

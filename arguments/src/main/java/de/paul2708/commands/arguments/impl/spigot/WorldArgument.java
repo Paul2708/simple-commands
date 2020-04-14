@@ -6,7 +6,6 @@ import de.paul2708.commands.language.MessageResource;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,11 +53,9 @@ public final class WorldArgument implements CommandArgument<World> {
      */
     @Override
     public List<String> autoComplete(String argument) {
-        List<String> autoComplete = Bukkit.getWorlds().stream()
+        return Bukkit.getWorlds().stream()
                 .map(world -> world.getName().toLowerCase())
                 .filter(name -> name.startsWith(argument.toLowerCase()))
-                .collect(Collectors.toList());
-
-        return Collections.unmodifiableList(autoComplete);
+                .collect(Collectors.toUnmodifiableList());
     }
 }

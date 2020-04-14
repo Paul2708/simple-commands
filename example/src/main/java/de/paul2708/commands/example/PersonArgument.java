@@ -4,7 +4,6 @@ import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
 import de.paul2708.commands.language.MessageResource;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,10 +78,9 @@ public final class PersonArgument implements CommandArgument<Person> {
      */
     @Override
     public List<String> autoComplete(String argument) {
-        List<String> autoComplete = list.stream()
+        return list.stream()
                 .map(person -> person.getName() + ";" + person.getAge())
-                .filter(name -> name.startsWith(argument)).collect(Collectors.toList());
-
-        return Collections.unmodifiableList(autoComplete);
+                .filter(name -> name.startsWith(argument))
+                .collect(Collectors.toUnmodifiableList());
     }
 }

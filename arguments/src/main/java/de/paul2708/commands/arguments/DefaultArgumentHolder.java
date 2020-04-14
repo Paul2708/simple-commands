@@ -4,8 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import de.paul2708.commands.arguments.impl.EnumArgument;
 import net.jodah.typetools.TypeResolver;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +85,6 @@ public final class DefaultArgumentHolder implements ArgumentHolder {
      */
     @Override
     public List<CommandArgument<?>> getAll() {
-        return Collections.unmodifiableList(new ArrayList<>(commandArguments.values()));
+        return List.copyOf(commandArguments.values());
     }
 }

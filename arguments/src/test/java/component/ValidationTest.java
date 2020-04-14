@@ -2,9 +2,9 @@ package component;
 
 import de.paul2708.commands.arguments.Validation;
 import de.paul2708.commands.language.MessageResource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This component test tests the validation class.
