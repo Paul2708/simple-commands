@@ -10,7 +10,7 @@ import java.util.List;
  * @param <T> The type of this argument
  */
 public class OptionalArgument<T> implements CommandArgument<T> {
-    private CommandArgument<T> internal;
+    private final CommandArgument<T> internal;
 
     /**
      * For internal use only. Use {@link CommandArgument#asOptional()} instead.
@@ -18,6 +18,15 @@ public class OptionalArgument<T> implements CommandArgument<T> {
      */
     OptionalArgument(CommandArgument<T> internal) {
         this.internal = internal;
+    }
+
+    /**
+     * Get the internal command argument that is wrapped within the optional argument.
+     *
+     * @return internal command argument
+     */
+    public CommandArgument<T> getInternal() {
+        return internal;
     }
 
     @Override

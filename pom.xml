@@ -19,13 +19,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Custom properties -->
-        <spigot.version>1.13.2-R0.1-SNAPSHOT</spigot.version>
-        <junit.version>4.12</junit.version>
+        <spigot.version>1.15.2-R0.1-SNAPSHOT</spigot.version>
+        <junit.version>5.6.1</junit.version>
+        <mockito.version>3.3.3</mockito.version>
     </properties>
 
     <name>simple-commands</name>
     <description>Simple command framework for spigot.</description>
-    <inceptionYear>2019</inceptionYear>
+    <inceptionYear>2020</inceptionYear>
 
     <developers>
         <developer>
@@ -33,6 +34,24 @@
             <email>playerpaul2708@gmx.de</email>
         </developer>
     </developers>
+
+    <repositories>
+        <!-- Spigot -->
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- JUnit -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -42,8 +61,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>14</source>
+                    <target>14</target>
                 </configuration>
             </plugin>
             <!-- Checkstyle -->
@@ -51,6 +70,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.1.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>8.29</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <id>validate</id>
@@ -62,19 +88,11 @@
                     <linkXRef>false</linkXRef>
                 </configuration>
             </plugin>
-            <!-- Javadoc -->
+            <!-- Surefire (fix test execution errors) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M4</version>
             </plugin>
         </plugins>
     </build>

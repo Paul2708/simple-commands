@@ -28,7 +28,7 @@ public final class ByteArgumentTest extends AbstractArgumentTest {
      * @return array of pairs
      */
     @Override
-    public Pair[] validArguments() {
+    public Pair<String, ?>[] validArguments() {
         return new Pair[] {
                 Pair.of("0", (byte) 0),
                 Pair.of("127", (byte) 127),

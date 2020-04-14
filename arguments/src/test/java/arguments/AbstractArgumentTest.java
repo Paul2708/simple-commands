@@ -3,12 +3,10 @@ package arguments;
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.Validation;
 import de.paul2708.commands.arguments.util.Pair;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This abstract test class provides two methods, that tests valid and invalid arguments.
@@ -22,7 +20,7 @@ public abstract class AbstractArgumentTest {
     /**
      * Create a new command argument.
      */
-    @Before
+    @BeforeEach
     public void setUp() {
         this.commandArgument = create();
     }
@@ -35,10 +33,10 @@ public abstract class AbstractArgumentTest {
         for (Pair<String, ?> pair : validArguments()) {
             Validation<?> validation = commandArgument.validate(pair.getKey());
 
-            assertTrue(String.format("%s is not valid", pair.getKey()), validation.isValid());
-            assertEquals(String.format("expected: %s != actual: %s",
-                    pair.getValue().toString(), validation.getParsedObject()), pair.getValue(),
-                    validation.getParsedObject());
+            assertTrue(validation.isValid(), String.format("%s is not valid", pair.getKey()));
+            assertEquals(pair.getValue(), validation.getParsedObject(),
+                    String.format("expected: %s != actual: %s",
+                                pair.getValue().toString(), validation.getParsedObject()));
         }
     }
 
@@ -50,7 +48,7 @@ public abstract class AbstractArgumentTest {
         for (String argument : invalidArguments()) {
             Validation<?> validation = commandArgument.validate(argument);
 
-            assertFalse("argument '" + argument + "' is valid", validation.isValid());
+            assertFalse(validation.isValid(), "argument '" + argument + "' is valid");
         }
     }
 
@@ -66,7 +64,7 @@ public abstract class AbstractArgumentTest {
      *
      * @return array of pairs
      */
-    public abstract Pair[] validArguments();
+    public abstract Pair<String, ?>[] validArguments();
 
     /**
      * Get an array of string arguments.
