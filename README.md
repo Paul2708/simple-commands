@@ -1,4 +1,4 @@
-# simple-commands [![Build Status](https://travis-ci.com/Paul2708/simple-commands.svg?branch=master)](https://travis-ci.com/Paul2708/simple-commands) [![](https://jitpack.io/v/Paul2708/simple-commands.svg)](https://jitpack.io/#Paul2708/simple-commands)
+# simple-commands [![actions](https://github.com/Paul2708/simple-commands/workflows/Java%20CI%20with%20Maven/badge.svg)](https://github.com/Paul2708/simple-commands/actions) [![](https://jitpack.io/v/Paul2708/simple-commands.svg)](https://jitpack.io/#Paul2708/simple-commands)
 Simple commands is a command framework for [Spigot](https://www.spigotmc.org).
 It's currently under heavy development, so stay tuned.
 
