@@ -198,6 +198,6 @@ public final class CommandDelegator extends Command {
     private boolean hasPermission(CommandSender sender, String permission) {
         return sender instanceof ConsoleCommandSender
                 || sender.isOp()
-                || sender.hasPermission(permission);
+                || (sender.hasPermission(permission) && !permission.equals("*"));
     }
 }
