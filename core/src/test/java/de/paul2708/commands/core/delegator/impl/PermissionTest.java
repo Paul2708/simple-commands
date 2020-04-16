@@ -77,7 +77,7 @@ final class PermissionTest extends CommandDelegatorTest {
 
         }
 
-        @Command(name = "player-op", permission = "*")
+        @Command(name = "player-op", permission = Command.OP_PERMISSION)
         public void playerOpPermission(Player player) {
 
         }
@@ -87,7 +87,7 @@ final class PermissionTest extends CommandDelegatorTest {
 
         }
 
-        @Command(name = "no-permission", permission = "")
+        @Command(name = "no-permission", permission = Command.NONE_PERMISSION)
         public void noPermission(Player player) {
 
         }

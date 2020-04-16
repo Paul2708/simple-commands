@@ -15,6 +15,16 @@ import java.lang.annotation.Target;
 public @interface Command {
 
     /**
+     * This permission indicates that the sender needs operation rights (OP).
+     */
+    String OP_PERMISSION = "*";
+
+    /**
+     * This permission indicates that none permission is needed.
+     */
+    String NONE_PERMISSION = "";
+
+    /**
      * Command name.
      *
      * @return command name
@@ -36,7 +46,7 @@ public @interface Command {
      *
      * @return command permission
      */
-    String permission() default "";
+    String permission() default Command.NONE_PERMISSION;
 
     /**
      * Command aliases. Default value is an empty array.
