@@ -29,12 +29,14 @@ public @interface Command {
     String desc() default "";
 
     /**
-     * Permission, a player needs, to execute the command. '*' means that the player requires op rights.
-     * Default value is '*'.
+     * Permission, a player needs, to execute the command.
+     * '*' means that the player requires op rights.
+     * An empty string means that no permission is needed at all.
+     * Default value is ''.
      *
      * @return command permission
      */
-    String permission() default "*";
+    String permission() default "";
 
     /**
      * Command aliases. Default value is an empty array.

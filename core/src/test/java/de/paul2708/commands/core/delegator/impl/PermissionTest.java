@@ -60,6 +60,16 @@ final class PermissionTest extends CommandDelegatorTest {
         assertMessage("command.no_permission", noPermissionPlayer, command);
     }
 
+    @Test
+    void noPermission() {
+        SimpleCommand command = resolve(TestCommand.class, "no-permission", Collections.emptyList());
+
+        Player player = mock(Player.class);
+        doReturn(false).when(player).hasPermission(any(String.class));
+
+        assertSuccess(player, command);
+    }
+
     public static class TestCommand {
 
         @Command(name = "console-permission", permission = "console")
@@ -74,6 +84,11 @@ final class PermissionTest extends CommandDelegatorTest {
 
         @Command(name = "player-permission", permission = "sample")
         public void playerPermission(Player player) {
+
+        }
+
+        @Command(name = "no-permission", permission = "")
+        public void noPermission(Player player) {
 
         }
     }

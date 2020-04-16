@@ -194,8 +194,13 @@ public final class CommandDelegator extends Command {
      * @param sender     command sender
      * @param permission permission
      * @return true if the sender is the console, has operator rights or has the permission
+     * or no permission is needed at all
      */
     private boolean hasPermission(CommandSender sender, String permission) {
+        if (permission.equals("")) {
+            return true;
+        }
+
         return sender instanceof ConsoleCommandSender
                 || sender.isOp()
                 || (sender.hasPermission(permission) && !permission.equals("*"));
