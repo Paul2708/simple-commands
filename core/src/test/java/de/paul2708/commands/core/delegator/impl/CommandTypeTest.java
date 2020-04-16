@@ -1,8 +1,8 @@
 package de.paul2708.commands.core.delegator.impl;
 
+import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.core.command.SimpleCommand;
 import de.paul2708.commands.core.delegator.CommandDelegatorTest;
-import de.paul2708.commands.core.delegator.ExampleCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -27,9 +27,9 @@ final class CommandTypeTest extends CommandDelegatorTest {
 
     @BeforeEach
     void setUp() {
-        this.playerOnlyCommand = resolve(ExampleCommand.class, "player-only", Collections.emptyList());
-        this.consoleOnlyCommand = resolve(ExampleCommand.class, "console-only", Collections.emptyList());
-        this.bothCommand = resolve(ExampleCommand.class, "player-console", Collections.emptyList());
+        this.playerOnlyCommand = resolve(TestCommand.class, "player-only", Collections.emptyList());
+        this.consoleOnlyCommand = resolve(TestCommand.class, "console-only", Collections.emptyList());
+        this.bothCommand = resolve(TestCommand.class, "player-console", Collections.emptyList());
     }
 
     @Test
@@ -69,5 +69,23 @@ final class CommandTypeTest extends CommandDelegatorTest {
 
     public ConsoleCommandSender mockConsole() {
         return mock(ConsoleCommandSender.class);
+    }
+
+    public static class TestCommand {
+
+        @Command(name = "player-only")
+        public void onlyPlayer(Player player) {
+
+        }
+
+        @Command(name = "console-only")
+        public void onlyPlayer(ConsoleCommandSender console) {
+
+        }
+
+        @Command(name = "player-console")
+        public void onlyPlayer(CommandSender sender) {
+
+        }
     }
 }
