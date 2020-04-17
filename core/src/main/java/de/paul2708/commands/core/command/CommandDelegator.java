@@ -109,8 +109,14 @@ public final class CommandDelegator extends Command {
         return true;
     }
 
+    /**
+     * Execute the command method with a list of passed parameters.
+     *
+     * @param sender           command sender
+     * @param mappedParameters mapped parameters, excluding the first sender object
+     */
     @SuppressWarnings("checkstyle:IllegalCatch")
-    private void execute(CommandSender sender, List<Object> mappedParameters) {
+    public void execute(CommandSender sender, List<Object> mappedParameters) {
         mappedParameters.add(0, sender);
 
         try {
@@ -187,9 +193,16 @@ public final class CommandDelegator extends Command {
      *
      * @param sender     command sender
      * @param permission permission
-     * @return true if the sender is the console or if the player has the permission, otherwise false
+     * @return true if the sender is the console, has operator rights or has the permission
+     * or no permission is needed at all
      */
     private boolean hasPermission(CommandSender sender, String permission) {
-        return sender instanceof ConsoleCommandSender || (sender instanceof Player && sender.hasPermission(permission));
+        if (permission.equals("")) {
+            return true;
+        }
+
+        return sender instanceof ConsoleCommandSender
+                || sender.isOp()
+                || (sender.hasPermission(permission) && !permission.equals("*"));
     }
 }
