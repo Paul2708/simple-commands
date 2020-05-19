@@ -2,10 +2,12 @@ package de.paul2708.commands.core.command;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.exception.NotFulfilledConditionException;
+import de.paul2708.commands.core.CommandRegistry;
 import de.paul2708.commands.core.command.argument.ArgumentGenerator;
 import de.paul2708.commands.core.command.argument.ArgumentTester;
 import de.paul2708.commands.core.command.argument.result.SuccessResult;
 import de.paul2708.commands.core.command.argument.result.TestResult;
+import de.paul2708.commands.core.command.registry.BukkitCommandRegistry;
 import de.paul2708.commands.core.language.LanguageSelector;
 import de.paul2708.commands.language.MessageResource;
 import org.bukkit.command.Command;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 public final class CommandDelegator extends Command {
 
     private final LanguageSelector languageSelector;
+    private final BukkitCommandRegistry registry;
     private final SimpleCommand simpleCommand;
 
     /**
@@ -35,10 +38,12 @@ public final class CommandDelegator extends Command {
      * @param languageSelector language selector to translate messages
      * @param simpleCommand    simple command
      */
-    public CommandDelegator(LanguageSelector languageSelector, SimpleCommand simpleCommand) {
+    public CommandDelegator(LanguageSelector languageSelector, BukkitCommandRegistry registry,
+                            SimpleCommand simpleCommand) {
         super(simpleCommand.getInformation().name());
 
         this.languageSelector = languageSelector;
+        this.registry = registry;
         this.simpleCommand = simpleCommand;
     }
 
@@ -203,6 +208,7 @@ public final class CommandDelegator extends Command {
 
         return sender instanceof ConsoleCommandSender
                 || sender.isOp()
-                || (sender.hasPermission(permission) && !permission.equals("*"));
+                || (sender.hasPermission(permission)
+                && !permission.equals(de.paul2708.commands.core.annotation.Command.OP_PERMISSION));
     }
 }

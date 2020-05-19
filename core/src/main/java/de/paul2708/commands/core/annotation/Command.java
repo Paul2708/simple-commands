@@ -25,6 +25,13 @@ public @interface Command {
     String NONE_PERMISSION = "";
 
     /**
+     * Array of parents.
+     *
+     * @return array of parents or an empty array if no parent is present
+     */
+    String[] parent() default {};
+
+    /**
      * Command name.
      *
      * @return command name
