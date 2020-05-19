@@ -203,6 +203,7 @@ public final class CommandDelegator extends Command {
 
         return sender instanceof ConsoleCommandSender
                 || sender.isOp()
-                || (sender.hasPermission(permission) && !permission.equals("*"));
+                || (sender.hasPermission(permission)
+                && !permission.equals(de.paul2708.commands.core.annotation.Command.OP_PERMISSION));
     }
 }
