@@ -197,7 +197,7 @@ public final class CommandDelegator extends Command {
      * or no permission is needed at all
      */
     private boolean hasPermission(CommandSender sender, String permission) {
-        if (permission.equals("")) {
+        if (permission.equals(de.paul2708.commands.core.annotation.Command.NONE_PERMISSION)) {
             return true;
         }
 
