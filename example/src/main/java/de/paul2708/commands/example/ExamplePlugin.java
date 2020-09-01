@@ -51,7 +51,7 @@ public final class ExamplePlugin extends JavaPlugin {
         // Inject the plugin
         registry.inject(this);
 
-        // Register the command class
-        registry.register(new TestCommand());
+        // Register the command classes
+        registry.register(new TestCommand(), new SubCommand());
     }
 }

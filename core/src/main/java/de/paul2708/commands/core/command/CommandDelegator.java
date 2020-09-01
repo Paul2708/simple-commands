@@ -12,9 +12,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,19 +28,35 @@ import java.util.stream.Collectors;
 public final class CommandDelegator extends Command {
 
     private final LanguageSelector languageSelector;
-    private final SimpleCommand simpleCommand;
+    private final List<SimpleCommand> commands;
+
+    private CommandMatcher matcher;
+
+    private boolean initiated;
 
     /**
      * Create a new basic command based on the simple command.
      *
      * @param languageSelector language selector to translate messages
-     * @param simpleCommand    simple command
+     * @param commands         list of commands including root and all sub commands
      */
-    public CommandDelegator(LanguageSelector languageSelector, SimpleCommand simpleCommand) {
-        super(simpleCommand.getInformation().name());
+    public CommandDelegator(LanguageSelector languageSelector, List<SimpleCommand> commands) {
+        super(commands.get(0).getBukkitLabel());
 
         this.languageSelector = languageSelector;
-        this.simpleCommand = simpleCommand;
+        this.commands = commands;
+    }
+
+    /**
+     * Called if the first command relating to this command group got exectued.
+     * This means that every command got registered.
+     */
+    private void firstExecution() {
+        // TODO: Ugly af
+        if (!initiated) {
+            this.matcher = new CommandMatcher(commands);
+            initiated = true;
+        }
     }
 
     /**
@@ -52,8 +69,11 @@ public final class CommandDelegator extends Command {
      */
     @SuppressWarnings("checkstyle:illegalcatch")
     @Override
-    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
         // TODO: Add custom listener
+        firstExecution();
+
+        SimpleCommand simpleCommand = matcher.findBestMatch(args);
 
         // Check executor
         switch (simpleCommand.getType()) {
@@ -82,9 +102,13 @@ public final class CommandDelegator extends Command {
             return true;
         }
 
+        // Move arguments
+        String[] movedArgs = new String[args.length - simpleCommand.getInformation().parent().length];
+        System.arraycopy(args, simpleCommand.getInformation().parent().length, movedArgs, 0, movedArgs.length);
+
         // Test arguments
         ArgumentGenerator generator = new ArgumentGenerator(simpleCommand.getArguments());
-        ArgumentTester tester = new ArgumentTester(args);
+        ArgumentTester tester = new ArgumentTester(movedArgs);
 
         List<TestResult> results = new LinkedList<>();
 
@@ -101,10 +125,10 @@ public final class CommandDelegator extends Command {
                     List<Object> test = ((SuccessResult) result).getMappedArguments().stream()
                             .map(parameter -> parameter.isEmpty() ? null : parameter.get())
                             .collect(Collectors.toList());
-                    execute(sender, test);
+                    execute(simpleCommand, sender, test);
                 }, () -> {
                     // TODO: How to check which error message should be printed?
-                    sendUsage(sender, simpleCommand.getArguments());
+                    sendUsage(sender, simpleCommand, simpleCommand.getArguments());
                 });
         return true;
     }
@@ -112,11 +136,12 @@ public final class CommandDelegator extends Command {
     /**
      * Execute the command method with a list of passed parameters.
      *
+     * @param simpleCommand    executed (sub) command
      * @param sender           command sender
      * @param mappedParameters mapped parameters, excluding the first sender object
      */
     @SuppressWarnings("checkstyle:IllegalCatch")
-    public void execute(CommandSender sender, List<Object> mappedParameters) {
+    public void execute(SimpleCommand simpleCommand, CommandSender sender, List<Object> mappedParameters) {
         mappedParameters.add(0, sender);
 
         try {
@@ -140,10 +165,11 @@ public final class CommandDelegator extends Command {
      * private helper to send usage to a CommandSender
      *
      * @param sender    the sender to send the usage to
+     * @param command   (sub) command
      * @param arguments the required arguments of the command
      */
-    private void sendUsage(CommandSender sender, List<CommandArgument<?>> arguments) {
-        StringBuilder usage = new StringBuilder("/" + simpleCommand.getInformation().name() + " ");
+    private void sendUsage(CommandSender sender, SimpleCommand command, List<CommandArgument<?>> arguments) {
+        StringBuilder usage = new StringBuilder("/" + String.join(" ", command.getPath()) + " ");
 
         for (CommandArgument<?> argument : arguments) {
             if (argument.isOptional()) {
@@ -174,18 +200,34 @@ public final class CommandDelegator extends Command {
      * @throws IllegalArgumentException if sender, alias, or args is null
      */
     @Override
-    public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+    @NotNull
+    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, String[] args)
+            throws IllegalArgumentException {
+        firstExecution();
+
         // TODO: Check if tab completion works with optional arguments
 
-        if (sender == null || alias == null || args == null) {
-            throw new IllegalArgumentException();
+        SimpleCommand command = matcher.findBestMatch(args);
+        List<String> subCommands = matcher.findDirectSubCommands(command).stream()
+                .filter(cmd -> cmd.getPathWithoutParent().length == args.length)
+                .map(c -> c.getInformation().name())
+                .filter(s -> s.startsWith(args[args.length - 1]))
+                .collect(Collectors.toList());
+
+        List<String> arguments = new ArrayList<>();
+        if (!command.getArguments().isEmpty()) {
+            String singleArgument = args[args.length - 1];
+            int argIndex = args.length - command.getPathWithoutParent().length - 1;
+
+            if (argIndex >= 0 && argIndex < command.getArguments().size()) {
+                CommandArgument<?> argument = command.getArguments().get(argIndex);
+                arguments.addAll(argument.autoComplete(singleArgument));
+            }
         }
 
-        if (args.length == 0 || args.length > simpleCommand.getArguments().size()) {
-            return Collections.emptyList();
-        }
-
-        return simpleCommand.getArguments().get(args.length - 1).autoComplete(args[args.length - 1]);
+        List<String> result = new ArrayList<>(subCommands);
+        result.addAll(arguments);
+        return result;
     }
 
     /**
@@ -197,7 +239,7 @@ public final class CommandDelegator extends Command {
      * or no permission is needed at all
      */
     private boolean hasPermission(CommandSender sender, String permission) {
-        if (permission.equals("")) {
+        if (permission.equals(de.paul2708.commands.core.annotation.Command.NONE_PERMISSION)) {
             return true;
         }
 

@@ -42,7 +42,7 @@ public abstract class CommandDelegatorTest {
             return null;
         }).when(selector).sendMessage(any(), any());
 
-        CommandDelegator delegator = new CommandDelegator(selector, command);
+        CommandDelegator delegator = new CommandDelegator(selector, List.of(command));
         delegator.execute(sender, "ignored", arguments);
     }
 
@@ -64,7 +64,7 @@ public abstract class CommandDelegatorTest {
             return null;
         }).when(selector).sendMessage(any(), any());
 
-        CommandDelegator delegator = new CommandDelegator(selector, command);
+        CommandDelegator delegator = new CommandDelegator(selector, List.of(command));
         delegator.execute(sender, "ignored", arguments);
     }
 
