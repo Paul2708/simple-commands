@@ -12,6 +12,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
@@ -64,7 +65,7 @@ public final class CommandDelegator extends Command {
      */
     @SuppressWarnings("checkstyle:illegalcatch")
     @Override
-    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
         // TODO: Add custom listener
         if (!initiated) {
             firstExecution();
@@ -126,7 +127,7 @@ public final class CommandDelegator extends Command {
                     execute(simpleCommand, sender, test);
                 }, () -> {
                     // TODO: How to check which error message should be printed?
-                    sendUsage(sender, simpleCommand.getArguments());
+                    sendUsage(sender, simpleCommand, simpleCommand.getArguments());
                 });
         return true;
     }
@@ -134,6 +135,7 @@ public final class CommandDelegator extends Command {
     /**
      * Execute the command method with a list of passed parameters.
      *
+     * @param simpleCommand    executed (sub) command
      * @param sender           command sender
      * @param mappedParameters mapped parameters, excluding the first sender object
      */
@@ -162,11 +164,11 @@ public final class CommandDelegator extends Command {
      * private helper to send usage to a CommandSender
      *
      * @param sender    the sender to send the usage to
+     * @param command   (sub) command
      * @param arguments the required arguments of the command
      */
-    private void sendUsage(CommandSender sender, List<CommandArgument<?>> arguments) {
-        // TODO: Send usage of sub command
-        StringBuilder usage = new StringBuilder("/" + matcher.getRootCommand().getInformation().name() + " ");
+    private void sendUsage(CommandSender sender, SimpleCommand command, List<CommandArgument<?>> arguments) {
+        StringBuilder usage = new StringBuilder("/" + String.join(" ", command.getPath()) + " ");
 
         for (CommandArgument<?> argument : arguments) {
             if (argument.isOptional()) {
@@ -197,14 +199,10 @@ public final class CommandDelegator extends Command {
      * @throws IllegalArgumentException if sender, alias, or args is null
      */
     @Override
-    public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+    @NotNull
+    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, String[] args) throws IllegalArgumentException {
         // TODO: Check if tab completion works with optional arguments
         // TODO: Check tab completion with sub commands
-
-        if (sender == null || alias == null || args == null) {
-            throw new IllegalArgumentException();
-        }
-
         if (args.length == 0 || args.length > matcher.getRootCommand().getArguments().size()) {
             return Collections.emptyList();
         }

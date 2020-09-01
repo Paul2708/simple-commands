@@ -67,6 +67,18 @@ public final class SimpleCommand {
     }
 
     /**
+     * Get the full path of the command including parent and name.
+     *
+     * @return full path
+     */
+    public String[] getPath() {
+        String[] arr = new String[information.parent().length + 1];
+        System.arraycopy(information.parent(), 0, arr, 0, information.parent().length);
+        arr[information.parent().length] = information.name();
+        return arr;
+    }
+
+    /**
      * Get the bukkit command label that refers to the command.
      * If the simple command is <code>parent=["test", "2ndlayer"], name = "command"</code>,
      * it will return the first parent entry.
