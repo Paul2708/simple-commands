@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,7 +52,11 @@ public final class CommandDelegator extends Command {
      * This means that every command got registered.
      */
     private void firstExecution() {
-        this.matcher = new CommandMatcher(commands);
+        // TODO: Ugly af
+        if (!initiated) {
+            this.matcher = new CommandMatcher(commands);
+            initiated = true;
+        }
     }
 
     /**
@@ -67,10 +71,7 @@ public final class CommandDelegator extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
         // TODO: Add custom listener
-        if (!initiated) {
-            firstExecution();
-            initiated = true;
-        }
+        firstExecution();
 
         SimpleCommand simpleCommand = matcher.findBestMatch(args);
 
@@ -201,13 +202,31 @@ public final class CommandDelegator extends Command {
     @Override
     @NotNull
     public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, String[] args) throws IllegalArgumentException {
+        firstExecution();
+
         // TODO: Check if tab completion works with optional arguments
-        // TODO: Check tab completion with sub commands
-        if (args.length == 0 || args.length > matcher.getRootCommand().getArguments().size()) {
-            return Collections.emptyList();
+
+        SimpleCommand command = matcher.findBestMatch(args);
+        List<String> subCommands = matcher.findDirectSubCommands(command).stream()
+                .filter(cmd -> cmd.getPathWithoutParent().length == args.length)
+                .map(c -> c.getInformation().name())
+                .filter(s -> s.startsWith(args[args.length - 1]))
+                .collect(Collectors.toList());
+
+        List<String> arguments = new ArrayList<>();
+        if (!command.getArguments().isEmpty()) {
+            String singleArgument = args[args.length - 1];
+            int argIndex = args.length - command.getPathWithoutParent().length - 1;
+
+            if (argIndex >= 0 && argIndex < command.getArguments().size()) {
+                CommandArgument<?> argument = command.getArguments().get(argIndex);
+                arguments.addAll(argument.autoComplete(singleArgument));
+            }
         }
 
-        return matcher.getRootCommand().getArguments().get(args.length - 1).autoComplete(args[args.length - 1]);
+        List<String> result = new ArrayList<>(subCommands);
+        result.addAll(arguments);
+        return result;
     }
 
     /**
