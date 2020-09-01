@@ -1,6 +1,5 @@
 package de.paul2708.commands.core.command.registry;
 
-import com.google.gson.internal.$Gson$Preconditions;
 import de.paul2708.commands.core.command.CommandDelegator;
 import de.paul2708.commands.core.command.SimpleCommand;
 import de.paul2708.commands.core.language.LanguageSelector;
@@ -10,7 +9,10 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class registers Bukkit-{@link org.bukkit.command.Command}s by simple commands
@@ -25,7 +27,7 @@ public final class BukkitCommandRegistry {
     private final JavaPlugin plugin;
     private final LanguageSelector languageSelector;
 
-    private final Set<SimpleCommand> commands;
+    private final Map<String, List<SimpleCommand>> commands;
 
     /**
      * Create a new bukkit command registry.
@@ -37,7 +39,7 @@ public final class BukkitCommandRegistry {
         this.plugin = plugin;
         this.languageSelector = languageSelector;
 
-        this.commands = new HashSet<>();
+        this.commands = new HashMap<>();
     }
 
     /**
@@ -47,52 +49,27 @@ public final class BukkitCommandRegistry {
      * @param simpleCommand simple command to register
      */
     public void register(SimpleCommand simpleCommand) {
-        // Add sub command reference
-        if (!simpleCommand.isRoot()) {
+        if (commands.containsKey(simpleCommand.getBukkitLabel())) {
+            commands.get(simpleCommand.getBukkitLabel()).add(simpleCommand);
+        } else {
+            List<SimpleCommand> list = new LinkedList<>();
+            list.add(simpleCommand);
+            commands.put(simpleCommand.getBukkitLabel(), list);
 
-        }
+            Command bukkitCommand = new CommandDelegator(languageSelector, list);
+            try {
+                Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+                commandMapField.setAccessible(true);
 
-        // Register root command
-        if (!simpleCommand.isRoot() || rootCommands.contains(simpleCommand)) {
-            return;
-        }
+                CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
+                commandMap.register(plugin.getName(), bukkitCommand);
 
-        Command bukkitCommand = new CommandDelegator(languageSelector, simpleCommand);
-
-        try {
-            Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-            commandMapField.setAccessible(true);
-
-            CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
-            commandMap.register(plugin.getName(), bukkitCommand);
-
-            if (simpleCommand.isRoot()) {
                 for (String alias : simpleCommand.getInformation().aliases()) {
                     commandMap.register(alias, plugin.getName(), bukkitCommand);
                 }
-            }
-
-        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    public Optional<SimpleCommand> findByName(String[] args) {
-        commands.stream()
-                .filter(command -> startWith(command.getp))
-    }
-
-    private boolean startWith(String[] array, String[] start) {
-        if (start.length > array.length) {
-            return false;
-        }
-
-        for (int i = 0; i < start.length; i++) {
-            if (!array[i].equals(start[i])) {
-                return false;
+            } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException exception) {
+                throw new RuntimeException(String.format("Couldn't register command %s", simpleCommand.toString()));
             }
         }
-
-        return true;
     }
 }
