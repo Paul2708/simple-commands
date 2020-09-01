@@ -2,12 +2,10 @@ package de.paul2708.commands.core.command;
 
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.exception.NotFulfilledConditionException;
-import de.paul2708.commands.core.CommandRegistry;
 import de.paul2708.commands.core.command.argument.ArgumentGenerator;
 import de.paul2708.commands.core.command.argument.ArgumentTester;
 import de.paul2708.commands.core.command.argument.result.SuccessResult;
 import de.paul2708.commands.core.command.argument.result.TestResult;
-import de.paul2708.commands.core.command.registry.BukkitCommandRegistry;
 import de.paul2708.commands.core.language.LanguageSelector;
 import de.paul2708.commands.language.MessageResource;
 import org.bukkit.command.Command;
@@ -29,22 +27,31 @@ import java.util.stream.Collectors;
 public final class CommandDelegator extends Command {
 
     private final LanguageSelector languageSelector;
-    private final BukkitCommandRegistry registry;
-    private final SimpleCommand simpleCommand;
+    private final List<SimpleCommand> commands;
+
+    private CommandMatcher matcher;
+
+    private boolean initiated;
 
     /**
      * Create a new basic command based on the simple command.
      *
      * @param languageSelector language selector to translate messages
-     * @param simpleCommand    simple command
+     * @param commands         list of commands including root and all sub commands
      */
-    public CommandDelegator(LanguageSelector languageSelector, BukkitCommandRegistry registry,
-                            SimpleCommand simpleCommand) {
-        super(simpleCommand.getInformation().name());
+    public CommandDelegator(LanguageSelector languageSelector, List<SimpleCommand> commands) {
+        super(commands.get(0).getBukkitLabel());
 
         this.languageSelector = languageSelector;
-        this.registry = registry;
-        this.simpleCommand = simpleCommand;
+        this.commands = commands;
+    }
+
+    /**
+     * Called if the first command relating to this command group got exectued.
+     * This means that every command got registered.
+     */
+    private void firstExecution() {
+        this.matcher = new CommandMatcher(commands);
     }
 
     /**
@@ -59,6 +66,12 @@ public final class CommandDelegator extends Command {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         // TODO: Add custom listener
+        if (!initiated) {
+            firstExecution();
+            initiated = true;
+        }
+
+        SimpleCommand simpleCommand = matcher.findBestMatch(args);
 
         // Check executor
         switch (simpleCommand.getType()) {
@@ -87,9 +100,13 @@ public final class CommandDelegator extends Command {
             return true;
         }
 
+        // Move arguments
+        String[] movedArgs = new String[args.length - simpleCommand.getInformation().parent().length];
+        System.arraycopy(args, simpleCommand.getInformation().parent().length, movedArgs, 0, movedArgs.length);
+
         // Test arguments
         ArgumentGenerator generator = new ArgumentGenerator(simpleCommand.getArguments());
-        ArgumentTester tester = new ArgumentTester(args);
+        ArgumentTester tester = new ArgumentTester(movedArgs);
 
         List<TestResult> results = new LinkedList<>();
 
@@ -106,7 +123,7 @@ public final class CommandDelegator extends Command {
                     List<Object> test = ((SuccessResult) result).getMappedArguments().stream()
                             .map(parameter -> parameter.isEmpty() ? null : parameter.get())
                             .collect(Collectors.toList());
-                    execute(sender, test);
+                    execute(simpleCommand, sender, test);
                 }, () -> {
                     // TODO: How to check which error message should be printed?
                     sendUsage(sender, simpleCommand.getArguments());
@@ -121,7 +138,7 @@ public final class CommandDelegator extends Command {
      * @param mappedParameters mapped parameters, excluding the first sender object
      */
     @SuppressWarnings("checkstyle:IllegalCatch")
-    public void execute(CommandSender sender, List<Object> mappedParameters) {
+    public void execute(SimpleCommand simpleCommand, CommandSender sender, List<Object> mappedParameters) {
         mappedParameters.add(0, sender);
 
         try {
@@ -148,7 +165,8 @@ public final class CommandDelegator extends Command {
      * @param arguments the required arguments of the command
      */
     private void sendUsage(CommandSender sender, List<CommandArgument<?>> arguments) {
-        StringBuilder usage = new StringBuilder("/" + simpleCommand.getInformation().name() + " ");
+        // TODO: Send usage of sub command
+        StringBuilder usage = new StringBuilder("/" + matcher.getRootCommand().getInformation().name() + " ");
 
         for (CommandArgument<?> argument : arguments) {
             if (argument.isOptional()) {
@@ -181,16 +199,17 @@ public final class CommandDelegator extends Command {
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
         // TODO: Check if tab completion works with optional arguments
+        // TODO: Check tab completion with sub commands
 
         if (sender == null || alias == null || args == null) {
             throw new IllegalArgumentException();
         }
 
-        if (args.length == 0 || args.length > simpleCommand.getArguments().size()) {
+        if (args.length == 0 || args.length > matcher.getRootCommand().getArguments().size()) {
             return Collections.emptyList();
         }
 
-        return simpleCommand.getArguments().get(args.length - 1).autoComplete(args[args.length - 1]);
+        return matcher.getRootCommand().getArguments().get(args.length - 1).autoComplete(args[args.length - 1]);
     }
 
     /**
