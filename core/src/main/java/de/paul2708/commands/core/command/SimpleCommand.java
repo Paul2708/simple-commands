@@ -3,12 +3,9 @@ package de.paul2708.commands.core.command;
 import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.core.annotation.Command;
 
-import javax.security.auth.SubjectDomainCombiner;
 import java.lang.reflect.Method;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * This class holds information about the command like name, permission, ... and the java method.
@@ -24,8 +21,6 @@ public final class SimpleCommand {
     private final Method method;
 
     private final List<CommandArgument<?>> arguments;
-
-    private final Set<SimpleCommand> subCommands;
 
     /**
      * Create a new simple command.
@@ -43,12 +38,32 @@ public final class SimpleCommand {
         this.object = object;
         this.method = method;
         this.arguments = arguments;
-
-        this.subCommands = new HashSet<>();
     }
 
+    /**
+     * Check if the command is a root command.
+     *
+     * @return true if the command is a root command, otherwise false
+     */
     public boolean isRoot() {
         return information.parent().length == 0;
+    }
+
+    /**
+     * Get the path without parent including its own name.
+     * E.g. /root sub subsub returns "sub subsub".
+     *
+     * @return path without parent including name
+     */
+    public String[] getPathWithoutParent() {
+        if (isRoot()) {
+            return new String[0];
+        } else {
+            String[] arr = new String[information.parent().length];
+            System.arraycopy(information.parent(), 1, arr, 0, arr.length - 1);
+            arr[information.parent().length - 1] = information.name();
+            return arr;
+        }
     }
 
     /**
@@ -109,6 +124,23 @@ public final class SimpleCommand {
     }
 
     @Override
+    public String toString() {
+        return "SimpleCommand{"
+                + "information=" + information
+                + ", type=" + type
+                + ", object=" + object
+                + ", method=" + method
+                + ", arguments=" + arguments
+                + '}';
+    }
+
+    /**
+     * Check if two commands are equal.
+     *
+     * @param o object
+     * @return true if every attribute is equal to each other
+     */
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -125,6 +157,11 @@ public final class SimpleCommand {
                 && Objects.equals(arguments, command.arguments);
     }
 
+    /**
+     * Hash the object.
+     *
+     * @return hash code
+     */
     @Override
     public int hashCode() {
         return Objects.hash(information, type, object, method, arguments);
