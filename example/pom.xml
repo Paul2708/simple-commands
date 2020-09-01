@@ -5,7 +5,7 @@
     <parent>
         <artifactId>simple-commands</artifactId>
         <groupId>de.paul2708</groupId>
-        <version>0.3.0</version>
+        <version>0.4.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,7 +16,7 @@
         <dependency>
             <groupId>de.paul2708</groupId>
             <artifactId>simple-commands-core</artifactId>
-            <version>0.3.0</version>
+            <version>${simple-commands.version}</version>
         </dependency>
         <!-- Spigot -->
         <dependency>
@@ -43,6 +43,17 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>

@@ -15,6 +15,23 @@ import java.lang.annotation.Target;
 public @interface Command {
 
     /**
+     * This permission indicates that the sender needs operation rights (OP).
+     */
+    String OP_PERMISSION = "*";
+
+    /**
+     * This permission indicates that none permission is needed.
+     */
+    String NONE_PERMISSION = "";
+
+    /**
+     * Array of parents.
+     *
+     * @return array of parents or an empty array if no parent is present
+     */
+    String[] parent() default {};
+
+    /**
      * Command name.
      *
      * @return command name
@@ -29,12 +46,14 @@ public @interface Command {
     String desc() default "";
 
     /**
-     * Permission, a player needs, to execute the command. '*' means that the player requires op rights.
-     * Default value is '*'.
+     * Permission, a player needs, to execute the command.
+     * '*' means that the player requires op rights.
+     * An empty string means that no permission is needed at all.
+     * Default value is ''.
      *
      * @return command permission
      */
-    String permission() default "*";
+    String permission() default Command.NONE_PERMISSION;
 
     /**
      * Command aliases. Default value is an empty array.

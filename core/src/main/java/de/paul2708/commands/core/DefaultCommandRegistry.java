@@ -6,13 +6,11 @@ import de.paul2708.commands.arguments.util.Pair;
 import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.core.annotation.Inject;
 import de.paul2708.commands.core.annotation.Optional;
-import de.paul2708.commands.core.command.CommandDelegator;
 import de.paul2708.commands.core.command.CommandType;
 import de.paul2708.commands.core.command.SimpleCommand;
+import de.paul2708.commands.core.command.registry.BukkitCommandRegistry;
 import de.paul2708.commands.core.language.DefaultLanguageSelector;
 import de.paul2708.commands.core.language.LanguageSelector;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
@@ -39,6 +37,8 @@ public final class DefaultCommandRegistry implements CommandRegistry {
 
     private final LanguageSelector languageSelector;
 
+    private final BukkitCommandRegistry bukkitCommandRegistry;
+
     /**
      * Create a new command registry.
      *
@@ -53,6 +53,8 @@ public final class DefaultCommandRegistry implements CommandRegistry {
         this.injectedObjects = new ArrayList<>();
 
         this.languageSelector = new DefaultLanguageSelector();
+
+        this.bukkitCommandRegistry = new BukkitCommandRegistry(plugin, languageSelector);
     }
 
     /**
@@ -158,9 +160,9 @@ public final class DefaultCommandRegistry implements CommandRegistry {
                     // Register command
                     SimpleCommand simpleCommand = new SimpleCommand(method.getAnnotation(Command.class), commandType,
                             object, method, list);
-                    commands.add(simpleCommand);
 
-                    registerBukkitCommand(simpleCommand, new CommandDelegator(languageSelector, simpleCommand));
+                    commands.add(simpleCommand);
+                    bukkitCommandRegistry.register(simpleCommand);
                 }
             }
         }
@@ -212,28 +214,5 @@ public final class DefaultCommandRegistry implements CommandRegistry {
         }
 
         return null;
-    }
-
-    /**
-     * Register a simple command as a bukkit command by using the command map.
-     * The plugin name will be used as command prefix.
-     *
-     * @param simpleCommand simple command
-     * @param bukkitCommand to simple command related bukkit command
-     */
-    private void registerBukkitCommand(SimpleCommand simpleCommand, org.bukkit.command.Command bukkitCommand) {
-        try {
-            Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-            commandMapField.setAccessible(true);
-
-            CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
-            commandMap.register(plugin.getName(), bukkitCommand);
-
-            for (String alias : simpleCommand.getInformation().aliases()) {
-                commandMap.register(alias, plugin.getName(), bukkitCommand);
-            }
-        } catch (NoSuchFieldException  | IllegalArgumentException | IllegalAccessException exception) {
-            exception.printStackTrace();
-        }
     }
 }
