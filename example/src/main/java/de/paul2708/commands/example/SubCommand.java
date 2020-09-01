@@ -16,12 +16,17 @@ public final class SubCommand {
     }
 
     @Command(name = "sub", parent = {"parent"})
-    public void sub(ConsoleCommandSender player, String arg) {
+    public void sub(ConsoleCommandSender player, Person arg) {
         player.sendMessage("Sub command: " + arg);
     }
 
+    @Command(name = "sab", parent = {"parent"})
+    public void sab(ConsoleCommandSender player, Person arg, Person lol) {
+        player.sendMessage("Sab command: " + arg + " " + lol);
+    }
+
     @Command(name = "subsub", parent = {"parent", "sub"})
-    public void subSub(ConsoleCommandSender player, String argument) {
+    public void subSub(ConsoleCommandSender player, Person argument) {
         player.sendMessage("Subsub command: " + argument);
     }
 }
