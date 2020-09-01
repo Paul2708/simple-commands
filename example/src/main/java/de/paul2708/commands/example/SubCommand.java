@@ -1,7 +1,7 @@
 package de.paul2708.commands.example;
 
 import de.paul2708.commands.core.annotation.Command;
-import org.bukkit.entity.Player;
+import org.bukkit.command.ConsoleCommandSender;
 
 /**
  * This class provides commands with sub commands.
@@ -11,17 +11,17 @@ import org.bukkit.entity.Player;
 public final class SubCommand {
 
     @Command(name = "parent")
-    public void parent(Player player) {
+    public void parent(ConsoleCommandSender player) {
         player.sendMessage("Parent command.");
     }
 
     @Command(name = "sub", parent = {"parent"})
-    public void sub(Player player) {
-        player.sendMessage("Sub command.");
+    public void sub(ConsoleCommandSender player, String arg) {
+        player.sendMessage("Sub command: " + arg);
     }
 
     @Command(name = "subsub", parent = {"parent", "sub"})
-    public void subSub(Player player, String argument) {
+    public void subSub(ConsoleCommandSender player, String argument) {
         player.sendMessage("Subsub command: " + argument);
     }
 }
