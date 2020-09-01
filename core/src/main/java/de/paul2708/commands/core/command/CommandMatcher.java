@@ -2,6 +2,7 @@ package de.paul2708.commands.core.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class matches a group of commands against user arguments.
@@ -71,6 +72,20 @@ public final class CommandMatcher {
 
             return commandPath.length;
         }
+    }
+
+    /**
+     * Find all direct sub commands by a given "root" command.
+     *
+     * @param command relative "root" command
+     * @return list of direct sub commands
+     */
+    public List<SimpleCommand> findDirectSubCommands(SimpleCommand command) {
+        return commands.stream()
+                .filter(cmd -> !cmd.isRoot())
+                .filter(cmd -> cmd.getInformation().parent()[cmd.getInformation().parent().length - 1]
+                        .equalsIgnoreCase(command.getInformation().name()))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     /**

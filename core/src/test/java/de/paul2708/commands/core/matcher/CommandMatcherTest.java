@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,6 +25,7 @@ public final class CommandMatcherTest {
 
     private SimpleCommand rootCommand;
     private SimpleCommand subACommand;
+    private SimpleCommand subBCommand;
     private SimpleCommand subASubCommand;
 
     private CommandMatcher matcher;
@@ -37,7 +38,7 @@ public final class CommandMatcherTest {
         List<SimpleCommand> commands = new ArrayList<>();
         this.rootCommand = buildCommand("root", new String[0]);
         this.subACommand = buildCommand("sub-a", new String[]{"root"});
-        SimpleCommand subBCommand = buildCommand("sub-b", new String[]{"root"});
+        this.subBCommand = buildCommand("sub-b", new String[]{"root"});
         this.subASubCommand = buildCommand("sub-a-sub", new String[]{"root", "sub-a"});
 
         commands.add(rootCommand);
@@ -88,6 +89,16 @@ public final class CommandMatcherTest {
     }
 
     /**
+     * Test if the matches finds all direct sub commands.
+     */
+    @Test
+    void findDirectSubCommands() {
+        assertListWithoutOrder(List.of(subACommand, subBCommand), matcher.findDirectSubCommands(rootCommand));
+        assertListWithoutOrder(List.of(subASubCommand), matcher.findDirectSubCommands(subACommand));
+        assertListWithoutOrder(Collections.emptyList(), matcher.findDirectSubCommands(subBCommand));
+    }
+
+    /**
      * Build a mocked simple command by name and its parent.
      * Other attributes are undefined.
      *
@@ -102,5 +113,22 @@ public final class CommandMatcherTest {
         when(command.toString()).thenReturn(name + " " + Arrays.toString(parent));
 
         return new SimpleCommand(command, CommandType.DEFAULT_COMMAND, null, null, Collections.emptyList());
+    }
+
+    /**
+     * Assert that two lists have the same items disregarding item order.
+     *
+     * @param expected expected items
+     * @param actual   actual items
+     * @param <T>      list type
+     */
+    private <T> void assertListWithoutOrder(List<T> expected, List<T> actual) {
+        if (expected.size() != actual.size()) {
+            fail("Not same length");
+        } else {
+            if (!actual.containsAll(expected)) {
+                fail("Not same content");
+            }
+        }
     }
 }
