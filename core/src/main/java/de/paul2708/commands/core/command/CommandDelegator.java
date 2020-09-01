@@ -201,7 +201,8 @@ public final class CommandDelegator extends Command {
      */
     @Override
     @NotNull
-    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, String[] args) throws IllegalArgumentException {
+    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, String[] args)
+            throws IllegalArgumentException {
         firstExecution();
 
         // TODO: Check if tab completion works with optional arguments
