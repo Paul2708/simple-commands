@@ -5,7 +5,6 @@ import de.paul2708.commands.arguments.CommandArgument;
 import de.paul2708.commands.arguments.util.Pair;
 import de.paul2708.commands.core.annotation.Command;
 import de.paul2708.commands.core.annotation.Inject;
-import de.paul2708.commands.core.annotation.Optional;
 import de.paul2708.commands.core.command.CommandType;
 import de.paul2708.commands.core.command.SimpleCommand;
 import de.paul2708.commands.core.command.registry.BukkitCommandRegistry;
@@ -124,7 +123,8 @@ public final class DefaultCommandRegistry implements CommandRegistry {
                     }
 
                     // Check if each parameter has a command argument
-                    ParameterToArgumentMapper mapper = new ParameterToArgumentMapper(method, parameters, argumentHolder);
+                    ParameterToArgumentMapper mapper = new ParameterToArgumentMapper(method, parameters,
+                            argumentHolder);
                     List<CommandArgument<?>> list = mapper.map();
 
                     // Set injected fields
