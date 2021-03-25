@@ -36,7 +36,7 @@ Just add the following repository and dependency to your Maven project.
 <dependency>
     <groupId>com.github.Paul2708</groupId>
     <artifactId>simple-commands</artifactId>
-    <version>0.4.0</version>
+    <version>0.4.1</version>
 </dependency>
 ```
 
@@ -51,7 +51,7 @@ If you don't use a build tool like Maven or Gradle, you can download the latest 
 <dependency>
     <groupId>de.paul2708</groupId>
     <artifactId>simple-commands-core</artifactId>
-    <version>0.4.0</version>
+    <version>0.4.1</version>
 </dependency>
 ```
 

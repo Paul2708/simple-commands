@@ -1,6 +1,6 @@
 name: Example-Commands
 author: Paul2708
-version: "0.4.0"
+version: "0.4.1"
 
 website: https://github.com/Paul2708/simple-commands
 description: Example plugin to test command framework

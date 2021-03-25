@@ -6,7 +6,7 @@
 
     <groupId>de.paul2708</groupId>
     <artifactId>simple-commands</artifactId>
-    <version>0.4.0</version>
+    <version>0.4.1</version>
     <modules>
         <module>core</module>
         <module>arguments</module>
@@ -19,7 +19,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Custom properties -->
-        <simple-commands.version>0.4.0</simple-commands.version>
+        <simple-commands.version>0.4.1</simple-commands.version>
         <spigot.version>1.15.2-R0.1-SNAPSHOT</spigot.version>
         <junit.version>5.6.1</junit.version>
         <mockito.version>3.3.3</mockito.version>
