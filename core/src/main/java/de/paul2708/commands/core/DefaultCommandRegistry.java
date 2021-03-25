@@ -124,24 +124,8 @@ public final class DefaultCommandRegistry implements CommandRegistry {
                     }
 
                     // Check if each parameter has a command argument
-                    List<CommandArgument<?>> list = new ArrayList<>();
-
-                    for (int i = 1; i < parameters.length; i++) {
-                        Class<?> type = parameters[i].getType();
-                        boolean isOptional = parameters[i].getAnnotation(Optional.class) != null;
-
-                        CommandArgument<?> argument = argumentHolder.resolve(type);
-
-                        if (argument == null) {
-                            throw new IllegalArgumentException(String.format("parameter %s of method %s doesn't have "
-                                    + "an argument wrapper", type.getName(), method.getName()));
-                        }
-
-                        if (isOptional) {
-                            argument = argument.asOptional();
-                        }
-                        list.add(argument);
-                    }
+                    ParameterToArgumentMapper mapper = new ParameterToArgumentMapper(method, parameters, argumentHolder);
+                    List<CommandArgument<?>> list = mapper.map();
 
                     // Set injected fields
                     for (Field field : clazz.getDeclaredFields()) {
@@ -202,7 +186,7 @@ public final class DefaultCommandRegistry implements CommandRegistry {
     /**
      * Get the injected value by key and type.
      *
-     * @param key key
+     * @param key         key
      * @param objectClass object class
      * @return injected value or <code>null</code> if none was injected
      */
