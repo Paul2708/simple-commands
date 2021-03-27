@@ -33,7 +33,7 @@ public final class LocaleLanguageProvider implements LanguageProvider {
      * Create a new language provider based on a locale.
      *
      * @param directory absolute file path to the directory of all message properties
-     * @param locale locale
+     * @param locale    locale
      */
     LocaleLanguageProvider(String directory, Locale locale) {
         Locale.setDefault(LanguageProvider.DEFAULT_LOCALE);
@@ -42,7 +42,7 @@ public final class LocaleLanguageProvider implements LanguageProvider {
                 + locale.getLanguage() + ".properties");
 
         try (InputStream inputStream = new FileInputStream(file)) {
-            this.resourceBundle =  new PropertyResourceBundle(inputStream);
+            this.resourceBundle = new PropertyResourceBundle(inputStream);
 
             this.locale = locale;
         } catch (MissingResourceException | IOException e) {
@@ -84,8 +84,8 @@ public final class LocaleLanguageProvider implements LanguageProvider {
             return prefix;
         }
 
-        String message = new String(resourceBundle.getString(key).getBytes(StandardCharsets.ISO_8859_1),
-                StandardCharsets.UTF_8).replace(REPLACE_CHAR + PREFIX_KEY + REPLACE_CHAR, prefix);
+        String message = new String(resourceBundle.getString(key).getBytes(StandardCharsets.UTF_8))
+                .replace(REPLACE_CHAR + PREFIX_KEY + REPLACE_CHAR, prefix);
 
         return MessageFormat.format(replaceColorCodes(message), arguments);
     }
